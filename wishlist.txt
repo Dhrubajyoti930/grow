@@ -1,1 +1,36 @@
-Make a full HTML digital clock that updates every second.
+# /grow — Wishlist
+# Ideas for future auto-generated pages.
+# Format: [tag] Title — short description
+# Tags: game | tool | art | story
+# ─────────────────────────────────────────────────────────────────
+
+[game]  Snake Reborn          — classic snake with neon trail and speed ramp
+[game]  Asteroid Drift        — 2D top-down asteroid dodge, keyboard + touch
+[game]  Memory Grid           — flip & match emoji cards, timed challenge mode
+[game]  Type Racer Mini       — solo typing speed test with WPM counter
+[game]  Platform Hopper       — simple one-screen platformer, procedural levels
+[game]  Number Slide          — 15-puzzle (slide tiles to reach the goal)
+[game]  Gravity Balls         — physics sandbox: drop coloured balls, watch them stack
+[game]  2048 Hex              — 2048 logic but on a hexagonal grid
+[game]  Reaction Tap          — tap the screen the instant a shape appears, log your ms
+[game]  Color Flood           — flood-fill the grid from top-left in fewest moves
+
+[tool]  Palette Generator     — enter a hex, get a full 10-shade palette + CSS vars
+[tool]  Pomodoro Timer        — 25/5 focus timer with session log and streak tracker
+[tool]  Font Pairer           — pick a display font, get 3 body-font matches + preview
+[tool]  README Builder        — fill a form, download a polished GitHub README.md
+[tool]  JSON Formatter        — paste messy JSON, get it pretty-printed + validated
+[tool]  Gradient Maker        — drag colour stops, copy the CSS gradient string
+[tool]  Unit Converter        — length / weight / temperature in one minimal UI
+[tool]  ASCII Art Gen         — type text, pick a font, render it in ASCII block art
+
+[art]   Perlin Dunes          — animated Perlin-noise landscape, adjustable wind speed
+[art]   Constellation Map     — click to place stars, auto-draw constellation lines
+[art]   Lissajous Studio      — tune a/b/delta sliders, watch the parametric curves evolve
+[art]   Particle Portrait     — upload a photo, shatter it into floating particles
+[art]   Mondrian Builder      — click to subdivide rectangles, auto-fill Mondrian colours
+[art]   Generative Quilt      — every page load produces a unique quilt pattern SVG
+
+[story] Daily Haiku           — Gemini generates a haiku each midnight, logs them all
+[story] Micro Fiction Prompt  — one sentence prompt, 150-word story, new each day
+[story] World Builder         — add a location each day; Gemini stitches them into lore
