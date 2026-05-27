@@ -6,7 +6,7 @@
 
 [game]  Snake Reborn          — classic snake with neon trail and speed ramp  ✅
 [game]  Asteroid Drift        — 2D top-down asteroid dodge, keyboard + touch  ✅
-[game]  Memory Grid           — flip & match emoji cards, timed challenge mode
+[game]  Memory Grid           — flip & match emoji cards, timed challenge mode  ✅
 [game]  Type Racer Mini       — solo typing speed test with WPM counter
 [game]  Platform Hopper       — simple one-screen platformer, procedural levels
 [game]  Number Slide          — 15-puzzle (slide tiles to reach the goal)
