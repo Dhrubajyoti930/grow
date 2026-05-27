@@ -34,3 +34,151 @@
 [story] Daily Haiku           — Gemini generates a haiku each midnight, logs them all
 [story] Micro Fiction Prompt  — one sentence prompt, 150-word story, new each day
 [story] World Builder         — add a location each day; Gemini stitches them into lore
+
+
+# /grow — Wishlist
+# Ideas for future auto-generated pages.
+# Format: [tag] Title — short description
+# Tags: game | tool | art | story
+# ─────────────────────────────────────────────────────────────────
+
+[game]  Snake Reborn          — classic snake with neon trail and speed ramp
+[game]  Asteroid Drift        — 2D top-down asteroid dodge, keyboard + touch
+[game]  Memory Grid           — flip & match emoji cards, timed challenge mode
+[game]  Type Racer Mini       — solo typing speed test with WPM counter
+[game]  Platform Hopper       — simple one-screen platformer, procedural levels
+[game]  Number Slide          — 15-puzzle (slide tiles to reach the goal)
+[game]  Gravity Balls         — physics sandbox: drop coloured balls, watch them stack
+[game]  2048 Hex              — 2048 logic but on a hexagonal grid
+[game]  Reaction Tap          — tap the screen the instant a shape appears, log your ms
+[game]  Color Flood           — flood-fill the grid from top-left in fewest moves
+
+[tool]  Palette Generator     — enter a hex, get a full 10-shade palette + CSS vars
+[tool]  Pomodoro Timer        — 25/5 focus timer with session log and streak tracker
+[tool]  Font Pairer           — pick a display font, get 3 body-font matches + preview
+[tool]  README Builder        — fill a form, download a polished GitHub README.md
+[tool]  JSON Formatter        — paste messy JSON, get it pretty-printed + validated
+[tool]  Gradient Maker        — drag colour stops, copy the CSS gradient string
+[tool]  Unit Converter        — length / weight / temperature in one minimal UI
+[tool]  ASCII Art Gen         — type text, pick a font, render it in ASCII block art
+
+[art]   Perlin Dunes          — animated Perlin-noise landscape, adjustable wind speed
+[art]   Constellation Map     — click to place stars, auto-draw constellation lines
+[art]   Lissajous Studio      — tune a/b/delta sliders, watch the parametric curves evolve
+[art]   Particle Portrait     — upload a photo, shatter it into floating particles
+[art]   Mondrian Builder      — click to subdivide rectangles, auto-fill Mondrian colours
+[art]   Generative Quilt      — every page load produces a unique quilt pattern SVG
+
+[story] Daily Haiku           — Gemini generates a haiku each midnight, logs them all
+[story] Micro Fiction Prompt  — one sentence prompt, 150-word story, new each day
+[story] World Builder         — add a location each day; Gemini stitches them into lore
+
+# ── 100 New Ideas ─────────────────────────────────────────────────
+
+# Games (40)
+[game]  Minesweeper Zero      — classic minesweeper with a clean dark UI and first-click safety
+[game]  Brick Blaster         — breakout clone, power-ups drop from broken bricks
+[game]  Sudoku Daily          — one fresh sudoku per day, three difficulty tiers
+[game]  Simon Says            — colour sequence memory game, speed increases each round
+[game]  Whack A Bug           — smash bugs that pop up across a grid, don't miss
+[game]  Chess Puzzles         — daily tactical chess puzzle, highlight correct moves
+[game]  Sokoban Micro         — push crates onto targets in minimal pixel rooms
+[game]  Falling Tetris        — standard tetris pieces, ghost piece, hold queue
+[game]  Infinite Runner       — auto-running character, tap to jump over obstacles
+[game]  Dungeon Crawler       — roguelike dungeon: rooms, items, enemies, turn-based
+[game]  Frogger Cross         — guide a frog across traffic and river logs
+[game]  Pixel Shooter         — top-down twin-stick shooter, waves of enemies
+[game]  Bubble Pop            — match & pop same-colour bubble clusters
+[game]  Hex Pathfinder        — draw paths on a hex grid to connect two sides (Hex game)
+[game]  Card War              — flip cards, higher value wins the pile, track score
+[game]  Number Merge          — drag tiles to merge matching numbers, reach 1024
+[game]  Orbit Gravity         — launch satellites, use planet gravity to reach targets
+[game]  Pixel Golf            — drag to aim, release to shoot, par-based scoring
+[game]  Rhythm Tap            — tap keys in time with a BPM metronome beat pattern
+[game]  Tower Defence Tiny    — place towers on a path, survive 20 waves of enemies
+[game]  Word Search           — find hidden words in a letter grid, timed mode
+[game]  Hangman Remix         — guess the word letter by letter, animated stick figure
+[game]  Tic Tac Toe AI        — play vs an unbeatable minimax AI
+[game]  Connect Four          — drop discs, get four in a row, 2-player local
+[game]  Lights Out            — toggle grid lights to turn them all off
+[game]  Reversi               — flip opponent discs, fill the board, beat the AI
+[game]  Nonogram Mini         — solve 5×5 to 10×10 picross / nonogram puzzles
+[game]  Pinball Table         — single flipper pinball with bumpers and ramps
+[game]  Sliding Jigsaw        — scrambled image tiles, slide to restore the picture
+[game]  Colour Sorter         — sort coloured balls into matching tubes in fewest moves
+[game]  Labyrinth Roll        — tilt maze (WASD), guide ball to exit without falling
+[game]  Clicker Empire        — idle clicker: click to earn, buy upgrades, offline gains
+[game]  Pixel Crossword       — small 7×7 crossword with daily themed clues
+[game]  Shape Drop            — drop geometric shapes to fill rows like tetris
+[game]  Maze Generator        — watch a maze build itself, then solve it
+[game]  Dice Poker            — Yahtzee-style dice game, 5 rolls, score categories
+[game]  Sequence              — place cards on a board to claim rows, solo vs AI
+[game]  Gravity Switch        — flip gravity to avoid obstacles in a side-scroll tunnel
+[game]  Pixel Farm            — plant crops, water daily, harvest points over time
+[game]  Code Breaker          — guess a 4-colour code (Mastermind), 8 attempts
+
+# Tools (30)
+[tool]  Markdown Previewer    — type markdown on the left, see rendered HTML on the right
+[tool]  Password Generator    — configure length, symbols, copy strong passwords
+[tool]  Base64 Coder          — encode/decode text or small files to Base64
+[tool]  Regex Tester          — write a regex, test it live against sample text
+[tool]  Cron Explainer        — paste a cron expression, get a human-readable schedule
+[tool]  Diff Viewer           — paste two text blocks, see line-by-line differences
+[tool]  QR Code Maker         — type a URL or text, render a downloadable QR code
+[tool]  Timestamp Converter   — convert Unix timestamps to human dates and vice versa
+[tool]  CSS Shadow Builder    — drag sliders, copy the box-shadow CSS string
+[tool]  SVG Path Viewer       — paste SVG path data, preview the shape live
+[tool]  Word Counter          — paste text, get word/char/sentence/reading-time stats
+[tool]  Hex to RGB Converter  — convert hex colours to RGB/HSL and show a swatch
+[tool]  Aspect Ratio Calc     — enter width, get height for any common aspect ratio
+[tool]  Lorem Ipsum Gen       — generate n words/paragraphs of placeholder text
+[tool]  Favicon Maker         — draw a 16×16 pixel icon, download as .ico / PNG
+[tool]  Meta Tag Builder      — fill a form, get copy-paste Open Graph + SEO meta tags
+[tool]  HTTP Status Codes     — searchable reference of every HTTP status code + meaning
+[tool]  Keyboard Shortcut Map — visual keyboard with hoverable shortcut labels per app
+[tool]  Countdown Timer       — set a target date, watch a live countdown tick down
+[tool]  Breathing Guide       — animated inhale/hold/exhale circle, choose a pattern
+[tool]  Budget Splitter       — enter a bill and names, calculate even split + tip
+[tool]  BMI Calculator        — enter height and weight, get BMI + healthy range note
+[tool]  Timezone Clock        — add up to 6 cities, see all their current times live
+[tool]  Roman Numeral Conv    — convert integers to Roman numerals and back
+[tool]  Morse Code Translator — type text, see Morse code, play audio beeps
+[tool]  Pixel Ruler           — drag a resizable ruler overlay to measure screen areas
+[tool]  CSS Flexbox Builder   — toggle flex properties visually, copy the CSS
+[tool]  Grid Layout Maker     — define CSS grid rows/cols, drag items, copy CSS
+[tool]  Emoji Picker          — searchable emoji grid with one-click copy to clipboard
+[tool]  Readability Scorer    — paste text, get Flesch-Kincaid grade level + tips
+
+# Art (20)
+[art]   Sunrise Generator     — procedural sky: randomised sunrise each page load
+[art]   Spirograph Studio     — set gear ratios with sliders, draw hypotrochoid curves
+[art]   Sand Pendulum         — double-pendulum drops coloured sand as it swings
+[art]   Voronoi Mosaic        — click to place seeds, render a coloured Voronoi diagram
+[art]   Flow Field            — animated vector field with Perlin-driven particle streams
+[art]   Pixel Rain            — Matrix-style falling character rain, pick colour + speed
+[art]   Watercolour Bleed     — click the canvas to drop pigment that bleeds outward
+[art]   Celtic Knot Gen       — generate interlaced Celtic knot patterns from grid size
+[art]   Kaleidoscope Cam      — reflect live webcam feed into a 6-fold kaleidoscope
+[art]   Truchet Tiles         — click to rotate quarter-circle tiles, build infinite patterns
+[art]   Noise Portrait        — render a photo using only Perlin-noise contour lines
+[art]   Neon Sign Maker       — type text, pick a colour, render it as a glowing neon sign
+[art]   Recursive Tree        — draw a fractal tree; sliders for angle, depth, branch ratio
+[art]   Aurora Borealis       — animated northern lights shader on a dark sky canvas
+[art]   Optical Illusion Lab  — gallery of classic illusions with animated reveals
+[art]   City Skyline Gen      — procedural night-time cityscape, different every load
+[art]   Dot Matrix Portrait   — convert an image to a grid of sized circles / dots
+[art]   Wave Interference     — place wave sources, watch interference patterns ripple
+[art]   Mandelbrot Explorer   — click to zoom into the Mandelbrot set, adjustable iterations
+[art]   Pixel Animator        — draw frames on a 16×16 canvas, export as GIF
+
+# Stories (10)
+[story] Dream Journal         — log a dream each day; Gemini tags themes and moods
+[story] One Line Novel        — Gemini writes one sentence per day; a novel builds slowly
+[story] Recipe Inventor       — pick 3 random ingredients; Gemini writes a recipe story
+[story] Character Sheet       — fill traits; Gemini writes a 200-word backstory each day
+[story] News From Nowhere     — Gemini writes a fictional newspaper front page daily
+[story] Myth of the Day       — Gemini invents a new mythology myth each midnight
+[story] Letter to Future      — write a letter; Gemini delivers a reply "from the future"
+[story] Traveller's Log       — enter a city; Gemini writes a poetic travel journal entry
+[story] Villain Origin        — daily supervillain backstory generated from a random flaw
+[story] Fable Machine         — Gemini generates a short moral fable with an animal cast
