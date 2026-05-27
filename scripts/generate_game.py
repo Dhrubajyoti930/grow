@@ -18,7 +18,7 @@ INJECT_END    = "// GENERATED_PAGES_END"
 TAG_DIRS      = {"game": "games", "tool": "tools", "art": "art", "story": "stories"}
 
 genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-model = genai.GenerativeModel("gemini-1.5-flash")
+model = genai.GenerativeModel("gemini-3.5-flash")
 
 # ── Pick next wishlist item ────────────────────────────────────────
 def pick_idea():
