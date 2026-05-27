@@ -3,7 +3,7 @@ import google.generativeai as genai
 
 # Setup Gemini
 genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-model = genai.GenerativeModel('gemini-2.0-flash') # Switched to 2.0 as discussed
+model = genai.GenerativeModel('gemini-3.5-flash') # Switched to 2.0 as discussed
 
 # Read the wishlist
 if not os.path.exists('wishlist.txt'):
