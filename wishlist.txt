@@ -1,3 +1,2 @@
-Create a full HTML classic Snake game using vanilla HTML, CSS, and JS.
 Build a full HTML simple calculator app with a clean UI.
 Make a full HTML digital clock that updates every second.
