@@ -3,13 +3,14 @@ name: Generate New Game Page
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *' # Runs daily at midnight
+    - cron: '0 0 * * *'   # Daily at midnight UTC
 
 jobs:
   generate:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -27,10 +28,11 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python scripts/generate_game.py
 
-      - name: Commit and Push
+      - name: Commit and push
         run: |
-          git config user.name "github-actions[bot]"
+          git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "Add new generated game page"
+          # Only commit if there are actual changes
+          git diff --cached --quiet || git commit -m "chore: add generated game page [$(date -u +%F)]"
           git push
