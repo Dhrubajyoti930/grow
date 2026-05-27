@@ -52,13 +52,14 @@ def parse_idea(raw):
 # ── Generate HTML via Gemini ───────────────────────────────────────
 def generate_html(idea):
     prompt = textwrap.dedent(f"""
-        Create a beautiful, self-contained single HTML file for the following:
+        Create a beautiful, cool, self-contained single HTML file for the following:
 
         Title: {idea['title']}
         Type:  {idea['tag']}
         Brief: {idea['desc']}
 
         Requirements:
+        - Use Creativity, recent asthetic trends and sometimes retro as well.
         - Entirely self-contained (no external dependencies except Google Fonts via <link>).
         - Dark theme with a distinctive, polished aesthetic. No generic purple gradients.
         - Fully functional and playable / usable right away.
