@@ -3,8 +3,13 @@ name: Generate New Game Page
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'   # Daily at midnight UTC
-
+    - cron: '0 0 * * 0'   # Daily at midnight UTC
+    - cron: '0 0 * * 1'
+    - cron: '0 0 * * 2'
+    - cron: '0 0 * * 3'
+    - cron: '0 0 * * 4'
+    - cron: '0 0 * * 5'
+    - cron: '0 0 * * 6'
 jobs:
   generate:
     runs-on: ubuntu-latest
