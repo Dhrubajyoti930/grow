@@ -4,176 +4,172 @@
 # Tags: game | tool | art | story
 # ─────────────────────────────────────────────────────────────────
 
-
-[game]  Gravity Balls         — physics sandbox: drop coloured balls, watch them stack
-[game]  2048 Hex              — 2048 logic but on a hexagonal grid
-[game]  Reaction Tap          — tap the screen the instant a shape appears, log your ms
-[game]  Color Flood           — flood-fill the grid from top-left in fewest moves
-
-[tool]  Palette Generator     — enter a hex, get a full 10-shade palette + CSS vars
-[tool]  Pomodoro Timer        — 25/5 focus timer with session log and streak tracker
-[tool]  Font Pairer           — pick a display font, get 3 body-font matches + preview
-[tool]  README Builder        — fill a form, download a polished GitHub README.md
-[tool]  JSON Formatter        — paste messy JSON, get it pretty-printed + validated
-[tool]  Gradient Maker        — drag colour stops, copy the CSS gradient string
-[tool]  Unit Converter        — length / weight / temperature in one minimal UI
-[tool]  ASCII Art Gen         — type text, pick a font, render it in ASCII block art
-
-[art]   Perlin Dunes          — animated Perlin-noise landscape, adjustable wind speed
-[art]   Constellation Map     — click to place stars, auto-draw constellation lines
-[art]   Lissajous Studio      — tune a/b/delta sliders, watch the parametric curves evolve
-[art]   Particle Portrait     — upload a photo, shatter it into floating particles
-[art]   Mondrian Builder      — click to subdivide rectangles, auto-fill Mondrian colours
-[art]   Generative Quilt      — every page load produces a unique quilt pattern SVG
-
-[story] Daily Haiku           — Gemini generates a haiku each midnight, logs them all
-[story] Micro Fiction Prompt  — one sentence prompt, 150-word story, new each day
-[story] World Builder         — add a location each day; Gemini stitches them into lore
-
-
-# /grow — Wishlist
-# Ideas for future auto-generated pages.
-# Format: [tag] Title — short description
-# Tags: game | tool | art | story
-# ─────────────────────────────────────────────────────────────────
-
-[game]  Snake Reborn          — classic snake with neon trail and speed ramp
-[game]  Asteroid Drift        — 2D top-down asteroid dodge, keyboard + touch
-[game]  Memory Grid           — flip & match emoji cards, timed challenge mode
-[game]  Type Racer Mini       — solo typing speed test with WPM counter
-[game]  Platform Hopper       — simple one-screen platformer, procedural levels
-[game]  Number Slide          — 15-puzzle (slide tiles to reach the goal)
-[game]  Gravity Balls         — physics sandbox: drop coloured balls, watch them stack
-[game]  2048 Hex              — 2048 logic but on a hexagonal grid
-[game]  Reaction Tap          — tap the screen the instant a shape appears, log your ms
-[game]  Color Flood           — flood-fill the grid from top-left in fewest moves
-
-[tool]  Palette Generator     — enter a hex, get a full 10-shade palette + CSS vars
-[tool]  Pomodoro Timer        — 25/5 focus timer with session log and streak tracker
-[tool]  Font Pairer           — pick a display font, get 3 body-font matches + preview
-[tool]  README Builder        — fill a form, download a polished GitHub README.md
-[tool]  JSON Formatter        — paste messy JSON, get it pretty-printed + validated
-[tool]  Gradient Maker        — drag colour stops, copy the CSS gradient string
-[tool]  Unit Converter        — length / weight / temperature in one minimal UI
-[tool]  ASCII Art Gen         — type text, pick a font, render it in ASCII block art
-
-[art]   Perlin Dunes          — animated Perlin-noise landscape, adjustable wind speed
-[art]   Constellation Map     — click to place stars, auto-draw constellation lines
-[art]   Lissajous Studio      — tune a/b/delta sliders, watch the parametric curves evolve
-[art]   Particle Portrait     — upload a photo, shatter it into floating particles
-[art]   Mondrian Builder      — click to subdivide rectangles, auto-fill Mondrian colours
-[art]   Generative Quilt      — every page load produces a unique quilt pattern SVG
-
-[story] Daily Haiku           — Gemini generates a haiku each midnight, logs them all
-[story] Micro Fiction Prompt  — one sentence prompt, 150-word story, new each day
-[story] World Builder         — add a location each day; Gemini stitches them into lore
-
-# ── 100 New Ideas ─────────────────────────────────────────────────
+# ── 160 New Ideas ────────────────────────────────────────────────
 
 # Games (40)
-[game]  Minesweeper Zero      — classic minesweeper with a clean dark UI and first-click safety
-[game]  Brick Blaster         — breakout clone, power-ups drop from broken bricks
-[game]  Sudoku Daily          — one fresh sudoku per day, three difficulty tiers
-[game]  Simon Says            — colour sequence memory game, speed increases each round
-[game]  Whack A Bug           — smash bugs that pop up across a grid, don't miss
-[game]  Chess Puzzles         — daily tactical chess puzzle, highlight correct moves
-[game]  Sokoban Micro         — push crates onto targets in minimal pixel rooms
-[game]  Falling Tetris        — standard tetris pieces, ghost piece, hold queue
-[game]  Infinite Runner       — auto-running character, tap to jump over obstacles
-[game]  Dungeon Crawler       — roguelike dungeon: rooms, items, enemies, turn-based
-[game]  Frogger Cross         — guide a frog across traffic and river logs
-[game]  Pixel Shooter         — top-down twin-stick shooter, waves of enemies
-[game]  Bubble Pop            — match & pop same-colour bubble clusters
-[game]  Hex Pathfinder        — draw paths on a hex grid to connect two sides (Hex game)
-[game]  Card War              — flip cards, higher value wins the pile, track score
-[game]  Number Merge          — drag tiles to merge matching numbers, reach 1024
-[game]  Orbit Gravity         — launch satellites, use planet gravity to reach targets
-[game]  Pixel Golf            — drag to aim, release to shoot, par-based scoring
-[game]  Rhythm Tap            — tap keys in time with a BPM metronome beat pattern
-[game]  Tower Defence Tiny    — place towers on a path, survive 20 waves of enemies
-[game]  Word Search           — find hidden words in a letter grid, timed mode
-[game]  Hangman Remix         — guess the word letter by letter, animated stick figure
-[game]  Tic Tac Toe AI        — play vs an unbeatable minimax AI
-[game]  Connect Four          — drop discs, get four in a row, 2-player local
-[game]  Lights Out            — toggle grid lights to turn them all off
-[game]  Reversi               — flip opponent discs, fill the board, beat the AI
-[game]  Nonogram Mini         — solve 5×5 to 10×10 picross / nonogram puzzles
-[game]  Pinball Table         — single flipper pinball with bumpers and ramps
-[game]  Sliding Jigsaw        — scrambled image tiles, slide to restore the picture
-[game]  Colour Sorter         — sort coloured balls into matching tubes in fewest moves
-[game]  Labyrinth Roll        — tilt maze (WASD), guide ball to exit without falling
-[game]  Clicker Empire        — idle clicker: click to earn, buy upgrades, offline gains
-[game]  Pixel Crossword       — small 7×7 crossword with daily themed clues
-[game]  Shape Drop            — drop geometric shapes to fill rows like tetris
-[game]  Maze Generator        — watch a maze build itself, then solve it
-[game]  Dice Poker            — Yahtzee-style dice game, 5 rolls, score categories
-[game]  Sequence              — place cards on a board to claim rows, solo vs AI
-[game]  Gravity Switch        — flip gravity to avoid obstacles in a side-scroll tunnel
-[game]  Pixel Farm            — plant crops, water daily, harvest points over time
-[game]  Code Breaker          — guess a 4-colour code (Mastermind), 8 attempts
+[game]  Potato War Sim        — out-farm a rival squid using complex math and raw dedication
+[game]  Compass Manhunt       — evade multiple hunters in a procedurally generated wilderness
+[game]  Barrel Horror         — navigate a dark cellar with limited lantern oil and hostile props
+[game]  Block Clutch Practice — fall into the void, place blocks on the wall to survive
+[game]  Anarchy Ruler         — build a syndicate on a server with no rules, wearing a pig crown
+[game]  Happy Physics Cart    — violently unfair 2D ragdoll driving over impossible gaps
+[game]  Blood God Battles     — 1v1 arena combat focusing on strafing, crits, and fishing rods
+[game]  MLG Water Drop        — jump from the skybox, land in a single block of water
+[game]  Orphan Obliterator    — fast-paced hack and slash boss rush, purely for the loot
+[game]  Portal Speedrun       — calculate perfect Nether portal coordinates using obsidian casting
+[game]  Meme Reviewer         — rate procedurally generated internet images while dodging bans
+[game]  Bridge Builder Pro    — click at 20 CPS to bridge across the void without sneaking
+[game]  Pug Simulator         — play as a pair of pugs solving puzzles in a chaotic household
+[game]  Ender Pearl Stasis    — trigger teleportation traps to escape impossible combat scenarios
+[game]  Floor is Lava Parkour — pixel-perfect jumping across disappearing slime blocks
+[game]  Skyblock Economist    — crash the virtual economy with an automated mob farm
+[game]  Brofist Brawler       — side-scrolling beat-em-up with absurd power-ups and tambourines
+[game]  TNT Cannon Crafter    — engineer redstone artillery to breach obsidian walls
+[game]  Blind Speedrun        — memorize audio cues to beat the final boss without looking
+[game]  Amnesia Clone         — run and hide from terrifying monsters, no weapons allowed
+[game]  Wither Spawner        — gather skulls and sand to unleash chaos on your enemies' base
+[game]  Boat Ice Racing       — drift wooden boats on blue ice tracks at Mach 3
+[game]  Sub Bot Defender      — fight off an army of automated accounts to maintain your sub lead
+[game]  Axe PvP Tactics       — manage shield cooldowns and axe crits in sweaty duels
+[game]  Half Heart Hardcore   — survive a massive open world where literally any damage is fatal
+[game]  Yoyo Trickster        — physics-based rhythm game mimicking classic trick videos
+[game]  End Crystal Bomber    — chaotic, explosive combat meta relying on indestructible crystals
+[game]  Trap Crafter          — lure hunters into elaborate TNT and cobweb traps
+[game]  Flappy Rage           — an impossibly frustrating arcade clone that makes you yell
+[game]  Elytra Flight Sim     — thread the needle through tiny rings while diving with fireworks
+[game]  Pig Jousting          — ride saddle-equipped hogs into tournament combat
+[game]  Speedbridger          — hold the optimal angle to bridge without falling off the edge
+[game]  Sandbox Torture       — put NPCs in increasingly ridiculous and deadly contraptions
+[game]  Potion Brewer         — memorize complex recipes to gain tactical buffs mid-combat
+[game]  Nether Navigation     — survive ghast fireballs while bridging over a sea of lava
+[game]  G-Fuel Tycoon         — manage a powdery energy drink empire for hardcore gamers
+[game]  Hunger Games Arena    — loot the cornucopia and survive a 24-player battle royale
+[game]  Techno's Library      — decipher ancient combat texts and apply Sun Tzu quotes to PvP
+[game]  Manhunt Analysis      — rewind and analyze 200 IQ plays to see if they were scripted
+[game]  Dragon Perch          — predict the dragon's landing sequence to deal massive bed damage
 
-# Tools (30)
-[tool]  Markdown Previewer    — type markdown on the left, see rendered HTML on the right
-[tool]  Password Generator    — configure length, symbols, copy strong passwords
-[tool]  Base64 Coder          — encode/decode text or small files to Base64
-[tool]  Regex Tester          — write a regex, test it live against sample text
-[tool]  Cron Explainer        — paste a cron expression, get a human-readable schedule
-[tool]  Diff Viewer           — paste two text blocks, see line-by-line differences
-[tool]  QR Code Maker         — type a URL or text, render a downloadable QR code
-[tool]  Timestamp Converter   — convert Unix timestamps to human dates and vice versa
-[tool]  CSS Shadow Builder    — drag sliders, copy the box-shadow CSS string
-[tool]  SVG Path Viewer       — paste SVG path data, preview the shape live
-[tool]  Word Counter          — paste text, get word/char/sentence/reading-time stats
-[tool]  Hex to RGB Converter  — convert hex colours to RGB/HSL and show a swatch
-[tool]  Aspect Ratio Calc     — enter width, get height for any common aspect ratio
-[tool]  Lorem Ipsum Gen       — generate n words/paragraphs of placeholder text
-[tool]  Favicon Maker         — draw a 16×16 pixel icon, download as .ico / PNG
-[tool]  Meta Tag Builder      — fill a form, get copy-paste Open Graph + SEO meta tags
-[tool]  HTTP Status Codes     — searchable reference of every HTTP status code + meaning
-[tool]  Keyboard Shortcut Map — visual keyboard with hoverable shortcut labels per app
-[tool]  Countdown Timer       — set a target date, watch a live countdown tick down
-[tool]  Breathing Guide       — animated inhale/hold/exhale circle, choose a pattern
-[tool]  Budget Splitter       — enter a bill and names, calculate even split + tip
-[tool]  BMI Calculator        — enter height and weight, get BMI + healthy range note
-[tool]  Timezone Clock        — add up to 6 cities, see all their current times live
-[tool]  Roman Numeral Conv    — convert integers to Roman numerals and back
-[tool]  Morse Code Translator — type text, see Morse code, play audio beeps
-[tool]  Pixel Ruler           — drag a resizable ruler overlay to measure screen areas
-[tool]  CSS Flexbox Builder   — toggle flex properties visually, copy the CSS
-[tool]  Grid Layout Maker     — define CSS grid rows/cols, drag items, copy CSS
-[tool]  Emoji Picker          — searchable emoji grid with one-click copy to clipboard
-[tool]  Readability Scorer    — paste text, get Flesch-Kincaid grade level + tips
+# Tools (40)
+[tool]  Fourier Tracer        — draw a closed curve, output the spinning epicycles that generate it
+[tool]  Vector Flow Viz       — input differential equations, watch the glowing vector field evolve
+[tool]  Basis Transformer     — drag basis vectors to see how the entire 2D plane morphs
+[tool]  Pi Collision Sim      — count perfectly elastic blocks bouncing to calculate digits of Pi
+[tool]  Neural Net Layers     — peek inside a perceptron network to see how it separates data
+[tool]  Quaternion Sphere     — visualize 4D rotations mapped onto a stereographic 3D projection
+[tool]  Taylor Series Graph   — add polynomial terms and watch them hug the sine wave
+[tool]  Eigenvalue Finder     — visually locate vectors that only scale during a transformation
+[tool]  Divergence Map        — visualize fluid sources and sinks in a continuous vector field
+[tool]  Curl Calculator       — drop a virtual paddlewheel in a vector field to measure rotation
+[tool]  Gradient Ascent       — drop a marble on a 3D loss function surface to find local minima
+[tool]  Prime Spiral          — highlight prime numbers on an expanding polar coordinate grid
+[tool]  Matrix Multiplier     — step-by-step visualizer of rows dipping into columns
+[tool]  Complex Mapper        — see how a grid transforms under complex mapping functions
+[tool]  Normal Dist Board     — drop balls through a Galton board to form a bell curve
+[tool]  Riemann Sums Calc     — slice the area under a curve into increasingly thin rectangles
+[tool]  Laplace Transform     — convert a time-domain wave into its s-domain frequency peaks
+[tool]  Markov Chain Sim      — watch state transitions flow between nodes based on probabilities
+[tool]  Cross Product Viz     — see the orthogonal parallelogram area generated by two vectors
+[tool]  Dot Product Projector — cast shadows of one vector onto another to find the scalar
+[tool]  Topology Morpher      — continuous deformation animation of a coffee mug into a donut
+[tool]  Logistic Map          — slide the growth rate parameter to watch chaos theory emerge
+[tool]  Calculus Chain Rule   — visual gears representing nested derivatives turning one another
+[tool]  Bayes Theorem Tree    — dynamic branching paths showing conditional probabilities
+[tool]  Binomial Expander     — Pascal's triangle interactive generator with combinatorics rules
+[tool]  Path Integral Sim     — sum over all possible particle histories in a double-slit setup
+[tool]  Manim Boilerplate     — visual UI to generate the Python code for elegant math animations
+[tool]  Heat Equation         — simulate thermal dispersion across a 2D metal plate over time
+[tool]  Wave Equation         — pluck a virtual 1D string to see harmonic standing waves
+[tool]  Determinant Area      — watch how the area of a square scales under a 2x2 matrix change
+[tool]  Fractional Dimensions — calculate the Hausdorff dimension of Sierpinski triangles
+[tool]  Graph Isomorphism     — untangle nodes to see if two network graphs are actually the same
+[tool]  Tensegrity Simulator  — build floating structures held together purely by tension lines
+[tool]  Mobius Strip Gen      — parametric slider to twist and connect a 3D ribbon of paper
+[tool]  Conic Sections        — slice a double cone with a 3D plane to reveal ellipses and parabolas
+[tool]  Proof by Induction    — visual dominoes falling to prove mathematical statements
+[tool]  Cellular Automata     — 1D Rule 30 generator showing complex patterns from simple rules
+[tool]  Newton's Method       — follow tangent lines down a curve to find its roots iteratively
+[tool]  Stereo Projection     — shine a light through a sphere to map its surface to a plane
+[tool]  Harmonic Oscillator   — perfectly damped, underdamped, and overdamped spring masses
 
-# Art (20)
-[art]   Sunrise Generator     — procedural sky: randomised sunrise each page load
-[art]   Spirograph Studio     — set gear ratios with sliders, draw hypotrochoid curves
-[art]   Sand Pendulum         — double-pendulum drops coloured sand as it swings
-[art]   Voronoi Mosaic        — click to place seeds, render a coloured Voronoi diagram
-[art]   Flow Field            — animated vector field with Perlin-driven particle streams
-[art]   Pixel Rain            — Matrix-style falling character rain, pick colour + speed
-[art]   Watercolour Bleed     — click the canvas to drop pigment that bleeds outward
-[art]   Celtic Knot Gen       — generate interlaced Celtic knot patterns from grid size
-[art]   Kaleidoscope Cam      — reflect live webcam feed into a 6-fold kaleidoscope
-[art]   Truchet Tiles         — click to rotate quarter-circle tiles, build infinite patterns
-[art]   Noise Portrait        — render a photo using only Perlin-noise contour lines
-[art]   Neon Sign Maker       — type text, pick a colour, render it as a glowing neon sign
-[art]   Recursive Tree        — draw a fractal tree; sliders for angle, depth, branch ratio
-[art]   Aurora Borealis       — animated northern lights shader on a dark sky canvas
-[art]   Optical Illusion Lab  — gallery of classic illusions with animated reveals
-[art]   City Skyline Gen      — procedural night-time cityscape, different every load
-[art]   Dot Matrix Portrait   — convert an image to a grid of sized circles / dots
-[art]   Wave Interference     — place wave sources, watch interference patterns ripple
-[art]   Mandelbrot Explorer   — click to zoom into the Mandelbrot set, adjustable iterations
-[art]   Pixel Animator        — draw frames on a 16×16 canvas, export as GIF
+# Art (40)
+[art]   Strange Attractors    — chaotic, infinitely wrapping particle trails in deep space
+[art]   Mandelbulb 3D         — a volumetric, fractal voyage into the third dimension
+[art]   Chladni Sand Patterns — acoustic resonance mapping with generative black sand
+[art]   Voronoi Stained Glass — cell-fracture algorithms generating cathedral-style windows
+[art]   Double Pendulum       — long-exposure light painting of chaotic swinging motion
+[art]   L-System Trees        — recursive botanical sketches generating infinite oak variations
+[art]   Interference Ripples  — intersecting wave patterns creating beautiful moiré illusions
+[art]   Lissajous Webs        — parametric curves spinning into dense, hypnotic thread art
+[art]   Conway's Canvas       — Game of Life cells treated as pixel-art color blooms
+[art]   Perlin Topography     — smoothly undulating mountain maps colored by elevation
+[art]   Raymarched Spheres    — infinitely repeating glass orbs reflecting each other
+[art]   Magnetic Field Lines  — iron filings snapping to invisible, animated polar forces
+[art]   Fractal Brownian      — generating hyper-realistic, jagged cloud formations
+[art]   Reaction-Diffusion    — Turing patterns simulating the spots on a leopard's skin
+[art]   Hex Tessellations     — infinitely folding Escher-style geometric animals
+[art]   Golden Ratio Spirals  — Fibonacci sequences drawn as expanding nautilus shells
+[art]   Slime Mold Network    — simulating Physarum polycephalum finding food sources
+[art]   Gravitational Lensing — bending a starry background texture around a black hole
+[art]   Fluid Vortex Shedding — beautiful, repeating swirls behind an object in a stream
+[art]   Quantum Superposition — hazy, probabilistic electron clouds snapping to specific orbitals
+[art]   Isometric Tesseracts  — 4D hypercubes rotating their inner faces to the outside
+[art]   Spirograph Galaxy     — hypotrochoids orbiting a central barycenter
+[art]   Generative Origami    — folding virtual paper into mathematically perfect cranes
+[art]   Poisson Disc Sampling — perfectly distributed, non-overlapping organic dot patterns
+[art]   Superformula Shapes   — tweaking parameters to generate starfish, leaves, and astroids
+[art]   Penrose Tiling        — aperiodic dart and kite patterns that never repeat the same way
+[art]   Boids Flocking        — thousands of glowing arrows swarming like starlings at dusk
+[art]   Gyroid Surfaces       — infinitely connected, triply periodic minimal surfaces
+[art]   Truchet Pipes         — randomized quarter-circle tiles forming infinite looping plumbing
+[art]   Moebius Knot Work     — intertwined Celtic knots painted onto non-orientable surfaces
+[art]   Kaleidoscope Raytrace — bouncing a single beam of light thousands of times
+[art]   Plasma Fractal        — diamond-square algorithms generating retro demoscene clouds
+[art]   Cymatic Water         — liquid surface distortion driven by deep bass frequencies
+[art]   Epicycloid Gears      — rolling circles tracing out planetary mechanical paths
+[art]   Apollonian Gasket     — infinitely nesting tangent circles packed inside one another
+[art]   Cellular Slime        — organic, squishy blobs merging and dividing based on proximity
+[art]   Bifurcation Diagram   — plotting the exact moments where chaos splits into order
+[art]   Soap Film Minimal     — dipping wireframes into a physics simulator to form tension planes
+[art]   Generative Glitch     — precise math equations purposefully broken for aesthetic artifacts
+[art]   Spectral Flow         — mapping vector field velocities to an HSV color wheel gradient
 
-# Stories (10)
-[story] Dream Journal         — log a dream each day; Gemini tags themes and moods
-[story] One Line Novel        — Gemini writes one sentence per day; a novel builds slowly
-[story] Recipe Inventor       — pick 3 random ingredients; Gemini writes a recipe story
-[story] Character Sheet       — fill traits; Gemini writes a 200-word backstory each day
-[story] News From Nowhere     — Gemini writes a fictional newspaper front page daily
-[story] Myth of the Day       — Gemini invents a new mythology myth each midnight
-[story] Letter to Future      — write a letter; Gemini delivers a reply "from the future"
-[story] Traveller's Log       — enter a city; Gemini writes a poetic travel journal entry
-[story] Villain Origin        — daily supervillain backstory generated from a random flaw
-[story] Fable Machine         — Gemini generates a short moral fable with an animal cast
+# Story (40)
+[story] The Demon Core        — a slipped screwdriver, a blue flash, and a physicist's fatal mistake
+[story] The Shade Balls       — dumping 96 million black spheres into a reservoir to stop chemistry
+[story] Faster Than Wind      — the Blackbird land yacht that breaks the laws of intuition
+[story] 100,000 Holes         — how a simple pegboard revealed the hidden statistics of randomness
+[story] The Infinite Hotel    — a paradox where a fully booked hotel can always fit one more guest
+[story] Empty Space Drop      — how a bowling ball and feather fall perfectly in a giant vacuum
+[story] The Double Slit       — an electron acts as a wave until the universe catches it looking
+[story] Slower Than Light     — the exact speed at which electricity actually flows through a wire
+[story] The Centennial Light  — a bulb in a California fire station that has burned for 120 years
+[story] Anti-Gravity Tube     — how you can spin a cylinder to make objects seemingly defy gravity
+[story] The Number 42         — how mathematicians finally solved the sum of three cubes
+[story] The Magnus Effect     — dropping a spinning basketball from the top of a massive dam
+[story] The Roundest Object   — a flawless silicon sphere created to redefine the kilogram
+[story] The Illusion of Time  — how your brain edits reality to trick you about when events happen
+[story] Seeing the Unseeable  — the algorithm that stitched together the first image of a black hole
+[story] Closed Timelike Curve — how general relativity makes time travel mathematically sound
+[story] Spooky Action Proven  — Einstein's entanglement doubts crushed by bell inequality tests
+[story] Monty Hall Problem    — why switching doors gives you a 66% chance of winning the car
+[story] The Chicxulub Impact  — tracing the asteroid event to the exact hour the dinosaurs died
+[story] Nuclear Dice          — proving radioactive decay rates using 1,000 violently shaking dice
+[story] Incompleteness Theory — Gödel proving that some truths can never be mathematically verified
+[story] Laser Light Sails     — using radiation pressure from photons to propel ships to other stars
+[story] The Coriolis Myth     — how Earth's rotation dictates weather, but not the flush of a toilet
+[story] Galvani's Frog        — the bizarre twitching amphibian legs that discovered electricity
+[story] The Supersonic Whip   — the physics of a leather bullwhip cracking faster than sound
+[story] The Mirror Flip       — the geometric reason why mirrors flip left to right, but never up
+[story] Spark-Gap Transmitter — how raw high-voltage sparks accidentally invented wireless radio
+[story] The Bismuth Staircase — melting toxic-looking metal on a stove to grow iridescent crystals
+[story] Why The Sky Is Purple — how our eyes filter atmospheric scattering to see blue instead
+[story] Magnetic Braking      — why dropping a magnet through a copper pipe slows it down
+[story] Ant Algorithms        — how a blind colony uses complex pheromone logic to solve mazes
+[story] Turing's Bombe        — the electro-mechanical rotors that cracked the Enigma code
+[story] Benford's Law         — the unexpected ubiquity of the number 1 in tax fraud and nature
+[story] The Tacoma Narrows    — how aeroelastic flutter, not simple resonance, collapsed a bridge
+[story] The Mpemba Effect     — the counter-intuitive anomaly where hot water freezes faster
+[story] Weighing The Earth    — how the Cavendish experiment measured planetary mass in a shed
+[story] Stimulated Emission   — the quantum leap required to align photons into a laser beam
+[story] The Eclipse of 1919   — how starlight bending around the sun proved general relativity
+[story] Atomic Time Dilation  — how precision clocks prove that your head ages faster than your feet
+[story] Zeno's Arrow          — the philosophical paradox that an arrow in flight is always at rest
