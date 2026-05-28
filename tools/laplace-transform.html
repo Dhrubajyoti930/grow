@@ -1,0 +1,1353 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laplace Transform Analyzer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #08090c;
+      --bg-panel: #11141a;
+      --border-color: #222733;
+      --accent-cyan: #00f0ff;
+      --accent-amber: #ffb000;
+      --accent-red: #ff3b30;
+      --text-main: #e2e8f0;
+      --text-muted: #64748b;
+      --glow-cyan: rgba(0, 240, 255, 0.2);
+      --glow-amber: rgba(255, 176, 0, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-deep);
+      color: var(--text-main);
+      font-family: 'Space Grotesk', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Back Link */
+    .back-link {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-family: 'Fira Code', monospace;
+      transition: color 0.2s ease;
+      z-index: 100;
+    }
+    .back-link:hover {
+      color: var(--accent-cyan);
+    }
+
+    header {
+      padding: 3rem 1.5rem 1.5rem 1.5rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+      background: linear-gradient(to bottom, #0d1117, var(--bg-deep));
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #fff 30%, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Main Grid Layout */
+    .app-container {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 1.5rem;
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem;
+      flex-grow: 1;
+    }
+
+    @media (max-width: 1024px) {
+      .app-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Left Control Sidebar */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .panel {
+      background-color: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+    }
+
+    .panel-title {
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.25rem;
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Presets Grid */
+    .presets-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-preset {
+      background: #1a1f2c;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.6rem;
+      font-size: 0.8rem;
+      font-family: 'Space Grotesk', sans-serif;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+
+    .btn-preset:hover {
+      background: var(--accent-cyan);
+      color: var(--bg-deep);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 10px var(--glow-cyan);
+    }
+
+    .btn-preset.active {
+      border-color: var(--accent-cyan);
+      background: rgba(0, 240, 255, 0.1);
+      color: var(--accent-cyan);
+    }
+
+    /* System Telemetry & Math */
+    .telemetry-list {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .telemetry-item {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed rgba(255,255,255,0.05);
+      padding-bottom: 0.4rem;
+    }
+
+    .telemetry-item span:first-child {
+      color: var(--text-muted);
+    }
+
+    .telemetry-item span:last-child {
+      color: var(--accent-amber);
+    }
+
+    /* Custom Controls */
+    .control-group {
+      margin-bottom: 1rem;
+    }
+
+    .control-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.4rem;
+      font-family: 'Fira Code', monospace;
+    }
+
+    .control-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 4px;
+      background: var(--border-color);
+      border-radius: 2px;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .control-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      cursor: pointer;
+      box-shadow: 0 0 8px var(--accent-cyan);
+      transition: transform 0.1s;
+    }
+
+    .control-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    /* Action Buttons */
+    .btn-action {
+      display: block;
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--accent-amber);
+      color: var(--accent-amber);
+      padding: 0.75rem;
+      border-radius: 6px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .btn-action:hover {
+      background: var(--accent-amber);
+      color: var(--bg-deep);
+      box-shadow: 0 0 15px var(--glow-amber);
+    }
+
+    /* Visualizer Displays Panel */
+    .display-workspace {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .canvas-card {
+      background-color: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .canvas-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      padding: 0 0.5rem;
+    }
+
+    .canvas-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .canvas-title::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--accent-cyan);
+      box-shadow: 0 0 6px var(--accent-cyan);
+    }
+
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      background: #0d0f14;
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .visualizers-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .visualizers-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Stability Alert Indicator */
+    .status-badge {
+      font-size: 0.75rem;
+      font-family: 'Fira Code', monospace;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    .status-stable {
+      background: rgba(0, 240, 255, 0.1);
+      color: var(--accent-cyan);
+      border: 1px solid var(--accent-cyan);
+    }
+
+    .status-unstable {
+      background: rgba(255, 59, 48, 0.1);
+      color: var(--accent-red);
+      border: 1px solid var(--accent-red);
+      animation: flash 1s infinite alternate;
+    }
+
+    @keyframes flash {
+      from { opacity: 0.6; }
+      to { opacity: 1; }
+    }
+
+    /* Formula box styling */
+    .formula-display {
+      background: #171b26;
+      border-left: 3px solid var(--accent-cyan);
+      padding: 0.8rem;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      margin-bottom: 1.25rem;
+      border-radius: 0 6px 6px 0;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    /* Info Badge bottom of screen */
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-family: 'Fira Code', monospace;
+      border-top: 1px solid var(--border-color);
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../index.html" class="back-link">← /grow</a>
+
+  <header>
+    <h1>Laplace Transform Explorer</h1>
+    <p>Interactively map s-domain complex pole vectors, witness real-time system impulse responses, and visualize the continuous spectral peaks in 2.5D space.</p>
+  </header>
+
+  <main class="app-container">
+    <!-- Left Panel: Control Station -->
+    <section class="sidebar">
+      <!-- Pole & Preset Configurator -->
+      <div class="panel">
+        <h2 class="panel-title">System Synthesizer</h2>
+        
+        <div class="formula-display" id="formulaBox">
+          H(s) = 1 / [ (s - p₁)(s - p₂)... ]
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <label class="control-label">System Presets</label>
+          <div class="presets-grid">
+            <button class="btn-preset active" onclick="loadPreset('underdamped')">Resonant Bell</button>
+            <button class="btn-preset" onclick="loadPreset('undamped')">Pure Sine</button>
+            <button class="btn-preset" onclick="loadPreset('overdamped')">Overdamped Decay</button>
+            <button class="btn-preset" onclick="loadPreset('unstable')">Unstable Reactor</button>
+            <button class="btn-preset" onclick="loadPreset('dual')">Double-Tone Beat</button>
+            <button class="btn-preset" onclick="loadPreset('lowpass')">Low-Pass Filter</button>
+          </div>
+        </div>
+
+        <!-- System Controls -->
+        <div>
+          <div class="control-group">
+            <div class="control-label">
+              <span>Overall Gain (A)</span>
+              <span id="gainVal">1.0</span>
+            </div>
+            <input type="range" class="control-slider" id="gainSlider" min="0.1" max="3" step="0.1" value="1.0" oninput="updateSystem()">
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>Time-Domain Speed</span>
+              <span id="speedVal">1.0x</span>
+            </div>
+            <input type="range" class="control-slider" id="speedSlider" min="0.2" max="2" step="0.1" value="1.0" oninput="updateSystem()">
+          </div>
+        </div>
+
+        <button class="btn-action" onclick="resetSystem()">Reset to Default</button>
+      </div>
+
+      <!-- Realtime Telemetry -->
+      <div class="panel">
+        <h2 class="panel-title">System Analysis</h2>
+        <div class="telemetry-list">
+          <div class="telemetry-item">
+            <span>System State</span>
+            <span id="stabilityStatus" class="status-badge status-stable">Stable</span>
+          </div>
+          <div class="telemetry-item">
+            <span>Primary Frequency (ω)</span>
+            <span id="telemetryFreq">0.00 rad/s</span>
+          </div>
+          <div class="telemetry-item">
+            <span>Attenuation Rate (σ)</span>
+            <span id="telemetryDamping">0.00 Np/s</span>
+          </div>
+          <div class="telemetry-item">
+            <span>Total Poles Active</span>
+            <span id="telemetryPoles">0</span>
+          </div>
+          <div class="telemetry-item">
+            <span>Natural Resonance</span>
+            <span id="telemetryResonance">0.00 Hz</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Panels: Interactive Graphic Modules -->
+    <section class="display-workspace">
+      <!-- Two side-by-side: interactive S-Plane Map and Live Oscilloscope -->
+      <div class="visualizers-grid">
+        <!-- Interactive Complex s-Plane -->
+        <div class="canvas-card">
+          <div class="canvas-header">
+            <span class="canvas-title">Complex s-Plane (s = σ + jω)</span>
+            <span style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">Drag 'X' Pole Targets</span>
+          </div>
+          <div class="canvas-container" style="height: 320px;">
+            <canvas id="sPlaneCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Oscilloscope Waveform -->
+        <div class="canvas-card">
+          <div class="canvas-header">
+            <span class="canvas-title">Time Domain Impulse Response f(t)</span>
+            <span id="oscTelemetry" style="font-size: 0.75rem; color: var(--accent-cyan); font-family: monospace;">0.00s</span>
+          </div>
+          <div class="canvas-container" style="height: 320px;">
+            <canvas id="timeCanvas"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.5D Laplace Peak Waterfall Mesh -->
+      <div class="canvas-card">
+        <div class="canvas-header">
+          <span class="canvas-title">Laplace Transform Magnitude Surface |F(s)|</span>
+          <span style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">Click & Drag to Orbit view</span>
+        </div>
+        <div class="canvas-container" style="height: 400px;">
+          <canvas id="meshCanvas"></canvas>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Laplace Transform Equation: F(s) = ∫₀^∞ f(t) e^⁻ˢᵗ dt • Developed in pure, raw HTML5 Canvas
+  </footer>
+
+  <script>
+    // System Pole Data Model
+    // s-domain representation: poles at s = σ ± jω.
+    // Real poles have ω = 0.
+    let poles = [];
+    let systemGain = 1.0;
+    let timeSpeed = 1.0;
+
+    // Animation / Projection State variables
+    let meshAngleX = 0.6; // rotation around X axis
+    let meshAngleZ = -0.7; // rotation around Z axis
+    let isDraggingMesh = false;
+    let isDraggingPole = false;
+    let selectedPoleIndex = -1;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
+
+    // Canvas references
+    let sPlaneCanvas, timeCanvas, meshCanvas;
+    let sPlaneCtx, timeCtx, meshCtx;
+
+    // Coordinate boundaries for s-Plane
+    const minSigma = -4.0, maxSigma = 2.0;
+    const minOmega = -12.0, maxOmega = 12.0;
+
+    // Define Presets
+    const presets = {
+      underdamped: {
+        poles: [
+          { sigma: -0.5, omega: 6.0, type: 'complex', id: 1 },
+          { sigma: -0.5, omega: -6.0, type: 'complex', id: 2 }
+        ],
+        gain: 1.0
+      },
+      undamped: {
+        poles: [
+          { sigma: 0.0, omega: 7.0, type: 'complex', id: 1 },
+          { sigma: 0.0, omega: -7.0, type: 'complex', id: 2 }
+        ],
+        gain: 1.0
+      },
+      overdamped: {
+        poles: [
+          { sigma: -1.2, omega: 0.0, type: 'real', id: 1 },
+          { sigma: -3.0, omega: 0.0, type: 'real', id: 2 }
+        ],
+        gain: 1.5
+      },
+      unstable: {
+        poles: [
+          { sigma: 0.25, omega: 5.0, type: 'complex', id: 1 },
+          { sigma: 0.25, omega: -5.0, type: 'complex', id: 2 }
+        ],
+        gain: 0.6
+      },
+      dual: {
+        poles: [
+          { sigma: -0.2, omega: 4.0, type: 'complex', id: 1 },
+          { sigma: -0.2, omega: -4.0, type: 'complex', id: 2 },
+          { sigma: -0.3, omega: 8.0, type: 'complex', id: 3 },
+          { sigma: -0.3, omega: -8.0, type: 'complex', id: 4 }
+        ],
+        gain: 1.0
+      },
+      lowpass: {
+        poles: [
+          { sigma: -2.0, omega: 2.0, type: 'complex', id: 1 },
+          { sigma: -2.0, omega: -2.0, type: 'complex', id: 2 },
+          { sigma: -3.0, omega: 0.0, type: 'real', id: 3 }
+        ],
+        gain: 2.0
+      }
+    };
+
+    window.onload = function() {
+      // Setup canvases
+      sPlaneCanvas = document.getElementById('sPlaneCanvas');
+      timeCanvas = document.getElementById('timeCanvas');
+      meshCanvas = document.getElementById('meshCanvas');
+
+      sPlaneCtx = sPlaneCanvas.getContext('2d');
+      timeCtx = timeCanvas.getContext('2d');
+      meshCtx = meshCanvas.getContext('2d');
+
+      // Bind interactions
+      setupEventHandlers();
+
+      // Set responsive sizes
+      resizeCanvases();
+      window.addEventListener('resize', () => {
+        resizeCanvases();
+        requestDraw();
+      });
+
+      // Load starter preset
+      loadPreset('underdamped');
+
+      // Begin animation loop
+      requestAnimationFrame(animationLoop);
+    };
+
+    function resizeCanvases() {
+      // Make canvases display with correct pixel density
+      const dpr = window.devicePixelRatio || 1;
+      
+      [sPlaneCanvas, timeCanvas, meshCanvas].forEach(canvas => {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        canvas.style.width = rect.width + 'px';
+        canvas.style.height = rect.height + 'px';
+        
+        const ctx = canvas.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      });
+    }
+
+    function loadPreset(key) {
+      const preset = presets[key];
+      // Clone poles deeply
+      poles = preset.poles.map(p => ({ ...p }));
+      systemGain = preset.gain;
+      document.getElementById('gainSlider').value = systemGain;
+      document.getElementById('gainVal').innerText = systemGain.toFixed(1);
+
+      // Select active class
+      document.querySelectorAll('.btn-preset').forEach(btn => {
+        if (btn.getAttribute('onclick').includes(key)) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      updateSystem();
+    }
+
+    function resetSystem() {
+      loadPreset('underdamped');
+    }
+
+    function updateSystem() {
+      systemGain = parseFloat(document.getElementById('gainSlider').value);
+      timeSpeed = parseFloat(document.getElementById('speedSlider').value);
+      
+      document.getElementById('gainVal').innerText = systemGain.toFixed(1);
+      document.getElementById('speedVal').innerText = timeSpeed.toFixed(1) + 'x';
+
+      // Recalculate Telemetry
+      const activeCount = poles.length;
+      document.getElementById('telemetryPoles').innerText = activeCount;
+
+      let isUnstable = false;
+      let primaryOmega = 0;
+      let primarySigma = 0;
+
+      poles.forEach(p => {
+        if (p.sigma > 0) isUnstable = true;
+        if (Math.abs(p.omega) > primaryOmega) {
+          primaryOmega = Math.abs(p.omega);
+          primarySigma = p.sigma;
+        }
+      });
+
+      const statusBadge = document.getElementById('stabilityStatus');
+      if (isUnstable) {
+        statusBadge.className = "status-badge status-unstable";
+        statusBadge.innerText = "UNSTABLE";
+      } else if (poles.some(p => p.sigma === 0)) {
+        statusBadge.className = "status-badge";
+        statusBadge.style.background = "rgba(255, 176, 0, 0.1)";
+        statusBadge.style.color = "var(--accent-amber)";
+        statusBadge.style.border = "1px solid var(--accent-amber)";
+        statusBadge.innerText = "CRITICAL / MARGINAL";
+      } else {
+        statusBadge.className = "status-badge status-stable";
+        statusBadge.innerText = "STABLE";
+      }
+
+      document.getElementById('telemetryFreq').innerText = `${primaryOmega.toFixed(2)} rad/s`;
+      document.getElementById('telemetryDamping').innerText = `${primarySigma.toFixed(2)} Np/s`;
+      
+      const naturalRes = Math.sqrt(primarySigma*primarySigma + primaryOmega*primaryOmega) / (2 * Math.PI);
+      document.getElementById('telemetryResonance').innerText = `${naturalRes.toFixed(2)} Hz`;
+
+      // Update Transfer Function formula display dynamically
+      updateFormulaBox();
+      requestDraw();
+    }
+
+    function updateFormulaBox() {
+      const box = document.getElementById('formulaBox');
+      if (poles.length === 0) {
+        box.innerHTML = "H(s) = " + systemGain.toFixed(1);
+        return;
+      }
+
+      let denomStr = "";
+      // Match conjugate pairs for standard representation
+      let processed = new Set();
+      
+      for(let i=0; i<poles.length; i++) {
+        if (processed.has(poles[i].id)) continue;
+
+        let p1 = poles[i];
+        if (p1.type === 'complex') {
+          // Find companion conjugate
+          let companion = poles.find(p => p.type === 'complex' && p.id !== p1.id && Math.abs(p.sigma - p1.sigma) < 0.05 && Math.abs(p.omega + p1.omega) < 0.05);
+          if (companion) {
+            processed.add(p1.id);
+            processed.add(companion.id);
+            // (s^2 + 2*sigma*s + (sigma^2 + omega^2))
+            const doubleSigma = (-2 * p1.sigma).toFixed(1);
+            const magSq = (p1.sigma * p1.sigma + p1.omega * p1.omega).toFixed(1);
+            let term = `(s² + ${doubleSigma}s + ${magSq})`;
+            denomStr += denomStr ? " · " + term : term;
+            continue;
+          }
+        }
+        
+        // Single or unmatched real pole
+        processed.add(p1.id);
+        const sigVal = (-p1.sigma).toFixed(1);
+        let term = `(s + ${sigVal})`;
+        denomStr += denomStr ? " · " + term : term;
+      }
+
+      box.innerHTML = `H(s) = <span style="color:var(--accent-cyan);">${systemGain.toFixed(1)}</span> / [ ${denomStr} ]`;
+    }
+
+    // Live continuous paint request
+    let drawPending = false;
+    function requestDraw() {
+      if (!drawPending) {
+        drawPending = true;
+        requestAnimationFrame(() => {
+          drawAll();
+          drawPending = false;
+        });
+      }
+    }
+
+    let globalTime = 0;
+    function animationLoop() {
+      globalTime += 0.015 * timeSpeed;
+      document.getElementById('oscTelemetry').innerText = `t = ${globalTime.toFixed(2)}s`;
+      
+      drawTimeDomain();
+      // slow rotation of mesh over time if not dragging
+      if (!isDraggingMesh) {
+        meshAngleZ += 0.002;
+        drawMesh();
+      }
+
+      requestAnimationFrame(animationLoop);
+    }
+
+    function drawAll() {
+      drawSPlane();
+      drawTimeDomain();
+      drawMesh();
+    }
+
+    // ----------------------------------------------------
+    // Canvas Drawer 1: Complex s-Plane
+    // ----------------------------------------------------
+    function drawSPlane() {
+      const w = sPlaneCanvas.width / (window.devicePixelRatio || 1);
+      const h = sPlaneCanvas.height / (window.devicePixelRatio || 1);
+      const ctx = sPlaneCtx;
+
+      ctx.clearRect(0, 0, w, h);
+      
+      // Background Grid
+      ctx.strokeStyle = '#1a1f2c';
+      ctx.lineWidth = 1;
+      
+      // Draw vertical grids
+      for (let s = minSigma; s <= maxSigma; s += 0.5) {
+        const x = mapSigmaToX(s, w);
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
+      }
+      
+      // Draw horizontal grids
+      for (let o = minOmega; o <= maxOmega; o += 2) {
+        const y = mapOmegaToY(o, h);
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+
+      // Draw Axes
+      ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+      ctx.lineWidth = 1.5;
+      
+      // σ axis (horizontal)
+      const yAxis = mapOmegaToY(0, h);
+      ctx.beginPath();
+      ctx.moveTo(0, yAxis);
+      ctx.lineTo(w, yAxis);
+      ctx.stroke();
+
+      // jω axis (vertical)
+      const xAxis = mapSigmaToX(0, w);
+      ctx.beginPath();
+      ctx.moveTo(xAxis, 0);
+      ctx.lineTo(xAxis, h);
+      ctx.stroke();
+
+      // Labels
+      ctx.fillStyle = 'var(--text-muted)';
+      ctx.font = '10px "Fira Code", monospace';
+      ctx.fillText('Re (σ)', w - 45, yAxis - 8);
+      ctx.fillText('+jω', xAxis + 8, 15);
+      ctx.fillText('-jω', xAxis + 8, h - 8);
+      
+      // Axis Ticks Labeling
+      ctx.fillText('0', xAxis + 5, yAxis - 5);
+      [-2, -1, 1].forEach(s => {
+        ctx.fillText(s, mapSigmaToX(s, w) - 5, yAxis + 14);
+      });
+      [-10, -5, 5, 10].forEach(o => {
+        ctx.fillText(o + 'j', xAxis - 25, mapOmegaToY(o, h) + 4);
+      });
+
+      // Shaded unstable zone (Right Half Plane)
+      ctx.fillStyle = 'rgba(255, 59, 48, 0.03)';
+      ctx.fillRect(xAxis, 0, w - xAxis, h);
+
+      // Draw Poles (X mark)
+      poles.forEach((p, idx) => {
+        const px = mapSigmaToX(p.sigma, w);
+        const py = mapOmegaToY(p.omega, h);
+
+        const r = 8;
+        ctx.strokeStyle = idx === selectedPoleIndex ? '#ffffff' : 'var(--accent-red)';
+        ctx.lineWidth = 3;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = 'var(--accent-red)';
+
+        ctx.beginPath();
+        ctx.moveTo(px - r, py - r);
+        ctx.lineTo(px + r, py + r);
+        ctx.moveTo(px + r, py - r);
+        ctx.lineTo(px - r, py + r);
+        ctx.stroke();
+
+        ctx.shadowBlur = 0; // reset glow
+
+        // Pole label
+        ctx.fillStyle = 'var(--text-main)';
+        ctx.font = 'bold 9px "Fira Code", monospace';
+        ctx.fillText(`p${idx+1}(${p.sigma.toFixed(1)}, ${p.omega.toFixed(1)}j)`, px + 12, py + 4);
+      });
+    }
+
+    // Helper mappings
+    function mapSigmaToX(sigma, width) {
+      return ((sigma - minSigma) / (maxSigma - minSigma)) * width;
+    }
+    function mapOmegaToY(omega, height) {
+      return height - ((omega - minOmega) / (maxOmega - minOmega)) * height;
+    }
+    function mapXToSigma(x, width) {
+      return minSigma + (x / width) * (maxSigma - minSigma);
+    }
+    function mapYToOmega(y, height) {
+      return minOmega + ((height - y) / height) * (maxOmega - minOmega);
+    }
+
+    // ----------------------------------------------------
+    // Canvas Drawer 2: Time-Domain Impulse Response f(t)
+    // ----------------------------------------------------
+    function drawTimeDomain() {
+      const w = timeCanvas.width / (window.devicePixelRatio || 1);
+      const h = timeCanvas.height / (window.devicePixelRatio || 1);
+      const ctx = timeCtx;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Grid Lines
+      ctx.strokeStyle = '#131722';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < w; x += 40) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+      }
+      for (let y = 0; y < h; y += 40) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+      }
+
+      // Zero baseline
+      ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+      ctx.beginPath();
+      ctx.moveTo(0, h/2);
+      ctx.lineTo(w, h/2);
+      ctx.stroke();
+
+      // Evaluate system response
+      // For any generic pole system, f(t) is linear combination of residues.
+      // We will generate the mathematical impulse response formula:
+      // f(t) = Sum [ Ai * exp(σ_i * t) * cos(ω_i * t) ]
+      // We scale the waveform beautifully.
+      let pts = [];
+      const numPts = w;
+      
+      // Max absolute amplitude tracker for scaling
+      let localMaxVal = 0.1;
+      const tWindow = 8.0; // Show last 8 seconds of history
+      
+      for (let x = 0; x < numPts; x++) {
+        const t = (x / numPts) * tWindow;
+        let yVal = evaluateImpulseResponse(t);
+        pts.push({ t, yVal });
+        if (Math.abs(yVal) > localMaxVal) {
+          localMaxVal = Math.abs(yVal);
+        }
+      }
+
+      // Auto-scaling logic to prevent physical clip, or emulate real analog saturation
+      let scaleY = (h * 0.35) / localMaxVal;
+      let limitClipped = false;
+      
+      // If system grows wild (unstable), lock scale and clip response like real hardware
+      if (localMaxVal > 15) {
+        scaleY = (h * 0.35) / 15.0;
+        limitClipped = true;
+      }
+
+      // Draw signal line with cyan phosphor glow
+      ctx.strokeStyle = 'var(--accent-cyan)';
+      ctx.lineWidth = 2.5;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = 'var(--accent-cyan)';
+      
+      ctx.beginPath();
+      for (let x = 0; x < numPts; x++) {
+        const screenY = h/2 - pts[x].yVal * scaleY;
+        
+        // Analog dynamic clipping indicator
+        let finalY = screenY;
+        if (screenY < 5) { finalY = 5; limitClipped = true; }
+        if (screenY > h - 5) { finalY = h - 5; limitClipped = true; }
+
+        if (x === 0) {
+          ctx.moveTo(x, finalY);
+        } else {
+          ctx.lineTo(x, finalY);
+        }
+      }
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Draw sweeping playhead cursor
+      const playheadX = ((globalTime % tWindow) / tWindow) * w;
+      ctx.strokeStyle = 'var(--accent-amber)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(playheadX, 0);
+      ctx.lineTo(playheadX, h);
+      ctx.stroke();
+
+      // Trace current instantaneous value dot
+      const currentT = globalTime % tWindow;
+      const currentYVal = evaluateImpulseResponse(currentT);
+      const currentY = h/2 - currentYVal * scaleY;
+      
+      ctx.fillStyle = 'var(--accent-amber)';
+      ctx.beginPath();
+      ctx.arc(playheadX, Math.max(5, Math.min(h-5, currentY)), 5, 0, 2*Math.PI);
+      ctx.fill();
+
+      // Clipping Warning Overlay
+      if (limitClipped) {
+        ctx.fillStyle = 'rgba(255, 59, 48, 0.8)';
+        ctx.font = 'bold 10px "Fira Code", monospace';
+        ctx.fillText("⚠️ OSCILLOSCOPE CLIPPING - UNSTABLE FEEDBACK", 15, h - 15);
+      }
+    }
+
+    // Mathematical representation of impulse response
+    function evaluateImpulseResponse(t) {
+      let sum = 0;
+      // For each conjugate pair or singular real pole:
+      // A typical pole pair at s = -a ± jb gives rise to: e^(-at) * cos(bt)
+      // To create physically exciting oscillations, we trigger with impulse response.
+      let processed = new Set();
+      
+      for (let i = 0; i < poles.length; i++) {
+        if (processed.has(poles[i].id)) continue;
+
+        let p1 = poles[i];
+        if (p1.type === 'complex') {
+          let companion = poles.find(p => p.type === 'complex' && p.id !== p1.id && Math.abs(p.sigma - p1.sigma) < 0.05 && Math.abs(p.omega + p1.omega) < 0.05);
+          if (companion) {
+            processed.add(p1.id);
+            processed.add(companion.id);
+            // Dynamic contribution of the pair: e^(sigma * t) * sin(omega * t)
+            sum += Math.exp(p1.sigma * t) * Math.sin(Math.abs(p1.omega) * t);
+            continue;
+          }
+        }
+        
+        // Real pole contribution: e^(sigma * t)
+        processed.add(p1.id);
+        sum += Math.exp(p1.sigma * t);
+      }
+      
+      return sum * systemGain;
+    }
+
+    // ----------------------------------------------------
+    // Canvas Drawer 3: 2.5D Rotating Laplace Peak Mesh
+    // ----------------------------------------------------
+    function drawMesh() {
+      const w = meshCanvas.width / (window.devicePixelRatio || 1);
+      const h = meshCanvas.height / (window.devicePixelRatio || 1);
+      const ctx = meshCtx;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // We evaluate a grid in the s-plane: sigma x jomega
+      // Compute magnitude |H(s)| at each point, project to 2.5D wireframe.
+      const resolution = 20;
+      const meshSigmaMin = -3.5;
+      const meshSigmaMax = 1.0;
+      const meshOmegaMin = -10.0;
+      const meshOmegaMax = 10.0;
+
+      let projectedPoints = [];
+
+      for (let i = 0; i <= resolution; i++) {
+        projectedPoints[i] = [];
+        const sig = meshSigmaMin + (i / resolution) * (meshSigmaMax - meshSigmaMin);
+        
+        for (let j = 0; j <= resolution; j++) {
+          const omg = meshOmegaMin + (j / resolution) * (meshOmegaMax - meshOmegaMin);
+          
+          // Calculate transfer function magnitude |H(s)| where s = sig + j*omg
+          const mag = getLaplaceMagnitude(sig, omg);
+          
+          // Cap magnitude to prevent infinite spires at pole singular points
+          const cappedMag = Math.min(mag, 8.0);
+          
+          // 3D coordinates (x = sigma, y = omega, z = Magnitude)
+          const px = sig;
+          const py = omg;
+          const pz = cappedMag * 0.5; // height scale
+
+          // Transform / Rotate points (3D to 2D Projection)
+          const pt2d = project3D(px, py, pz, w, h);
+          projectedPoints[i][j] = { ...pt2d, val: cappedMag };
+        }
+      }
+
+      // Render grid lines
+      ctx.lineWidth = 1;
+      for (let i = 0; i < resolution; i++) {
+        for (let j = 0; j < resolution; j++) {
+          const p1 = projectedPoints[i][j];
+          const p2 = projectedPoints[i+1][j];
+          const p3 = projectedPoints[i][j+1];
+
+          // Dynamic line color matching height peak intensity
+          const maxIntensity = Math.max(p1.val, p2.val, p3.val);
+          const ratio = maxIntensity / 8.0; // norm range [0, 1]
+          
+          // Morph wireframe color: dark slate-cyan at base -> bright orange/gold at peaks
+          const r = Math.floor(0 * (1 - ratio) + 255 * ratio);
+          const g = Math.floor(240 * (1 - ratio) + 176 * ratio);
+          const b = Math.floor(255 * (1 - ratio) + 0 * ratio);
+          const alpha = 0.15 + ratio * 0.7;
+
+          ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+
+          // Line along constant sigma
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.stroke();
+
+          // Line along constant omega
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p3.x, p3.y);
+          ctx.stroke();
+        }
+      }
+
+      // Legend key details overlaid on canvas
+      ctx.fillStyle = 'var(--text-muted)';
+      ctx.font = '9px "Fira Code", monospace';
+      ctx.fillText("X-Axis: Damping (σ)", 20, h - 35);
+      ctx.fillText("Y-Axis: Frequency (jω)", 20, h - 20);
+      ctx.fillText("Z-Axis: Magnitude |H(s)|", 20, h - 5);
+    }
+
+    // Analytical calculation of continuous transfer function magnitude |H(s)|
+    // H(s) = Gain / Product_i ( s - p_i )
+    function getLaplaceMagnitude(sigma, omega) {
+      if (poles.length === 0) return systemGain;
+
+      let denominatorMagnitude = 1.0;
+      
+      poles.forEach(p => {
+        // Distance in complex plane from s to pole p_i:
+        // ds = (sigma - p.sigma) + j*(omega - p.omega)
+        const realDist = sigma - p.sigma;
+        const imagDist = omega - p.omega;
+        const dist = Math.sqrt(realDist*realDist + imagDist*imagDist);
+        
+        // Prevent pure zero dividing at mathematical singularity poles
+        denominatorMagnitude *= Math.max(dist, 0.15);
+      });
+
+      return systemGain / denominatorMagnitude;
+    }
+
+    // Mathematical matrix-free projection formula
+    function project3D(x, y, z, width, height) {
+      // Scale coordinates to nice virtual space bounds
+      const zoom = 24;
+      let nx = x * zoom;
+      let ny = y * zoom * 0.4;
+      let nz = z * zoom * 1.4;
+
+      // Rotation around Z axis (Yaw)
+      const cosZ = Math.cos(meshAngleZ);
+      const sinZ = Math.sin(meshAngleZ);
+      const rx = nx * cosZ - ny * sinZ;
+      const ry = nx * sinZ + ny * cosZ;
+
+      // Rotation around X axis (Pitch)
+      const cosX = Math.cos(meshAngleX);
+      const sinX = Math.sin(meshAngleX);
+      const finalX = rx;
+      const finalY = ry * cosX - nz * sinX;
+
+      // Centered translation
+      return {
+        x: width / 2 + finalX,
+        y: height / 2.3 - finalY
+      };
+    }
+
+    // ----------------------------------------------------
+    // Event Listeners and Drag Handlers
+    // ----------------------------------------------------
+    function setupEventHandlers() {
+      // Complex plane interactive pole drag
+      sPlaneCanvas.addEventListener('mousedown', onSPlaneMouseDown);
+      sPlaneCanvas.addEventListener('mousemove', onSPlaneMouseMove);
+      window.addEventListener('mouseup', onMouseUp);
+
+      sPlaneCanvas.addEventListener('touchstart', onSPlaneTouchStart, {passive: false});
+      sPlaneCanvas.addEventListener('touchmove', onSPlaneTouchMove, {passive: false});
+      window.addEventListener('touchend', onMouseUp);
+
+      // 3D mesh orbit control
+      meshCanvas.addEventListener('mousedown', onMeshMouseDown);
+      meshCanvas.addEventListener('mousemove', onMeshMouseMove);
+      meshCanvas.addEventListener('touchstart', onMeshTouchStart, {passive: false});
+      meshCanvas.addEventListener('touchmove', onMeshTouchMove, {passive: false});
+    }
+
+    // s-Plane logic: Select closest pole to drag
+    function findNearPole(x, y) {
+      const w = sPlaneCanvas.width / (window.devicePixelRatio || 1);
+      const h = sPlaneCanvas.height / (window.devicePixelRatio || 1);
+      const sigma = mapXToSigma(x, w);
+      const omega = mapYToOmega(y, h);
+
+      let bestIndex = -1;
+      let bestDist = 0.5; // maximum hit tolerance radius in s-plane coordinates
+
+      poles.forEach((p, idx) => {
+        const dSigma = p.sigma - sigma;
+        const dOmega = p.omega - omega;
+        const d = Math.sqrt(dSigma*dSigma + dOmega*dOmega);
+        if (d < bestDist) {
+          bestDist = d;
+          bestIndex = idx;
+        }
+      });
+      return bestIndex;
+    }
+
+    function onSPlaneMouseDown(e) {
+      const rect = sPlaneCanvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      selectedPoleIndex = findNearPole(x, y);
+      if (selectedPoleIndex !== -1) {
+        isDraggingPole = true;
+      }
+    }
+
+    function onSPlaneMouseMove(e) {
+      if (!isDraggingPole || selectedPoleIndex === -1) return;
+
+      const rect = sPlaneCanvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const w = sPlaneCanvas.width / (window.devicePixelRatio || 1);
+      const h = sPlaneCanvas.height / (window.devicePixelRatio || 1);
+
+      // Calculate bounded coordinates
+      let sig = Math.max(minSigma, Math.min(maxSigma, mapXToSigma(x, w)));
+      let omg = Math.max(minOmega, Math.min(maxOmega, mapYToOmega(y, h)));
+
+      let target = poles[selectedPoleIndex];
+      
+      // Keep real poles strictly locked on real axis
+      if (target.type === 'real') {
+        target.sigma = sig;
+        target.omega = 0.0;
+      } else if (target.type === 'complex') {
+        target.sigma = sig;
+        target.omega = omg;
+        
+        // Symmetrically modify its complex conjugate companion
+        let companion = poles.find(p => p.type === 'complex' && p.id !== target.id && p.id !== -1);
+        
+        // Find by companion ID or sign matching
+        if (!companion) {
+          companion = poles.find(p => p.type === 'complex' && p.id !== target.id);
+        }
+
+        if (companion) {
+          companion.sigma = sig;
+          companion.omega = -omg; // lock mirrored on axis
+        }
+      }
+
+      updateSystem();
+    }
+
+    // Touch Support for mobile (S-plane dragging)
+    function onSPlaneTouchStart(e) {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const rect = sPlaneCanvas.getBoundingClientRect();
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
+
+      selectedPoleIndex = findNearPole(x, y);
+      if (selectedPoleIndex !== -1) {
+        isDraggingPole = true;
+      }
+    }
+
+    function onSPlaneTouchMove(e) {
+      if (!isDraggingPole || selectedPoleIndex === -1) return;
+      e.preventDefault();
+      
+      const touch = e.touches[0];
+      const rect = sPlaneCanvas.getBoundingClientRect();
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
+      const w = sPlaneCanvas.width / (window.devicePixelRatio || 1);
+      const h = sPlaneCanvas.height / (window.devicePixelRatio || 1);
+
+      let sig = Math.max(minSigma, Math.min(maxSigma, mapXToSigma(x, w)));
+      let omg = Math.max(minOmega, Math.min(maxOmega, mapYToOmega(y, h)));
+
+      let target = poles[selectedPoleIndex];
+      if (target.type === 'real') {
+        target.sigma = sig;
+        target.omega = 0.0;
+      } else {
+        target.sigma = sig;
+        target.omega = omg;
+        let companion = poles.find(p => p.type === 'complex' && p.id !== target.id);
+        if (companion) {
+          companion.sigma = sig;
+          companion.omega = -omg;
+        }
+      }
+      updateSystem();
+    }
+
+    // ----------------------------------------------------
+    // Mesh Drag Rotations
+    // ----------------------------------------------------
+    function onMeshMouseDown(e) {
+      isDraggingMesh = true;
+      lastMouseX = e.clientX;
+      lastMouseY = e.clientY;
+    }
+
+    function onMeshMouseMove(e) {
+      if (!isDraggingMesh) return;
+      
+      const deltaX = e.clientX - lastMouseX;
+      const deltaY = e.clientY - lastMouseY;
+
+      meshAngleZ += deltaX * 0.01;
+      meshAngleX += deltaY * 0.01;
+
+      // Restrict extreme flipping upside down
+      meshAngleX = Math.max(0.1, Math.min(Math.PI/2 - 0.1, meshAngleX));
+
+      lastMouseX = e.clientX;
+      lastMouseY = e.clientY;
+      requestDraw();
+    }
+
+    function onMeshTouchStart(e) {
+      isDraggingMesh = true;
+      const touch = e.touches[0];
+      lastMouseX = touch.clientX;
+      lastMouseY = touch.clientY;
+    }
+
+    function onMeshTouchMove(e) {
+      if (!isDraggingMesh) return;
+      e.preventDefault();
+      
+      const touch = e.touches[0];
+      const deltaX = touch.clientX - lastMouseX;
+      const deltaY = touch.clientY - lastMouseY;
+
+      meshAngleZ += deltaX * 0.01;
+      meshAngleX += deltaY * 0.01;
+      meshAngleX = Math.max(0.1, Math.min(Math.PI/2 - 0.1, meshAngleX));
+
+      lastMouseX = touch.clientX;
+      lastMouseY = touch.clientY;
+      requestDraw();
+    }
+
+    function onMouseUp() {
+      isDraggingPole = false;
+      isDraggingMesh = false;
+      selectedPoleIndex = -1;
+    }
+  </script>
+</body>
+</html>
+```
