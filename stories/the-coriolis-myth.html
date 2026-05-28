@@ -1,0 +1,994 @@
+```html
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Coriolis Myth — Scale, Spin, and Science</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#07080d',
+                            900: '#0c0e17',
+                            800: '#141829',
+                            700: '#1e243d',
+                        },
+                        cyan: {
+                            400: '#00f0ff',
+                            500: '#00d8e6',
+                            950: '#002026',
+                        },
+                        amber: {
+                            400: '#ffb703',
+                            500: '#fb8500',
+                            950: '#2d1400',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0c0e17;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e243d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f0ff;
+        }
+
+        /* Subtle grid pattern overlay */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+
+        /* Custom glow effects */
+        .glow-cyan {
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+        }
+        .glow-amber {
+            box-shadow: 0 0 20px rgba(255, 183, 3, 0.15);
+        }
+        
+        /* Scanline retro effect */
+        .scanlines {
+            position: relative;
+            overflow: hidden;
+        }
+        .scanlines::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 10;
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-dark-950 text-slate-100 font-sans selection:bg-cyan-500 selection:text-dark-950 bg-grid min-h-screen relative overflow-x-hidden">
+
+    <!-- Header Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-dark-950/80 backdrop-blur-md border-b border-dark-800 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-6">
+                <a href="../index.html" class="inline-flex items-center text-xs text-slate-400 hover:text-cyan-400 transition-colors font-mono gap-1">
+                    <span class="mr-1">←</span>/grow
+                </a>
+                <span class="text-xs font-mono px-2 py-1 bg-dark-800 rounded border border-dark-700 text-slate-400 uppercase tracking-widest">Lab Report #042</span>
+            </div>
+            <div class="hidden sm:flex items-center gap-6 text-xs font-mono text-slate-400">
+                <a href="#myth" class="hover:text-cyan-400 transition-colors">01. The Myth</a>
+                <a href="#scale" class="hover:text-cyan-400 transition-colors">02. Scale Analyzer</a>
+                <a href="#weather" class="hover:text-cyan-400 transition-colors">03. Weather Lab</a>
+                <a href="#drain" class="hover:text-cyan-400 transition-colors">04. The Basin</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero / Title Section -->
+    <section class="relative pt-32 pb-20 md:pt-40 md:pb-32 px-6 overflow-hidden">
+        <!-- Floating UI decor -->
+        <div class="absolute top-1/4 right-10 w-96 h-96 bg-cyan-500/5 rounded-full filter blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-10 left-10 w-96 h-96 bg-amber-500/5 rounded-full filter blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-dark-900 border border-dark-700 mb-6">
+                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                <span class="text-xs font-mono tracking-widest text-cyan-400 uppercase">Debunking Hydro-Physics</span>
+            </div>
+            
+            <h1 class="font-display font-extrabold text-5xl md:text-8xl tracking-tight text-white mb-6">
+                THE CORIOLIS <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-amber-400">MYTH</span>
+            </h1>
+            
+            <p class="text-slate-400 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed font-light mb-12">
+                Every second, somewhere in the world, someone watches a toilet flush and attributes its spin to the Earth's rotation. They are wrong. Explore the true dynamics of spin across scales, from massive hurricanes to the humble bathroom drain.
+            </p>
+
+            <!-- Diagnostic Stats Row -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto p-4 rounded-xl bg-dark-900/60 border border-dark-800/80 backdrop-blur font-mono text-left">
+                <div>
+                    <div class="text-xs text-slate-500">EARTH'S SPIN RATE</div>
+                    <div class="text-lg font-bold text-slate-200">7.292e-5 rad/s</div>
+                </div>
+                <div>
+                    <div class="text-xs text-slate-500">CYNIC STORM SCALE</div>
+                    <div class="text-lg font-bold text-cyan-400">&gt; 100 km</div>
+                </div>
+                <div>
+                    <div class="text-xs text-slate-500">TOILET BASIN SCALE</div>
+                    <div class="text-lg font-bold text-amber-500">&lt; 0.5 m</div>
+                </div>
+                <div>
+                    <div class="text-xs text-slate-500">DOMINANT FORCE (SINK)</div>
+                    <div class="text-lg font-bold text-slate-200">Geometry / Inertia</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 1: The Core Myth -->
+    <section id="myth" class="py-20 px-6 border-t border-dark-800 bg-dark-900/40 relative">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <span class="text-xs font-mono text-cyan-400 block mb-3">// 01. THE POPULAR PARADOX</span>
+                <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight mb-6">
+                    A Southern Hemisphere Swirl?
+                </h2>
+                <div class="space-y-4 text-slate-400 leading-relaxed font-light">
+                    <p>
+                        The myth has been broadcast in cartoons, travel shows, and high-school classrooms: pull the plug in Australia, and the water flows clockwise; do it in America, and it turns counter-clockwise.
+                    </p>
+                    <p>
+                        It sounds beautifully neat, connecting our daily household activities with the grand cosmic ballet of planetary motion. But fluid dynamics tells a completely different story.
+                    </p>
+                    <p>
+                        At the scale of a domestic sink or toilet, the <strong>Coriolis force is so infinitesimal</strong> that it is utterly overwhelmed by everyday factors: the shape of the basin, the angle of the faucet, the residual motion left over from filling the sink, and even microscopic irregularities in the drain hole itself.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Graphic card -->
+            <div class="bg-dark-900 p-8 rounded-2xl border border-dark-800 glow-cyan relative overflow-hidden flex flex-col justify-center min-h-[350px]">
+                <div class="absolute top-4 right-4 text-xs font-mono text-slate-600">DIAGNOSTIC VISUAL</div>
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-cyan-950 border border-cyan-500/30 flex items-center justify-center font-mono text-cyan-400 font-bold shrink-0">W</div>
+                        <div>
+                            <h4 class="font-mono text-sm font-semibold text-slate-200">Planetary Weather Scale</h4>
+                            <p class="text-xs text-slate-400 mt-1">Coriolis parameter dominates. Wind travels over hundreds of kilometers. Rossby Number <span class="text-cyan-400 font-mono font-bold">&lt;&lt; 1</span>.</p>
+                        </div>
+                    </div>
+                    <div class="h-px bg-dark-800"></div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-amber-950 border border-amber-500/30 flex items-center justify-center font-mono text-amber-400 font-bold shrink-0">B</div>
+                        <div>
+                            <h4 class="font-mono text-sm font-semibold text-slate-200">The Household Basin</h4>
+                            <p class="text-xs text-slate-400 mt-1">Geometric and inertial forces dominate. Water travels over mere centimeters. Rossby Number <span class="text-amber-400 font-mono font-bold">&gt;&gt; 10,000</span>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Rossby Scale Analyzer (Interactive Module) -->
+    <section id="scale" class="py-20 px-6 border-t border-dark-800 relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-xs font-mono text-amber-400 block mb-3">// 02. FLUID MECHANICS CRITERIA</span>
+                <h2 class="font-display text-3xl md:text-5xl font-bold text-white tracking-tight mb-4">
+                    The Rossby Number Calculator
+                </h2>
+                <p class="text-slate-400 max-w-2xl mx-auto text-sm md:text-base">
+                    Physicists use the non-dimensional <strong>Rossby Number (Ro)</strong> to determine if Coriolis matters. 
+                    If <span class="text-cyan-400 font-mono">Ro &lt;&lt; 1</span>, Earth's spin dictates the fluid. 
+                    If <span class="text-amber-400 font-mono">Ro &gt;&gt; 1</span>, the Coriolis force is a rounding error.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+                <!-- Controls Card -->
+                <div class="bg-dark-900/60 border border-dark-800 rounded-2xl p-6 flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-display font-bold text-lg text-white mb-6 flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-amber-400"></span> System Parameters
+                        </h3>
+                        
+                        <!-- Slider 1: System Velocity -->
+                        <div class="mb-6">
+                            <div class="flex justify-between text-xs font-mono mb-2">
+                                <span class="text-slate-400">FLUID VELOCITY (U)</span>
+                                <span class="text-cyan-400" id="val-u">0.1 m/s</span>
+                            </div>
+                            <input type="range" id="input-u" min="0.01" max="10" step="0.01" value="0.5" class="w-full accent-cyan-400 bg-dark-800 rounded-lg appearance-none h-1.5 cursor-pointer">
+                            <div class="flex justify-between text-[10px] text-slate-600 mt-1">
+                                <span>0.01 m/s (Seep)</span>
+                                <span>10 m/s (Rapid)</span>
+                            </div>
+                        </div>
+
+                        <!-- Slider 2: Spatial Scale -->
+                        <div class="mb-6">
+                            <div class="flex justify-between text-xs font-mono mb-2">
+                                <span class="text-slate-400">SPATIAL SCALE (L)</span>
+                                <span class="text-cyan-400" id="val-l">500 km</span>
+                            </div>
+                            <!-- Logarithmic scale handled in JS. Values 1 to 7 corresponding to: 
+                                 1: 10cm, 2: 1m, 3: 100m, 4: 10km, 5: 100km, 6: 1000km, 7: 5000km -->
+                            <input type="range" id="input-l" min="1" max="7" step="0.1" value="5" class="w-full accent-cyan-400 bg-dark-800 rounded-lg appearance-none h-1.5 cursor-pointer">
+                            <div class="flex justify-between text-[10px] text-slate-600 mt-1">
+                                <span>10 cm (Sink)</span>
+                                <span>5,000 km (Continent)</span>
+                            </div>
+                        </div>
+
+                        <!-- Preset Buttons -->
+                        <div class="space-y-2">
+                            <span class="text-[10px] font-mono text-slate-500 block">SYSTEM PRESETS:</span>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="setPreset('toilet')" class="px-3 py-2 rounded bg-dark-800 hover:bg-dark-700 text-xs font-mono text-left text-amber-400 border border-amber-500/10 hover:border-amber-400 transition-colors">
+                                    🛁 Bathroom Sink
+                                </button>
+                                <button onclick="setPreset('hurricane')" class="px-3 py-2 rounded bg-dark-800 hover:bg-dark-700 text-xs font-mono text-left text-cyan-400 border border-cyan-500/10 hover:border-cyan-400 transition-colors">
+                                    🌀 Hurricane
+                                </button>
+                                <button onclick="setPreset('ocean')" class="px-3 py-2 rounded bg-dark-800 hover:bg-dark-700 text-xs font-mono text-left text-emerald-400 border border-emerald-500/10 hover:border-emerald-400 transition-colors">
+                                    🌊 Ocean Gyre
+                                </button>
+                                <button onclick="setPreset('tornado')" class="px-3 py-2 rounded bg-dark-800 hover:bg-dark-700 text-xs font-mono text-left text-slate-400 border border-slate-700/50 hover:border-slate-400 transition-colors">
+                                    🌪️ Tornado
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Display / Math Card -->
+                <div class="bg-dark-900 border border-dark-800 rounded-2xl p-6 flex flex-col justify-between lg:col-span-2 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-48 h-48 bg-cyan-500/5 rounded-full filter blur-2xl pointer-events-none"></div>
+                    
+                    <div>
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-mono text-xs text-slate-500 tracking-wider">EQUIVALENT CALCULATION</h3>
+                            <span id="regime-badge" class="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-red-950/40 text-red-400 border border-red-900">Calculating</span>
+                        </div>
+
+                        <!-- Large Formula Visual -->
+                        <div class="bg-dark-950 p-6 rounded-xl border border-dark-800 font-mono mb-6 relative">
+                            <div class="text-[10px] text-slate-500 absolute top-2 left-3">ROSSBY EQUATION</div>
+                            <div class="flex items-center justify-center gap-4 text-white py-4">
+                                <span class="text-2xl font-bold">Ro</span>
+                                <span class="text-xl">=</span>
+                                <div class="flex flex-col items-center">
+                                    <span class="border-b border-slate-600 pb-1 px-3 text-cyan-400" id="formula-u">U</span>
+                                    <span class="pt-1 px-3 text-slate-400" id="formula-denom">2 &Omega; L</span>
+                                </div>
+                                <span class="text-xl">=</span>
+                                <span class="text-3xl font-bold text-white tracking-tight" id="calc-rossby">14,230</span>
+                            </div>
+                        </div>
+
+                        <!-- Visual Spectrum Meter -->
+                        <div class="mb-6">
+                            <div class="flex justify-between text-xs font-mono mb-2">
+                                <span class="text-slate-400">INERTIAL DOMINANT</span>
+                                <span class="text-slate-400">CORIOLIS DOMINANT</span>
+                            </div>
+                            <div class="h-3 w-full bg-dark-950 rounded-full overflow-hidden p-[2px] border border-dark-800">
+                                <div id="rossby-bar" class="h-full rounded-full bg-gradient-to-r from-amber-500 via-yellow-400 to-cyan-500 transition-all duration-300" style="width: 50%;"></div>
+                            </div>
+                            <div class="flex justify-between text-[10px] font-mono text-slate-600 mt-1">
+                                <span>Ro &gt;&gt; 100</span>
+                                <span>Ro = 1</span>
+                                <span>Ro &lt;&lt; 0.1</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Explanatory Verdict -->
+                    <div class="p-4 bg-dark-950/60 rounded-xl border border-dark-800">
+                        <h4 class="font-mono text-xs text-slate-500 uppercase tracking-widest mb-1">Verdict:</h4>
+                        <p id="verdict-text" class="text-slate-300 text-sm leading-relaxed">
+                            Loading physical simulation metrics...
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Weather Lab (Planetary Scale Interactive) -->
+    <section id="weather" class="py-20 px-6 border-t border-dark-800 bg-dark-900/30 relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Column: Simulation Controller -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div>
+                        <span class="text-xs font-mono text-cyan-400 block mb-2">// 03. PLANETARY WEATHER SIMULATION</span>
+                        <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight">
+                            The Earth in Motion
+                        </h2>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        On a global scale, wind currents rushing towards low-pressure centers are deflected over huge distances. Because Earth rotates eastward beneath this moving air, paths curve.
+                    </p>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        In the Northern Hemisphere, deflection is to the <strong>right</strong> (creating counter-clockwise rotation around low pressure). In the Southern Hemisphere, it's to the <strong>left</strong>.
+                    </p>
+
+                    <div class="p-4 bg-dark-900/80 rounded-xl border border-dark-800 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-mono text-slate-400">CHOOSE HEMISPHERE:</span>
+                            <div class="inline-flex rounded-lg p-0.5 bg-dark-950 border border-dark-800">
+                                <button id="btn-north" onclick="setHemisphere('north')" class="px-3 py-1 text-xs font-mono rounded bg-cyan-500 text-dark-950 font-bold transition-all">North</button>
+                                <button id="btn-south" onclick="setHemisphere('south')" class="px-3 py-1 text-xs font-mono rounded text-slate-400 hover:text-white transition-all">South</button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-mono text-slate-400 font-normal">WIND GENERATOR FORCE:</span>
+                            <span id="wind-speed-val" class="text-xs font-mono text-cyan-400">Moderate</span>
+                        </div>
+                        <input type="range" id="input-wind" min="1" max="3" step="1" value="2" class="w-full accent-cyan-400 bg-dark-950 rounded-lg appearance-none h-1 cursor-pointer">
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <button onclick="triggerLowPressure()" class="flex-1 bg-cyan-500 hover:bg-cyan-400 text-dark-950 font-display font-bold px-4 py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-sm glow-cyan">
+                            <span>🌀 Trigger Low Pressure</span>
+                        </button>
+                        <button onclick="resetWeatherSim()" class="px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-slate-300 hover:bg-dark-700 transition-colors text-sm font-mono">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Column: Interactive Canvas Map -->
+                <div class="lg:col-span-7 bg-dark-950 rounded-2xl border border-dark-800 p-4 relative overflow-hidden flex flex-col items-center">
+                    <div class="absolute top-4 left-4 font-mono text-[10px] text-slate-500 flex items-center gap-2 z-20">
+                        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
+                        PLANETARY FLUID RADAR
+                    </div>
+                    <div id="sim-direction-badge" class="absolute top-4 right-4 font-mono text-[10px] text-cyan-400 bg-cyan-950 border border-cyan-800/50 px-2 py-0.5 rounded z-20">
+                        DEFLECTION: RIGHT
+                    </div>
+                    
+                    <!-- Canvas Box -->
+                    <div class="w-full aspect-square max-w-[450px] relative mt-4">
+                        <canvas id="weatherCanvas" class="w-full h-full bg-[#0a0c14] rounded-xl border border-dark-900"></canvas>
+                        
+                        <!-- Overlay Legend Grid -->
+                        <div class="absolute bottom-2 left-2 right-2 pointer-events-none flex justify-between font-mono text-[9px] text-slate-600">
+                            <span>GRID: 250KM / DIV</span>
+                            <span>SCALE: GLOBAL</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: The Domestic Basin (The Microscale Toilet/Sink Lab) -->
+    <section id="drain" class="py-20 px-6 border-t border-dark-800 relative scanlines">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Column: The Interactive Basin Simulation Canvas -->
+                <div class="lg:col-span-7 bg-dark-950 rounded-2xl border border-dark-800 p-4 relative overflow-hidden flex flex-col items-center order-2 lg:order-1">
+                    <div class="absolute top-4 left-4 font-mono text-[10px] text-slate-500 flex items-center gap-2 z-20">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+                        LAB SINK DRAIN MODEL
+                    </div>
+                    
+                    <div class="w-full aspect-square max-w-[450px] relative mt-4">
+                        <canvas id="drainCanvas" class="w-full h-full bg-[#0d0f1a] rounded-xl border border-dark-900"></canvas>
+                        
+                        <!-- Drain Target Info -->
+                        <div class="absolute bottom-2 left-2 right-2 pointer-events-none flex justify-between font-mono text-[9px] text-slate-600">
+                            <span>SCALE: 40CM BASIN</span>
+                            <span>SPIN INFLUENCE: GEOMETRY</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Control Deck & Explanation -->
+                <div class="lg:col-span-5 space-y-6 order-1 lg:order-2">
+                    <div>
+                        <span class="text-xs font-mono text-amber-400 block mb-2">// 04. THE TOILET & BASIN ENVIRONMENT</span>
+                        <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight">
+                            The Miniature Vortex
+                        </h2>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed font-light">
+                        In a toilet or sink, the water drains over a fraction of a meter in seconds. Here, the Earth’s rotation contributes less than <strong class="text-white">one-millionth</strong> of the force compared to the water's initial motion.
+                    </p>
+                    <p class="text-slate-400 text-sm leading-relaxed font-light">
+                        <strong>Try it yourself:</strong> Inject initial turbulence into the basin. See how even a microscopic initial momentum overrides planetary rotation entirely.
+                    </p>
+
+                    <!-- User Interaction Control panel -->
+                    <div class="p-5 bg-dark-900/80 rounded-2xl border border-dark-800 space-y-6">
+                        <!-- Stir direction input -->
+                        <div>
+                            <span class="text-xs font-mono text-slate-400 block mb-2">INJECT TURBULENCE (STIR DIRECTION):</span>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button id="stir-ccw" onclick="setStir('ccw')" class="px-3 py-2 rounded text-xs font-mono border border-dark-700 bg-dark-950 text-slate-300 hover:border-amber-400 transition-colors">
+                                    🔄 CCW (Left)
+                                </button>
+                                <button id="stir-none" onclick="setStir('none')" class="px-3 py-2 rounded text-xs font-mono border border-amber-500/30 bg-amber-950/20 text-amber-400 hover:border-amber-400 transition-colors">
+                                    Static (Pure)
+                                </button>
+                                <button id="stir-cw" onclick="setStir('cw')" class="px-3 py-2 rounded text-xs font-mono border border-dark-700 bg-dark-950 text-slate-300 hover:border-amber-400 transition-colors">
+                                    🔄 CW (Right)
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Coriolis booster slider -->
+                        <div>
+                            <div class="flex justify-between text-xs font-mono mb-2">
+                                <span class="text-slate-400">CORIOLIS FORCE MULTIPLIER:</span>
+                                <span id="coriolis-boost-val" class="text-amber-400 font-bold">1x (Real Earth)</span>
+                            </div>
+                            <input type="range" id="input-boost" min="1" max="10000" step="1" value="1" class="w-full accent-amber-400 bg-dark-950 rounded-lg appearance-none h-1.5 cursor-pointer">
+                            <div class="flex justify-between text-[10px] text-slate-600 mt-1">
+                                <span>Real Scale</span>
+                                <span>10,000x Jupiter Spin</span>
+                            </div>
+                        </div>
+
+                        <!-- Reset / Trigger Button -->
+                        <div class="flex items-center gap-3">
+                            <button onclick="flushToilet()" class="flex-1 bg-amber-500 hover:bg-amber-400 text-dark-950 font-display font-bold px-4 py-3 rounded-xl transition-all text-sm glow-amber">
+                                🚽 Flush / Drain Basin
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Deep Technical Deep-Dive Grid -->
+    <section class="py-20 px-6 border-t border-dark-800 bg-dark-950/80 relative">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="font-display text-2xl md:text-3xl font-bold text-white text-center mb-12">
+                Physical Forces Compared
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="p-6 rounded-2xl bg-dark-900 border border-dark-800 hover:border-cyan-500/20 transition-colors">
+                    <span class="text-xs font-mono text-cyan-400">01 / GEOMETRIC ACCELERATION</span>
+                    <h3 class="font-display font-bold text-lg text-white mt-2 mb-3">Drain Geometry</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Sinks and toilets are manufactured with micro-scale physical imperfections. Even a tiny 1-millimeter asymmetry acts as an aerodynamic ramp, directing water with magnitudes of force far eclipsing Coriolis.
+                    </p>
+                </div>
+                <!-- Card 2 -->
+                <div class="p-6 rounded-2xl bg-dark-900 border border-dark-800 hover:border-amber-500/20 transition-colors">
+                    <span class="text-xs font-mono text-amber-400">02 / INERTIAL LEGACY</span>
+                    <h3 class="font-display font-bold text-lg text-white mt-2 mb-3">Residual Motion</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Water poured into a sink remains rotating slightly for up to 24 hours. Unless a basin sits in perfectly vibration-free isolators for days, the lingering kinetic energy from filling the sink completely dictates its drain spiral.
+                    </p>
+                </div>
+                <!-- Card 3 -->
+                <div class="p-6 rounded-2xl bg-dark-900 border border-dark-800 hover:border-emerald-500/20 transition-colors">
+                    <span class="text-xs font-mono text-emerald-400">03 / REAL LAB EXPERIMENTS</span>
+                    <h3 class="font-display font-bold text-lg text-white mt-2 mb-3">The Extreme Protocol</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        In 1962, physicist Ascher Shapiro tested this. He used a perfect 2-meter bowl, filled it with settled water for 24 hours, and drained it under strictly controlled lab conditions. Only then did he prove Coriolis worked on a basin.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-dark-800 bg-dark-950 py-12 px-6">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-4">
+                <span class="font-display text-white font-bold">The Coriolis Myth</span>
+                <span class="h-4 w-px bg-dark-800"></span>
+                <span class="text-xs font-mono text-slate-500">Interactive Educational Physics Report</span>
+            </div>
+            <div class="text-xs font-mono text-slate-600">
+                Created with precision to replace myths with fluid dynamics.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Logic & Animations script -->
+    <script>
+        // --- PRESET SYSTEM AND ROSSBY CALCULATOR ---
+        const omega = 7.292115e-5; // Earth spin speed (rad/s)
+
+        const presets = {
+            toilet: { u: 0.5, l: 0.2, title: "Bathroom Sink / Toilet" },
+            hurricane: { u: 15, l: 800000, title: "Hurricane System" },
+            ocean: { u: 0.1, l: 3000000, title: "Oceanic Gyre" },
+            tornado: { u: 40, l: 200, title: "F5 Tornado" }
+        };
+
+        const valU = document.getElementById("val-u");
+        const valL = document.getElementById("val-l");
+        const inputU = document.getElementById("input-u");
+        const inputL = document.getElementById("input-l");
+        const calcRossbyDisplay = document.getElementById("calc-rossby");
+        const formulaU = document.getElementById("formula-u");
+        const formulaDenom = document.getElementById("formula-denom");
+        const rossbyBar = document.getElementById("rossby-bar");
+        const regimeBadge = document.getElementById("regime-badge");
+        const verdictText = document.getElementById("verdict-text");
+
+        // Convert slide scale (1-7) to logarithmic length (meters)
+        function sliderToLength(val) {
+            const mapped = [0.1, 0.5, 10, 1000, 50000, 500000, 5000000];
+            const idx = Math.floor(val) - 1;
+            const frac = val - idx - 1;
+            if (idx >= mapped.length - 1) return mapped[mapped.length - 1];
+            return mapped[idx] + frac * (mapped[idx+1] - mapped[idx]);
+        }
+
+        function lengthToSlider(len) {
+            const mapped = [0.1, 0.5, 10, 1000, 50000, 500000, 5000000];
+            if (len <= mapped[0]) return 1;
+            if (len >= mapped[mapped.length - 1]) return mapped.length;
+            for(let i=0; i<mapped.length-1; i++){
+                if(len >= mapped[i] && len <= mapped[i+1]){
+                    const frac = (len - mapped[i]) / (mapped[i+1] - mapped[i]);
+                    return (i + 1) + frac;
+                }
+            }
+            return 4;
+        }
+
+        function formatLength(len) {
+            if (len < 1) return `${(len * 100).toFixed(0)} cm`;
+            if (len < 1000) return `${len.toFixed(1)} m`;
+            return `${(len / 1000).toFixed(0)} km`;
+        }
+
+        function calculateRossby() {
+            const u = parseFloat(inputU.value);
+            const rawLValue = parseFloat(inputL.value);
+            const l = sliderToLength(rawLValue);
+
+            valU.textContent = `${u.toFixed(2)} m/s`;
+            valL.textContent = formatLength(l);
+
+            // Ro = U / (2 * omega * L)
+            const ro = u / (2 * omega * l);
+            
+            // Format scientific or flat
+            if (ro > 1000) {
+                calcRossbyDisplay.textContent = ro.toLocaleString(undefined, {maximumFractionDigits: 0});
+            } else if (ro < 0.01) {
+                calcRossbyDisplay.textContent = ro.toExponential(3);
+            } else {
+                calcRossbyDisplay.textContent = ro.toFixed(3);
+            }
+
+            // Math components
+            formulaU.textContent = `${u.toFixed(2)} m/s`;
+            formulaDenom.textContent = `2 × (7.29e-5) × ${formatLength(l)}`;
+
+            // UI Slider update & analysis
+            // We map logarithmic Ro range from 0.001 to 10000 to slide position (0 to 100%)
+            const minLog = Math.log10(0.001);
+            const maxLog = Math.log10(10000);
+            const currentLog = Math.log10(ro);
+            let percent = ((currentLog - minLog) / (maxLog - minLog)) * 100;
+            percent = Math.max(0, Math.min(100, percent));
+            
+            // Invert slide logic visually (Rossby number < 1 is Coriolis dominant (right side of visual gauge))
+            const visualPercent = 100 - percent;
+            rossbyBar.style.width = `${visualPercent}%`;
+
+            // Adjust colors and texts based on Regime
+            if (ro > 100) {
+                regimeBadge.className = "px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-amber-950/40 text-amber-400 border border-amber-900";
+                regimeBadge.textContent = "Inertia Dominant (No Coriolis)";
+                verdictText.innerHTML = `Because the spatial scale (<strong>${formatLength(l)}</strong>) is extremely small or speeds are high, fluid inertia is too powerful. Earth's rotation has <strong>absolutely zero influence</strong>. Draining direction is purely determined by initial whirlpool spin or shape.`;
+            } else if (ro < 0.5) {
+                regimeBadge.className = "px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-cyan-950/40 text-cyan-400 border border-cyan-900";
+                regimeBadge.textContent = "Geostrophic Dominant (Coriolis)";
+                verdictText.innerHTML = `At this immense scale of <strong>${formatLength(l)}</strong>, the minuscule deflection of the Earth's rotation accumulates over space and time. Wind or water is <strong>forced to rotate</strong> strictly by hemisphere!`;
+            } else {
+                regimeBadge.className = "px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-slate-800 text-slate-300 border border-slate-700";
+                regimeBadge.textContent = "Transition Zone";
+                verdictText.innerHTML = `At this scale, both Coriolis forces and inertial forces compete. Localized friction, layout design, and thermal variables determine the final swirling spin.`;
+            }
+        }
+
+        function setPreset(key) {
+            const p = presets[key];
+            if (!p) return;
+            inputU.value = p.u;
+            inputL.value = lengthToSlider(p.l);
+            calculateRossby();
+        }
+
+        inputU.addEventListener('input', calculateRossby);
+        inputL.addEventListener('input', calculateRossby);
+
+
+        // --- PLANETARY WEATHER SIMULATOR ---
+        const weatherCanvas = document.getElementById('weatherCanvas');
+        const ctxW = weatherCanvas.getContext('2d');
+        let hemisphere = 'north';
+        let stormTriggered = false;
+        let weatherParticles = [];
+        let windPower = 2; // scale factor
+
+        // Set High DPI Canvas sizing
+        function setupCanvasDPI(canvas, ctx) {
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            return { w: rect.width, h: rect.height };
+        }
+
+        let sizeW = setupCanvasDPI(weatherCanvas, ctxW);
+
+        class WeatherParticle {
+            constructor(startX, startY, centerTarget) {
+                this.x = startX;
+                this.y = startY;
+                this.cx = centerTarget.x;
+                this.cy = centerTarget.y;
+                this.speed = (Math.random() * 0.5 + 0.5) * windPower;
+                this.angle = Math.atan2(this.cy - this.y, this.cx - this.x);
+                this.life = 1;
+                this.alpha = 0;
+                this.trail = [];
+                this.color = hemisphere === 'north' ? '0, 240, 255' : '0, 240, 180';
+            }
+
+            update() {
+                // Direction of force pull towards low pressure center
+                let targetAngle = Math.atan2(this.cy - this.y, this.cx - this.x);
+                
+                // Coriolis Force adds a deflection offset perpendicular to velocity
+                const distanceToCenter = Math.hypot(this.cx - this.x, this.cy - this.y);
+                
+                // Dynamic deflection depending on hemisphere
+                const deflectionCoeff = hemisphere === 'north' ? 0.35 : -0.35;
+                
+                // Let the angle curve inward
+                this.angle += (targetAngle - this.angle) * 0.1;
+                this.angle += deflectionCoeff * (1.2 / Math.max(1, distanceToCenter / 20));
+
+                this.x += Math.cos(this.angle) * this.speed;
+                this.y += Math.sin(this.angle) * this.speed;
+
+                this.trail.push({x: this.x, y: this.y});
+                if (this.trail.length > 25) this.trail.shift();
+
+                if (distanceToCenter < 10 || distanceToCenter > sizeW.w * 0.7) {
+                    this.life = 0;
+                }
+                
+                if (this.alpha < 0.8) this.alpha += 0.05;
+            }
+
+            draw() {
+                ctxW.beginPath();
+                ctxW.lineWidth = 1.5;
+                ctxW.strokeStyle = `rgba(${this.color}, ${this.alpha * 0.4})`;
+                for (let i = 0; i < this.trail.length; i++) {
+                    const pt = this.trail[i];
+                    if (i === 0) ctxW.moveTo(pt.x, pt.y);
+                    else ctxW.lineTo(pt.x, pt.y);
+                }
+                ctxW.stroke();
+
+                // Draw lead particle head
+                ctxW.beginPath();
+                ctxW.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                ctxW.fillStyle = `rgba(${this.color}, ${this.alpha})`;
+                ctxW.fill();
+            }
+        }
+
+        function setHemisphere(h) {
+            hemisphere = h;
+            document.getElementById('btn-north').className = h === 'north' ? "px-3 py-1 text-xs font-mono rounded bg-cyan-500 text-dark-950 font-bold" : "px-3 py-1 text-xs font-mono rounded text-slate-400 hover:text-white";
+            document.getElementById('btn-south').className = h === 'south' ? "px-3 py-1 text-xs font-mono rounded bg-cyan-500 text-dark-950 font-bold" : "px-3 py-1 text-xs font-mono rounded text-slate-400 hover:text-white";
+            document.getElementById('sim-direction-badge').textContent = h === 'north' ? "DEFLECTION: RIGHT" : "DEFLECTION: LEFT";
+            resetWeatherSim();
+        }
+
+        document.getElementById('input-wind').addEventListener('input', function(e) {
+            windPower = parseFloat(e.target.value);
+            const lab = ["Gentle", "Moderate", "Hurricane Category"];
+            document.getElementById('wind-speed-val').textContent = lab[windPower-1];
+        });
+
+        function triggerLowPressure() {
+            stormTriggered = true;
+            for (let i = 0; i < 80; i++) {
+                // Distribute starting points in a circle around center
+                const ang = Math.random() * Math.PI * 2;
+                const r = Math.random() * 120 + 80;
+                weatherParticles.push(new WeatherParticle(
+                    sizeW.w / 2 + Math.cos(ang) * r,
+                    sizeW.h / 2 + Math.sin(ang) * r,
+                    { x: sizeW.w / 2, y: sizeW.h / 2 }
+                ));
+            }
+        }
+
+        function resetWeatherSim() {
+            weatherParticles = [];
+            stormTriggered = false;
+        }
+
+        // Loop dynamic planetary visual
+        function drawWeather() {
+            ctxW.clearRect(0, 0, sizeW.w, sizeW.h);
+            
+            // Draw Target Center Grid
+            ctxW.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+            ctxW.lineWidth = 1;
+            ctxW.beginPath();
+            ctxW.arc(sizeW.w/2, sizeW.h/2, 100, 0, Math.PI*2);
+            ctxW.arc(sizeW.w/2, sizeW.h/2, 180, 0, Math.PI*2);
+            ctxW.stroke();
+            
+            // Grid Axis
+            ctxW.beginPath();
+            ctxW.moveTo(0, sizeW.h/2); ctxW.lineTo(sizeW.w, sizeW.h/2);
+            ctxW.moveTo(sizeW.w/2, 0); ctxW.lineTo(sizeW.w/2, sizeW.h);
+            ctxW.stroke();
+
+            // Center Low marker
+            ctxW.fillStyle = '#1e293b';
+            ctxW.beginPath();
+            ctxW.arc(sizeW.w/2, sizeW.h/2, 20, 0, Math.PI*2);
+            ctxW.fill();
+            
+            ctxW.fillStyle = '#00f0ff';
+            ctxW.font = 'bold 11px JetBrains Mono';
+            ctxW.textAlign = 'center';
+            ctxW.textBaseline = 'middle';
+            ctxW.fillText("L", sizeW.w/2, sizeW.h/2);
+
+            // Emit ambient background winds towards Low Pressure continuously
+            if (Math.random() < 0.25 && weatherParticles.length < 150) {
+                const ang = Math.random() * Math.PI * 2;
+                const r = Math.random() * 100 + 120;
+                weatherParticles.push(new WeatherParticle(
+                    sizeW.w / 2 + Math.cos(ang) * r,
+                    sizeW.h / 2 + Math.sin(ang) * r,
+                    { x: sizeW.w / 2, y: sizeW.h / 2 }
+                ));
+            }
+
+            // Update & Render storm particles
+            for (let i = weatherParticles.length - 1; i >= 0; i--) {
+                const p = weatherParticles[i];
+                p.update();
+                p.draw();
+                if (p.life === 0) {
+                    weatherParticles.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(drawWeather);
+        }
+
+        // --- THE SINK / TOILET SIMULATION ---
+        const drainCanvas = document.getElementById('drainCanvas');
+        const ctxD = drainCanvas.getContext('2d');
+        let sizeD = setupCanvasDPI(drainCanvas, ctxD);
+
+        let stirDirection = 'none'; // 'none', 'cw', 'ccw'
+        let coriolisForceBoost = 1;
+        let drainParticles = [];
+        let isFlushing = false;
+        let flushProgress = 1.0;
+
+        class DrainParticle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                const ang = Math.random() * Math.PI * 2;
+                this.r = Math.random() * 160 + 20;
+                this.x = sizeD.w/2 + Math.cos(ang) * this.r;
+                this.y = sizeD.h/2 + Math.sin(ang) * this.r;
+                this.angle = ang;
+                this.speed = Math.random() * 0.5 + 0.2;
+                this.color = '251, 133, 0'; // amber
+                this.trail = [];
+                this.life = 1;
+            }
+
+            update() {
+                // If draining is active, pull inwards to center drain
+                if (isFlushing) {
+                    this.r -= this.speed * 1.5;
+                }
+
+                // Swirl Logic: Combine Coriolis effect AND direct User Stir direction
+                const earthCoriolisInflow = -0.00001 * coriolisForceBoost; // Infinitesimal default
+                
+                let userStirInflow = 0;
+                if (stirDirection === 'cw') userStirInflow = 0.08;
+                if (stirDirection === 'ccw') userStirInflow = -0.08;
+                
+                // If "none", simulate tiny random environmental turbulence factor
+                if (stirDirection === 'none') {
+                    userStirInflow = 0.001; // Tiny residual water currents
+                }
+
+                // Angular update combines all rotational forces
+                const netRotationalSpeed = userStirInflow + earthCoriolisInflow;
+                
+                // Keplers Second Law approximation (spin faster as radius shrinks)
+                const spinVelocity = netRotationalSpeed * (180 / Math.max(10, this.r));
+                this.angle += spinVelocity;
+
+                this.x = sizeD.w/2 + Math.cos(this.angle) * this.r;
+                this.y = sizeD.h/2 + Math.sin(this.angle) * this.r;
+
+                this.trail.push({x: this.x, y: this.y});
+                if (this.trail.length > 15) this.trail.shift();
+
+                if (this.r < 5) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctxD.beginPath();
+                ctxD.lineWidth = 1.2;
+                ctxD.strokeStyle = `rgba(${this.color}, 0.25)`;
+                for (let i = 0; i < this.trail.length; i++) {
+                    const pt = this.trail[i];
+                    if (i === 0) ctxD.moveTo(pt.x, pt.y);
+                    else ctxD.lineTo(pt.x, pt.y);
+                }
+                ctxD.stroke();
+
+                ctxD.beginPath();
+                ctxD.arc(this.x, this.y, 1.5, 0, Math.PI * 2);
+                ctxD.fillStyle = `rgba(${this.color}, 0.8)`;
+                ctxD.fill();
+            }
+        }
+
+        // Initialize particles
+        for (let i = 0; i < 100; i++) {
+            drainParticles.push(new DrainParticle());
+        }
+
+        function setStir(dir) {
+            stirDirection = dir;
+            const buttons = {
+                'cw': document.getElementById('stir-cw'),
+                'ccw': document.getElementById('stir-ccw'),
+                'none': document.getElementById('stir-none')
+            };
+            
+            // Toggle highlight styles
+            for (const key in buttons) {
+                if (key === dir) {
+                    buttons[key].className = "px-3 py-2 rounded text-xs font-mono border border-amber-500 bg-amber-950/40 text-amber-400 font-bold transition-all";
+                } else {
+                    buttons[key].className = "px-3 py-2 rounded text-xs font-mono border border-dark-700 bg-dark-950 text-slate-400 hover:border-slate-500 transition-all";
+                }
+            }
+        }
+
+        document.getElementById('input-boost').addEventListener('input', function(e) {
+            coriolisForceBoost = parseFloat(e.target.value);
+            const display = document.getElementById('coriolis-boost-val');
+            if (coriolisForceBoost === 1) {
+                display.className = "text-amber-400 font-bold";
+                display.textContent = "1x (Real Earth)";
+            } else if (coriolisForceBoost < 100) {
+                display.className = "text-yellow-400";
+                display.textContent = `${coriolisForceBoost.toFixed(0)}x (Minor Lab)`;
+            } else {
+                display.className = "text-red-400 font-bold animate-pulse";
+                display.textContent = `${coriolisForceBoost.toLocaleString()}x (Cosmic Spin)`;
+            }
+        });
+
+        function flushToilet() {
+            isFlushing = true;
+            flushProgress = 1.0;
+        }
+
+        function drawDrainSim() {
+            ctxD.clearRect(0, 0, sizeD.w, sizeD.h);
+
+            // Outer Basin ring
+            ctxD.strokeStyle = 'rgba(255, 183, 3, 0.08)';
+            ctxD.lineWidth = 1.5;
+            ctxD.beginPath();
+            ctxD.arc(sizeD.w/2, sizeD.h/2, 170, 0, Math.PI * 2);
+            ctxD.stroke();
+
+            // Inner Drain Hole
+            ctxD.fillStyle = '#07080d';
+            ctxD.strokeStyle = 'rgba(255, 183, 3, 0.2)';
+            ctxD.lineWidth = 2;
+            ctxD.beginPath();
+            ctxD.arc(sizeD.w/2, sizeD.h/2, 12, 0, Math.PI * 2);
+            ctxD.fill();
+            ctxD.stroke();
+
+            // Render particles
+            drainParticles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            // Drain vortex decoration lines
+            if (isFlushing) {
+                ctxD.strokeStyle = 'rgba(251, 133, 0, 0.4)';
+                ctxD.lineWidth = 1.5;
+                ctxD.beginPath();
+                ctxD.arc(sizeD.w/2, sizeD.h/2, 35, 0, Math.PI*2 * (1 - flushProgress));
+                ctxD.stroke();
+            }
+
+            requestAnimationFrame(drawDrainSim);
+        }
+
+        // Init Everything on load
+        window.addEventListener('load', () => {
+            setPreset('toilet');
+            setHemisphere('north');
+            drawWeather();
+            drawDrainSim();
+        });
+
+        // Resize support
+        window.addEventListener('resize', () => {
+            sizeW = setupCanvasDPI(weatherCanvas, ctxW);
+            sizeD = setupCanvasDPI(drainCanvas, ctxD);
+        });
+
+    </script>
+</body>
+</html>
+```

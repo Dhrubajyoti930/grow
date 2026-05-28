@@ -4,7 +4,7 @@
 # Tags: game | tool | art | story
 # ─────────────────────────────────────────────────────────────────
 
-[story] The Coriolis Myth     — how Earth's rotation dictates weather, but not the flush of a toilet
+[story] The Coriolis Myth     — how Earth's rotation dictates weather, but not the flush of a toilet  ✅
 [tool]  Laplace Transform     — convert a time-domain wave into its s-domain frequency peaks
 [game]  Potato War Sim        — out-farm a rival squid using complex math and raw dedication
 [art]   Strange Attractors    — chaotic, infinitely wrapping particle trails in deep space
