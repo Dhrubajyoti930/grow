@@ -4,172 +4,162 @@
 # Tags: game | tool | art | story
 # ─────────────────────────────────────────────────────────────────
 
-# ── 160 New Ideas ────────────────────────────────────────────────
-
-# Games (40)
-[game]  Potato War Sim        — out-farm a rival squid using complex math and raw dedication
-[game]  Compass Manhunt       — evade multiple hunters in a procedurally generated wilderness
-[game]  Barrel Horror         — navigate a dark cellar with limited lantern oil and hostile props
-[game]  Block Clutch Practice — fall into the void, place blocks on the wall to survive
-[game]  Anarchy Ruler         — build a syndicate on a server with no rules, wearing a pig crown
-[game]  Happy Physics Cart    — violently unfair 2D ragdoll driving over impossible gaps
-[game]  Blood God Battles     — 1v1 arena combat focusing on strafing, crits, and fishing rods
-[game]  MLG Water Drop        — jump from the skybox, land in a single block of water
-[game]  Orphan Obliterator    — fast-paced hack and slash boss rush, purely for the loot
-[game]  Portal Speedrun       — calculate perfect Nether portal coordinates using obsidian casting
-[game]  Meme Reviewer         — rate procedurally generated internet images while dodging bans
-[game]  Bridge Builder Pro    — click at 20 CPS to bridge across the void without sneaking
-[game]  Pug Simulator         — play as a pair of pugs solving puzzles in a chaotic household
-[game]  Ender Pearl Stasis    — trigger teleportation traps to escape impossible combat scenarios
-[game]  Floor is Lava Parkour — pixel-perfect jumping across disappearing slime blocks
-[game]  Skyblock Economist    — crash the virtual economy with an automated mob farm
-[game]  Brofist Brawler       — side-scrolling beat-em-up with absurd power-ups and tambourines
-[game]  TNT Cannon Crafter    — engineer redstone artillery to breach obsidian walls
-[game]  Blind Speedrun        — memorize audio cues to beat the final boss without looking
-[game]  Amnesia Clone         — run and hide from terrifying monsters, no weapons allowed
-[game]  Wither Spawner        — gather skulls and sand to unleash chaos on your enemies' base
-[game]  Boat Ice Racing       — drift wooden boats on blue ice tracks at Mach 3
-[game]  Sub Bot Defender      — fight off an army of automated accounts to maintain your sub lead
-[game]  Axe PvP Tactics       — manage shield cooldowns and axe crits in sweaty duels
-[game]  Half Heart Hardcore   — survive a massive open world where literally any damage is fatal
-[game]  Yoyo Trickster        — physics-based rhythm game mimicking classic trick videos
-[game]  End Crystal Bomber    — chaotic, explosive combat meta relying on indestructible crystals
-[game]  Trap Crafter          — lure hunters into elaborate TNT and cobweb traps
-[game]  Flappy Rage           — an impossibly frustrating arcade clone that makes you yell
-[game]  Elytra Flight Sim     — thread the needle through tiny rings while diving with fireworks
-[game]  Pig Jousting          — ride saddle-equipped hogs into tournament combat
-[game]  Speedbridger          — hold the optimal angle to bridge without falling off the edge
-[game]  Sandbox Torture       — put NPCs in increasingly ridiculous and deadly contraptions
-[game]  Potion Brewer         — memorize complex recipes to gain tactical buffs mid-combat
-[game]  Nether Navigation     — survive ghast fireballs while bridging over a sea of lava
-[game]  G-Fuel Tycoon         — manage a powdery energy drink empire for hardcore gamers
-[game]  Hunger Games Arena    — loot the cornucopia and survive a 24-player battle royale
-[game]  Techno's Library      — decipher ancient combat texts and apply Sun Tzu quotes to PvP
-[game]  Manhunt Analysis      — rewind and analyze 200 IQ plays to see if they were scripted
-[game]  Dragon Perch          — predict the dragon's landing sequence to deal massive bed damage
-
-# Tools (40)
-[tool]  Fourier Tracer        — draw a closed curve, output the spinning epicycles that generate it
-[tool]  Vector Flow Viz       — input differential equations, watch the glowing vector field evolve
-[tool]  Basis Transformer     — drag basis vectors to see how the entire 2D plane morphs
-[tool]  Pi Collision Sim      — count perfectly elastic blocks bouncing to calculate digits of Pi
-[tool]  Neural Net Layers     — peek inside a perceptron network to see how it separates data
-[tool]  Quaternion Sphere     — visualize 4D rotations mapped onto a stereographic 3D projection
-[tool]  Taylor Series Graph   — add polynomial terms and watch them hug the sine wave
-[tool]  Eigenvalue Finder     — visually locate vectors that only scale during a transformation
-[tool]  Divergence Map        — visualize fluid sources and sinks in a continuous vector field
-[tool]  Curl Calculator       — drop a virtual paddlewheel in a vector field to measure rotation
-[tool]  Gradient Ascent       — drop a marble on a 3D loss function surface to find local minima
-[tool]  Prime Spiral          — highlight prime numbers on an expanding polar coordinate grid
-[tool]  Matrix Multiplier     — step-by-step visualizer of rows dipping into columns
-[tool]  Complex Mapper        — see how a grid transforms under complex mapping functions
-[tool]  Normal Dist Board     — drop balls through a Galton board to form a bell curve
-[tool]  Riemann Sums Calc     — slice the area under a curve into increasingly thin rectangles
 [tool]  Laplace Transform     — convert a time-domain wave into its s-domain frequency peaks
-[tool]  Markov Chain Sim      — watch state transitions flow between nodes based on probabilities
-[tool]  Cross Product Viz     — see the orthogonal parallelogram area generated by two vectors
-[tool]  Dot Product Projector — cast shadows of one vector onto another to find the scalar
-[tool]  Topology Morpher      — continuous deformation animation of a coffee mug into a donut
-[tool]  Logistic Map          — slide the growth rate parameter to watch chaos theory emerge
-[tool]  Calculus Chain Rule   — visual gears representing nested derivatives turning one another
-[tool]  Bayes Theorem Tree    — dynamic branching paths showing conditional probabilities
-[tool]  Binomial Expander     — Pascal's triangle interactive generator with combinatorics rules
-[tool]  Path Integral Sim     — sum over all possible particle histories in a double-slit setup
-[tool]  Manim Boilerplate     — visual UI to generate the Python code for elegant math animations
-[tool]  Heat Equation         — simulate thermal dispersion across a 2D metal plate over time
-[tool]  Wave Equation         — pluck a virtual 1D string to see harmonic standing waves
-[tool]  Determinant Area      — watch how the area of a square scales under a 2x2 matrix change
-[tool]  Fractional Dimensions — calculate the Hausdorff dimension of Sierpinski triangles
-[tool]  Graph Isomorphism     — untangle nodes to see if two network graphs are actually the same
-[tool]  Tensegrity Simulator  — build floating structures held together purely by tension lines
-[tool]  Mobius Strip Gen      — parametric slider to twist and connect a 3D ribbon of paper
-[tool]  Conic Sections        — slice a double cone with a 3D plane to reveal ellipses and parabolas
-[tool]  Proof by Induction    — visual dominoes falling to prove mathematical statements
-[tool]  Cellular Automata     — 1D Rule 30 generator showing complex patterns from simple rules
-[tool]  Newton's Method       — follow tangent lines down a curve to find its roots iteratively
-[tool]  Stereo Projection     — shine a light through a sphere to map its surface to a plane
-[tool]  Harmonic Oscillator   — perfectly damped, underdamped, and overdamped spring masses
-
-# Art (40)
+[game]  Potato War Sim        — out-farm a rival squid using complex math and raw dedication
 [art]   Strange Attractors    — chaotic, infinitely wrapping particle trails in deep space
-[art]   Mandelbulb 3D         — a volumetric, fractal voyage into the third dimension
-[art]   Chladni Sand Patterns — acoustic resonance mapping with generative black sand
-[art]   Voronoi Stained Glass — cell-fracture algorithms generating cathedral-style windows
-[art]   Double Pendulum       — long-exposure light painting of chaotic swinging motion
-[art]   L-System Trees        — recursive botanical sketches generating infinite oak variations
-[art]   Interference Ripples  — intersecting wave patterns creating beautiful moiré illusions
-[art]   Lissajous Webs        — parametric curves spinning into dense, hypnotic thread art
-[art]   Conway's Canvas       — Game of Life cells treated as pixel-art color blooms
-[art]   Perlin Topography     — smoothly undulating mountain maps colored by elevation
-[art]   Raymarched Spheres    — infinitely repeating glass orbs reflecting each other
-[art]   Magnetic Field Lines  — iron filings snapping to invisible, animated polar forces
-[art]   Fractal Brownian      — generating hyper-realistic, jagged cloud formations
-[art]   Reaction-Diffusion    — Turing patterns simulating the spots on a leopard's skin
-[art]   Hex Tessellations     — infinitely folding Escher-style geometric animals
-[art]   Golden Ratio Spirals  — Fibonacci sequences drawn as expanding nautilus shells
-[art]   Slime Mold Network    — simulating Physarum polycephalum finding food sources
-[art]   Gravitational Lensing — bending a starry background texture around a black hole
-[art]   Fluid Vortex Shedding — beautiful, repeating swirls behind an object in a stream
-[art]   Quantum Superposition — hazy, probabilistic electron clouds snapping to specific orbitals
-[art]   Isometric Tesseracts  — 4D hypercubes rotating their inner faces to the outside
-[art]   Spirograph Galaxy     — hypotrochoids orbiting a central barycenter
-[art]   Generative Origami    — folding virtual paper into mathematically perfect cranes
-[art]   Poisson Disc Sampling — perfectly distributed, non-overlapping organic dot patterns
-[art]   Superformula Shapes   — tweaking parameters to generate starfish, leaves, and astroids
-[art]   Penrose Tiling        — aperiodic dart and kite patterns that never repeat the same way
-[art]   Boids Flocking        — thousands of glowing arrows swarming like starlings at dusk
-[art]   Gyroid Surfaces       — infinitely connected, triply periodic minimal surfaces
-[art]   Truchet Pipes         — randomized quarter-circle tiles forming infinite looping plumbing
-[art]   Moebius Knot Work     — intertwined Celtic knots painted onto non-orientable surfaces
-[art]   Kaleidoscope Raytrace — bouncing a single beam of light thousands of times
-[art]   Plasma Fractal        — diamond-square algorithms generating retro demoscene clouds
-[art]   Cymatic Water         — liquid surface distortion driven by deep bass frequencies
-[art]   Epicycloid Gears      — rolling circles tracing out planetary mechanical paths
-[art]   Apollonian Gasket     — infinitely nesting tangent circles packed inside one another
-[art]   Cellular Slime        — organic, squishy blobs merging and dividing based on proximity
-[art]   Bifurcation Diagram   — plotting the exact moments where chaos splits into order
-[art]   Soap Film Minimal     — dipping wireframes into a physics simulator to form tension planes
-[art]   Generative Glitch     — precise math equations purposefully broken for aesthetic artifacts
-[art]   Spectral Flow         — mapping vector field velocities to an HSV color wheel gradient
-
-# Story (40)
-[story] The Demon Core        — a slipped screwdriver, a blue flash, and a physicist's fatal mistake
-[story] The Shade Balls       — dumping 96 million black spheres into a reservoir to stop chemistry
-[story] Faster Than Wind      — the Blackbird land yacht that breaks the laws of intuition
-[story] 100,000 Holes         — how a simple pegboard revealed the hidden statistics of randomness
-[story] The Infinite Hotel    — a paradox where a fully booked hotel can always fit one more guest
-[story] Empty Space Drop      — how a bowling ball and feather fall perfectly in a giant vacuum
-[story] The Double Slit       — an electron acts as a wave until the universe catches it looking
-[story] Slower Than Light     — the exact speed at which electricity actually flows through a wire
-[story] The Centennial Light  — a bulb in a California fire station that has burned for 120 years
-[story] Anti-Gravity Tube     — how you can spin a cylinder to make objects seemingly defy gravity
-[story] The Number 42         — how mathematicians finally solved the sum of three cubes
-[story] The Magnus Effect     — dropping a spinning basketball from the top of a massive dam
-[story] The Roundest Object   — a flawless silicon sphere created to redefine the kilogram
-[story] The Illusion of Time  — how your brain edits reality to trick you about when events happen
-[story] Seeing the Unseeable  — the algorithm that stitched together the first image of a black hole
-[story] Closed Timelike Curve — how general relativity makes time travel mathematically sound
-[story] Spooky Action Proven  — Einstein's entanglement doubts crushed by bell inequality tests
-[story] Monty Hall Problem    — why switching doors gives you a 66% chance of winning the car
-[story] The Chicxulub Impact  — tracing the asteroid event to the exact hour the dinosaurs died
-[story] Nuclear Dice          — proving radioactive decay rates using 1,000 violently shaking dice
-[story] Incompleteness Theory — Gödel proving that some truths can never be mathematically verified
-[story] Laser Light Sails     — using radiation pressure from photons to propel ships to other stars
 [story] The Coriolis Myth     — how Earth's rotation dictates weather, but not the flush of a toilet
+[game]  Anarchy Ruler         — build a syndicate on a server with no rules, wearing a pig crown
+[art]   Perlin Topography     — smoothly undulating mountain maps colored by elevation
+[tool]  Riemann Sums Calc     — slice the area under a curve into increasingly thin rectangles
+[story] The Roundest Object   — a flawless silicon sphere created to redefine the kilogram
+[game]  Portal Speedrun       — calculate perfect Nether portal coordinates using obsidian casting
+[tool]  Gradient Ascent       — drop a marble on a 3D loss function surface to find local minima
+[art]   Chladni Sand Patterns — acoustic resonance mapping with generative black sand
+[story] The Infinite Hotel    — a paradox where a fully booked hotel can always fit one more guest
+[game]  Ender Pearl Stasis    — trigger teleportation traps to escape impossible combat scenarios
+[tool]  Vector Flow Viz       — input differential equations, watch the glowing vector field evolve
+[art]   Golden Ratio Spirals  — Fibonacci sequences drawn as expanding nautilus shells
+[story] The Demon Core        — a slipped screwdriver, a blue flash, and a physicist's fatal mistake
+[game]  Floor is Lava Parkour — pixel-perfect jumping across disappearing slime blocks
+[tool]  Markov Chain Sim      — watch state transitions flow between nodes based on probabilities
+[art]   Boids Flocking        — thousands of glowing arrows swarming like starlings at dusk
+[story] The Double Slit       — an electron acts as a wave until the universe catches it looking
+[game]  End Crystal Bomber    — chaotic, explosive combat meta relying on indestructible crystals
+[tool]  Fourier Tracer        — draw a closed curve, output the spinning epicycles that generate it
+[art]   Reaction-Diffusion    — Turing patterns simulating the spots on a leopard's skin
+[story] The Shade Balls       — dumping 96 million black spheres into a reservoir to stop chemistry
+[game]  Skyblock Economist    — crash the virtual economy with an automated mob farm
+[tool]  Eigenvalue Finder     — visually locate vectors that only scale during a transformation
+[art]   Double Pendulum       — long-exposure light painting of chaotic swinging motion
+[story] The Centennial Light  — a bulb in a California fire station that has burned for 120 years
+[game]  TNT Cannon Crafter    — engineer redstone artillery to breach obsidian walls
+[tool]  Basis Transformer     — drag basis vectors to see how the entire 2D plane morphs
+[art]   Gyroid Surfaces       — infinitely connected, triply periodic minimal surfaces
+[story] Monty Hall Problem    — why switching doors gives you a 66% chance of winning the car
+[game]  MLG Water Drop        — jump from the skybox, land in a single block of water
+[tool]  Complex Mapper        — see how a grid transforms under complex mapping functions
+[art]   Fractal Brownian      — generating hyper-realistic, jagged cloud formations
+[story] Closed Timelike Curve — how general relativity makes time travel mathematically sound
+[game]  Blind Speedrun        — memorize audio cues to beat the final boss without looking
+[tool]  Taylor Series Graph   — add polynomial terms and watch them hug the sine wave
+[art]   Gravitational Lensing — bending a starry background texture around a black hole
+[story] The Number 42         — how mathematicians finally solved the sum of three cubes
+[game]  Amnesia Clone         — run and hide from terrifying monsters, no weapons allowed
+[tool]  Dot Product Projector — cast shadows of one vector onto another to find the scalar
+[art]   Isometric Tesseracts  — 4D hypercubes rotating their inner faces to the outside
+[story] The Magnus Effect     — dropping a spinning basketball from the top of a massive dam
+[game]  Boat Ice Racing       — drift wooden boats on blue ice tracks at Mach 3
+[tool]  Determinant Area      — watch how the area of a square scales under a 2x2 matrix change
+[art]   Mandelbulb 3D         — a volumetric, fractal voyage into the third dimension
+[story] The Illusion of Time  — how your brain edits reality to trick you about when events happen
+[game]  Wither Spawner        — gather skulls and sand to unleash chaos on your enemies' base
+[tool]  Cross Product Viz     — see the orthogonal parallelogram area generated by two vectors
+[art]   Generative Origami    — folding virtual paper into mathematically perfect cranes
 [story] Galvani's Frog        — the bizarre twitching amphibian legs that discovered electricity
+[game]  Axe PvP Tactics       — manage shield cooldowns and axe crits in sweaty duels
+[tool]  Binomial Expander     — Pascal's triangle interactive generator with combinatorics rules
+[art]   Voronoi Stained Glass — cell-fracture algorithms generating cathedral-style windows
 [story] The Supersonic Whip   — the physics of a leather bullwhip cracking faster than sound
+[game]  Half Heart Hardcore   — survive a massive open world where literally any damage is fatal
+[tool]  Matrix Multiplier     — step-by-step visualizer of rows dipping into columns
+[art]   L-System Trees        — recursive botanical sketches generating infinite oak variations
 [story] The Mirror Flip       — the geometric reason why mirrors flip left to right, but never up
+[game]  Yoyo Trickster        — physics-based rhythm game mimicking classic trick videos
+[tool]  Topology Morpher      — continuous deformation animation of a coffee mug into a donut
+[art]   Interference Ripples  — intersecting wave patterns creating beautiful moiré illusions
 [story] Spark-Gap Transmitter — how raw high-voltage sparks accidentally invented wireless radio
-[story] The Bismuth Staircase — melting toxic-looking metal on a stove to grow iridescent crystals
-[story] Why The Sky Is Purple — how our eyes filter atmospheric scattering to see blue instead
-[story] Magnetic Braking      — why dropping a magnet through a copper pipe slows it down
-[story] Ant Algorithms        — how a blind colony uses complex pheromone logic to solve mazes
-[story] Turing's Bombe        — the electro-mechanical rotors that cracked the Enigma code
-[story] Benford's Law         — the unexpected ubiquity of the number 1 in tax fraud and nature
-[story] The Tacoma Narrows    — how aeroelastic flutter, not simple resonance, collapsed a bridge
-[story] The Mpemba Effect     — the counter-intuitive anomaly where hot water freezes faster
-[story] Weighing The Earth    — how the Cavendish experiment measured planetary mass in a shed
-[story] Stimulated Emission   — the quantum leap required to align photons into a laser beam
-[story] The Eclipse of 1919   — how starlight bending around the sun proved general relativity
+[game]  Trap Crafter          — lure hunters into elaborate TNT and cobweb traps
+[tool]  Logistic Map          — slide the growth rate parameter to watch chaos theory emerge
+[art]   Quantum Superposition — hazy, probabilistic electron clouds snapping to specific orbitals
+[story] Faster Than Wind      — the Blackbird land yacht that breaks the laws of intuition
+[game]  Flappy Rage           — an impossibly frustrating arcade clone that makes you yell
+[tool]  Path Integral Sim     — sum over all possible particle histories in a double-slit setup
+[art]   Spirograph Galaxy     — hypotrochoids orbiting a central barycenter
 [story] Atomic Time Dilation  — how precision clocks prove that your head ages faster than your feet
+[game]  Elytra Flight Sim     — thread the needle through tiny rings while diving with fireworks
+[tool]  Manim Boilerplate     — visual UI to generate the Python code for elegant math animations
+[art]   Poisson Disc Sampling — perfectly distributed, non-overlapping organic dot patterns
 [story] Zeno's Arrow          — the philosophical paradox that an arrow in flight is always at rest
+[game]  Pig Jousting          — ride saddle-equipped hogs into tournament combat
+[tool]  Heat Equation         — simulate thermal dispersion across a 2D metal plate over time
+[art]   Superformula Shapes   — tweaking parameters to generate starfish, leaves, and astroids
+[story] The Bismuth Staircase — melting toxic-looking metal on a stove to grow iridescent crystals
+[game]  Speedbridger          — hold the optimal angle to bridge without falling off the edge
+[tool]  Wave Equation         — pluck a virtual 1D string to see harmonic standing waves
+[art]   Penrose Tiling        — aperiodic dart and kite patterns that never repeat the same way
+[story] Why The Sky Is Purple — how our eyes filter atmospheric scattering to see blue instead
+[game]  Sandbox Torture       — put NPCs in increasingly ridiculous and deadly contraptions
+[tool]  Fractional Dimensions — calculate the Hausdorff dimension of Sierpinski triangles
+[art]   Lissajous Webs        — parametric curves spinning into dense, hypnotic thread art
+[story] Magnetic Braking      — why dropping a magnet through a copper pipe slows it down
+[game]  Potion Brewer         — memorize complex recipes to gain tactical buffs mid-combat
+[tool]  Graph Isomorphism     — untangle nodes to see if two network graphs are actually the same
+[art]   Conway's Canvas       — Game of Life cells treated as pixel-art color blooms
+[story] Ant Algorithms        — how a blind colony uses complex pheromone logic to solve mazes
+[game]  Nether Navigation     — survive ghast fireballs while bridging over a sea of lava
+[tool]  Tensegrity Simulator  — build floating structures held together purely by tension lines
+[art]   Raymarched Spheres    — infinitely repeating glass orbs reflecting each other
+[story] Turing's Bombe        — the electro-mechanical rotors that cracked the Enigma code
+[game]  G-Fuel Tycoon         — manage a powdery energy drink empire for hardcore gamers
+[tool]  Mobius Strip Gen      — parametric slider to twist and connect a 3D ribbon of paper
+[art]   Magnetic Field Lines  — iron filings snapping to invisible, animated polar forces
+[story] Benford's Law         — the unexpected ubiquity of the number 1 in tax fraud and nature
+[game]  Hunger Games Arena    — loot the cornucopia and survive a 24-player battle royale
+[tool]  Conic Sections        — slice a double cone with a 3D plane to reveal ellipses and parabolas
+[art]   Slime Mold Network    — simulating Physarum polycephalum finding food sources
+[story] The Tacoma Narrows    — how aeroelastic flutter, not simple resonance, collapsed a bridge
+[game]  Techno's Library      — decipher ancient combat texts and apply Sun Tzu quotes to PvP
+[tool]  Proof by Induction    — visual dominoes falling to prove mathematical statements
+[art]   Fluid Vortex Shedding — beautiful, repeating swirls behind an object in a stream
+[story] The Mpemba Effect     — the counter-intuitive anomaly where hot water freezes faster
+[game]  Manhunt Analysis      — rewind and analyze 200 IQ plays to see if they were scripted
+[tool]  Cellular Automata     — 1D Rule 30 generator showing complex patterns from simple rules
+[art]   Hex Tessellations     — infinitely folding Escher-style geometric animals
+[story] Weighing The Earth    — how the Cavendish experiment measured planetary mass in a shed
+[game]  Dragon Perch          — predict the dragon's landing sequence to deal massive bed damage
+[tool]  Newton's Method       — follow tangent lines down a curve to find its roots iteratively
+[art]   Truchet Pipes         — randomized quarter-circle tiles forming infinite looping plumbing
+[story] Stimulated Emission   — the quantum leap required to align photons into a laser beam
+[game]  Compass Manhunt       — evade multiple hunters in a procedurally generated wilderness
+[tool]  Stereo Projection     — shine a light through a sphere to map its surface to a plane
+[art]   Moebius Knot Work     — intertwined Celtic knots painted onto non-orientable surfaces
+[story] The Eclipse of 1919   — how starlight bending around the sun proved general relativity
+[game]  Barrel Horror         — navigate a dark cellar with limited lantern oil and hostile props
+[tool]  Harmonic Oscillator   — perfectly damped, underdamped, and overdamped spring masses
+[art]   Kaleidoscope Raytrace — bouncing a single beam of light thousands of times
+[story] 100,000 Holes         — how a simple pegboard revealed the hidden statistics of randomness
+[game]  Block Clutch Practice — fall into the void, place blocks on the wall to survive
+[tool]  Divergence Map        — visualize fluid sources and sinks in a continuous vector field
+[art]   Plasma Fractal        — diamond-square algorithms generating retro demoscene clouds
+[story] Empty Space Drop      — how a bowling ball and feather fall perfectly in a giant vacuum
+[game]  Happy Physics Cart    — violently unfair 2D ragdoll driving over impossible gaps
+[tool]  Curl Calculator       — drop a virtual paddlewheel in a vector field to measure rotation
+[art]   Cymatic Water         — liquid surface distortion driven by deep bass frequencies
+[story] Incompleteness Theory — Gödel proving that some truths can never be mathematically verified
+[game]  Blood God Battles     — 1v1 arena combat focusing on strafing, crits, and fishing rods
+[tool]  Pi Collision Sim      — count perfectly elastic blocks bouncing to calculate digits of Pi
+[art]   Epicycloid Gears      — rolling circles tracing out planetary mechanical paths
+[story] Laser Light Sails     — using radiation pressure from photons to propel ships to other stars
+[game]  Orphan Obliterator    — fast-paced hack and slash boss rush, purely for the loot
+[tool]  Neural Net Layers     — peek inside a perceptron network to see how it separates data
+[art]   Apollonian Gasket     — infinitely nesting tangent circles packed inside one another
+[story] Seeing the Unseeable  — the algorithm that stitched together the first image of a black hole
+[game]  Meme Reviewer         — rate procedurally generated internet images while dodging bans
+[tool]  Quaternion Sphere     — visualize 4D rotations mapped onto a stereographic 3D projection
+[art]   Cellular Slime        — organic, squishy blobs merging and dividing based on proximity
+[story] Spooky Action Proven  — Einstein's entanglement doubts crushed by bell inequality tests
+[game]  Bridge Builder Pro    — click at 20 CPS to bridge across the void without sneaking
+[tool]  Bayes Theorem Tree    — dynamic branching paths showing conditional probabilities
+[art]   Bifurcation Diagram   — plotting the exact moments where chaos splits into order
+[story] The Chicxulub Impact  — tracing the asteroid event to the exact hour the dinosaurs died
+[game]  Pug Simulator         — play as a pair of pugs solving puzzles in a chaotic household
+[tool]  Normal Dist Board     — drop balls through a Galton board to form a bell curve
+[art]   Soap Film Minimal     — dipping wireframes into a physics simulator to form tension planes
+[story] Nuclear Dice          — proving radioactive decay rates using 1,000 violently shaking dice
+[game]  Brofist Brawler       — side-scrolling beat-em-up with absurd power-ups and tambourines
+[tool]  Prime Spiral          — highlight prime numbers on an expanding polar coordinate grid
+[art]   Generative Glitch     — precise math equations purposefully broken for aesthetic artifacts
+[story] Slower Than Light     — the exact speed at which electricity actually flows through a wire
+[game]  Sub Bot Defender      — fight off an army of automated accounts to maintain your sub lead
+[tool]  Calculus Chain Rule   — visual gears representing nested derivatives turning one another
+[art]   Spectral Flow         — mapping vector field velocities to an HSV color wheel gradient
