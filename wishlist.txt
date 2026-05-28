@@ -4,10 +4,10 @@
 # Tags: game | tool | art | story
 # ─────────────────────────────────────────────────────────────────
 
+[story] The Coriolis Myth     — how Earth's rotation dictates weather, but not the flush of a toilet
 [tool]  Laplace Transform     — convert a time-domain wave into its s-domain frequency peaks
 [game]  Potato War Sim        — out-farm a rival squid using complex math and raw dedication
 [art]   Strange Attractors    — chaotic, infinitely wrapping particle trails in deep space
-[story] The Coriolis Myth     — how Earth's rotation dictates weather, but not the flush of a toilet
 [game]  Anarchy Ruler         — build a syndicate on a server with no rules, wearing a pig crown
 [art]   Perlin Topography     — smoothly undulating mountain maps colored by elevation
 [tool]  Riemann Sums Calc     — slice the area under a curve into increasingly thin rectangles
