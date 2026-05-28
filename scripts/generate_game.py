@@ -59,9 +59,9 @@ def generate_html(idea):
         Brief: {idea['desc']}
 
         Requirements:
-        - Use Creativity, recent asthetic trends and sometimes retro as well.
+        - Use Creativity, recent asthetic trends and sometimes retro as well, which may be 2D or 3D or Mix 2.5D isomeric.
         - Entirely self-contained (no external dependencies except Google Fonts via <link>).
-        - Dark theme with a distinctive, polished aesthetic. No generic purple gradients.
+        - Dark theme with a distinctive, polished aesthetic. No generic purple gradients; you may use pixel art.
         - Fully functional and playable / usable right away.
         - Mobile-friendly.
         - Include a subtle back link: <a href="../index.html">← /grow</a> in the top-left corner.
