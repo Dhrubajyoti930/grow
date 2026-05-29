@@ -4,11 +4,14 @@ scripts/generate_game.py
 Asks Gemini to generate a self-contained HTML game / page,
 saves it under games/ (or tools/ / art/ / stories/),
 then injects a new entry into the PAGES array inside index.html.
+
+Uses the new `google-genai` SDK (pip install google-genai).
 """
 
-import os, re, json, textwrap
+import os, re, textwrap
 from datetime import date
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
 # ── Config ─────────────────────────────────────────────────────────
 WISHLIST_PATH = "wishlist.txt"
@@ -17,8 +20,9 @@ INJECT_START  = "// GENERATED_PAGES_START"
 INJECT_END    = "// GENERATED_PAGES_END"
 TAG_DIRS      = {"game": "games", "tool": "tools", "art": "art", "story": "stories"}
 
-genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-model = genai.GenerativeModel("gemini-3.5-flash")
+MODEL = "gemini-3.5-flash"
+
+client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
 # ── Pick next wishlist item ────────────────────────────────────────
 def pick_idea():
@@ -59,7 +63,7 @@ def generate_html(idea):
         Brief: {idea['desc']}
 
         Requirements:
-        - Use Creativity, recent asthetic trends and sometimes retro as well, which may be 2D or 3D or Mix 2.5D isomeric.
+        - Use Creativity, recent aesthetic trends and sometimes retro as well, which may be 2D or 3D or Mix 2.5D isometric.
         - Entirely self-contained (no external dependencies except Google Fonts via <link>).
         - Dark theme with a distinctive, polished aesthetic. No generic purple gradients; you may use pixel art.
         - Fully functional and playable / usable right away.
@@ -68,7 +72,15 @@ def generate_html(idea):
         - Return ONLY the raw HTML, starting with <!DOCTYPE html>. No markdown, no explanation.
     """)
 
-    response = model.generate_content(prompt)
+    response = client.models.generate_content(
+        model=MODEL,
+        contents=prompt,
+        config=types.GenerateContentConfig(
+            temperature=1.0,
+            max_output_tokens=8192,
+        ),
+    )
+
     return response.text.strip()
 
 # ── Update index.html ──────────────────────────────────────────────
@@ -87,7 +99,6 @@ def inject_into_index(idea, file_path, icon="🎮"):
     with open(INDEX_PATH, "r") as f:
         content = f.read()
 
-    # Insert after INJECT_START marker
     if INJECT_START not in content:
         print("⚠️  Marker not found in index.html — skipping injection.")
         return
@@ -104,15 +115,14 @@ def inject_into_index(idea, file_path, icon="🎮"):
 
 # ── Icon picker ───────────────────────────────────────────────────
 TAG_ICONS = {
-    "game":  ["🎮","🕹️","🧩","⚡","🏆"],
-    "tool":  ["🔧","🛠️","⚙️","📐","🎛️"],
-    "art":   ["🎨","✨","🌀","🖼️","💫"],
-    "story": ["📖","🌱","✍️","🗺️","💬"],
+    "game":  ["🎮", "🕹️", "🧩", "⚡", "🏆"],
+    "tool":  ["🔧", "🛠️", "⚙️", "📐", "🎛️"],
+    "art":   ["🎨", "✨", "🌀", "🖼️", "💫"],
+    "story": ["📖", "🌱", "✍️", "🗺️", "💬"],
 }
 
 def pick_icon(tag, slug):
     icons = TAG_ICONS.get(tag, ["🌐"])
-    # deterministic but varied
     idx = sum(ord(c) for c in slug) % len(icons)
     return icons[idx]
 
@@ -133,7 +143,6 @@ def main():
 
     html = generate_html(idea)
 
-    # Ensure output directory exists
     out_dir = TAG_DIRS.get(idea["tag"], "pages")
     os.makedirs(out_dir, exist_ok=True)
     out_file = f"{out_dir}/{idea['slug']}.html"
