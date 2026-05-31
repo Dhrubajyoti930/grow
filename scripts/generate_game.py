@@ -20,7 +20,7 @@ INJECT_START  = "// GENERATED_PAGES_START"
 INJECT_END    = "// GENERATED_PAGES_END"
 TAG_DIRS      = {"game": "games", "tool": "tools", "art": "art", "story": "stories"}
 
-MODEL = "gemini-3.5-flash"
+MODEL = "gemini-3.1-flash-lite"
 
 client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
@@ -63,7 +63,6 @@ def generate_html(idea):
         Brief: {idea['desc']}
 
         Requirements:
-        - Use Creativity, recent aesthetic trends and sometimes retro as well, which may be 2D or 3D or Mix 2.5D isometric.
         - Entirely self-contained (no external dependencies except Google Fonts via <link>).
         - Dark theme with a distinctive, polished aesthetic. No generic purple gradients; you may use pixel art.
         - Fully functional and playable / usable right away.
