@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -148,6 +147,7 @@
             align-items: center;
             pointer-events: none;
             backdrop-filter: blur(4px);
+            z-index: 4;
         }
 
         .crown-profile {
@@ -213,6 +213,7 @@
             pointer-events: none;
             animation: bounce 2s infinite ease-in-out;
             color: var(--text-muted);
+            z-index: 4;
         }
 
         @keyframes bounce {
@@ -563,20 +564,15 @@
     </header>
 
     <div class="game-container">
-        <!-- Visual Map & Action Screen -->
         <div class="viewport-panel">
             <div class="crown-hud">
                 <div class="crown-profile">
-                    <!-- SVG Crown Pixel Art -->
                     <svg class="pig-crown-icon" viewBox="0 0 16 16">
-                        <!-- Background Crown shape -->
                         <path d="M 1 8 L 3 13 L 13 13 L 15 8 L 12 10 L 8 6 L 4 10 Z" fill="#ffd700" />
-                        <!-- Crown gems & shadow details -->
                         <rect x="3" y="11" width="10" height="2" fill="#cfa600" />
                         <rect x="5" y="10" width="1" height="1" fill="#ff4444" />
                         <rect x="10" y="10" width="1" height="1" fill="#4444ff" />
                         <rect x="8" y="8" width="1" height="1" fill="#44ff44" />
-                        <!-- Pig face peeking from underneath -->
                         <rect x="4" y="13" width="8" height="3" fill="#ff99ad" />
                         <rect x="6" y="14" width="4" height="2" fill="#ff5e7e" />
                         <rect x="7" y="14" width="1" height="1" fill="#000000" />
@@ -593,7 +589,6 @@
                 </div>
             </div>
 
-            <!-- Incursion active alert -->
             <div class="raid-warning" id="raid-alert">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                 INCURSION IN PROGRESS - CLICK RIVALS!
@@ -603,7 +598,6 @@
             <div class="click-prompt">TAP / CLICK SPAWN TO DUPE & DEFEND</div>
         </div>
 
-        <!-- System Controls & Upgrades -->
         <div class="dashboard-panel">
             <div class="panel-header">
                 <h3>SYNDICATE CONTROL PANEL</h3>
@@ -616,25 +610,22 @@
                 <button class="tab-btn" onclick="switchTab('syndicate')">Syndicate Base</button>
             </div>
 
-            <!-- Exploits / Upgrades Tab -->
             <div id="tab-upgrades" class="tab-content active">
                 <div class="upgrade-grid" id="upgrades-container">
-                    <!-- Dynamic upgrades injected here -->
-                </div>
+                    </div>
             </div>
 
-            <!-- Crown Powers Tab -->
             <div id="tab-crown" class="tab-content">
                 <div class="skills-grid">
                     <div class="skill-card" id="skill-1">
                         <div class="skill-name">Techno Buff</div>
                         <div class="skill-desc">Click dupe yields multiplied by 10x for 15s.</div>
-                        <button class="btn-skill" onclick="activateSkill('technobuff')">Activate</button>
+                        <button class="btn-skill" id="btn-technobuff" onclick="activateSkill('technobuff')">Activate</button>
                     </div>
                     <div class="skill-card" id="skill-2">
                         <div class="skill-name">Potato Wall</div>
                         <div class="skill-desc">Auto-defend next base incursion with zero losses.</div>
-                        <button class="btn-skill" onclick="activateSkill('potato')">Activate</button>
+                        <button class="btn-skill" id="btn-potato" onclick="activateSkill('potato')">Activate</button>
                     </div>
                 </div>
                 <div class="upgrade-grid">
@@ -653,8 +644,480 @@
                 </div>
             </div>
 
-            <!-- Syndicate Tab -->
             <div id="tab-syndicate" class="tab-content">
                 <div style="background: #111115; border: 1px solid var(--panel-border); padding: 15px; border-radius: 4px; margin-bottom: 15px;">
                     <h4 style="margin: 0 0 10px 0; color: var(--accent-gold);">SYNDICATE ASSETS</h4>
-                    <p style="font-size: 13px; color: var(--text-muted); line-height: 1.
+                    <p style="font-size: 13px; color: var(--text-muted); line-height: 1.4;">
+                        Base Level: <span id="asset-base-lvl" style="color:#fff;">1</span><br>
+                        Defensive Matrix: <span id="asset-defense" style="color:var(--accent-blue);">Stable</span><br>
+                        Network Saturation: <span id="asset-saturation" style="color:var(--accent-green);">0.00%</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="console-panel" id="console-log">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        // Game State Core Engine
+        const state = {
+            dupes: 0,
+            clickStrengthMultiplier: 1.0,
+            polishLevel: 0,
+            polishCost: 150,
+            baseLevel: 1,
+            
+            // Auto progression increments
+            dps: 0, 
+
+            // Dynamic Active Skill Timers
+            skills: {
+                technobuff: { active: false, activeTimer: 0, cooldown: 0, maxCooldown: 45, duration: 15 },
+                potato: { active: false, activeTimer: 0, cooldown: 0, maxCooldown: 60, duration: 0, charged: false }
+            },
+
+            // Random Events / Raid Matrix
+            incursion: {
+                active: false,
+                hp: 0,
+                maxHp: 10,
+                timer: 0
+            },
+
+            // Upgrades System Array 
+            upgrades: [
+                { id: 'packet_injector', name: 'Packet Injector', cost: 15, baseCost: 15, count: 0, dps: 0.5, desc: 'Injects malformed packets to generate data fragments automatically.' },
+                { id: 'chunk_duplicator', name: 'Chunk Duplicator', cost: 100, baseCost: 100, count: 0, dps: 4, desc: 'Forces chunk reload glitches, copying resource chests.' },
+                { id: 'botnet_farm', name: 'Botnet Farm', cost: 1100, baseCost: 1100, count: 0, dps: 32, desc: 'Enlists thousands of dormant zombie clients to mine materials.' },
+                { id: 'zero_day', name: 'Zero-Day Exploit', cost: 12000, baseCost: 12000, count: 0, dps: 260, desc: 'Bypasses target root filters completely to drain node nodes.' }
+            ]
+        };
+
+        // Canvas Simulation Render Config
+        const canvas = document.getElementById('anarchy-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let targets = [];
+
+        // Base Target entity configurations 
+        let spawnerNode = { x: 0, y: 0, radius: 45, pulse: 0 };
+
+        function initCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            spawnerNode.x = canvas.width / 2;
+            spawnerNode.y = canvas.height / 2;
+        }
+
+        window.addEventListener('resize', initCanvas);
+
+        // UI Tabs Navigator Switch 
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.currentTarget.classList.add('active');
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+        }
+
+        // Logger Interface terminal outputs
+        function logMessage(text, isAlert = false) {
+            const consoleLog = document.getElementById('console-log');
+            const now = new Date();
+            const timeStr = now.toTimeString().split(' ')[0];
+            
+            const line = document.createElement('div');
+            line.className = 'console-line';
+            line.innerHTML = `<span class="timestamp">[${timeStr}]</span> <span class="${isAlert ? 'alert' : ''}">${text}</span>`;
+            
+            consoleLog.appendChild(line);
+            if (consoleLog.children.length > 6) {
+                consoleLog.removeChild(consoleLog.firstChild);
+            }
+            consoleLog.scrollTop = consoleLog.scrollHeight;
+        }
+
+        // Spawn interactive visual rendering components
+        function spawnParticle(x, y, color = '#ffd700', text = '') {
+            particles.push({
+                x, y,
+                vx: (Math.random() - 0.5) * 4,
+                vy: (Math.random() - 0.5) * 4 - 2,
+                alpha: 1,
+                color: color,
+                text: text,
+                life: 1
+            });
+        }
+
+        // Canvas Interaction Triggers
+        canvas.addEventListener('mousedown', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            // Priority checking: Attack Rival Incursions
+            if (state.incursion.active) {
+                let hitRival = false;
+                for (let i = targets.length - 1; i >= 0; i--) {
+                    let t = targets[i];
+                    let dist = Math.hypot(mouseX - t.x, mouseY - t.y);
+                    if (dist < t.radius) {
+                        state.incursion.hp--;
+                        spawnParticle(t.x, t.y, '#ff3e3e', '-1 HP');
+                        logMessage(`Hit intruder node! Remaining Integrity: ${state.incursion.hp}`);
+                        
+                        if (state.incursion.hp <= 0) {
+                            resolveIncursion(true);
+                        }
+                        hitRival = true;
+                        break;
+                    }
+                }
+                if (hitRival) return;
+            }
+
+            // Normal Operations: Main Resource Duplication core target checking
+            let distance = Math.hypot(mouseX - spawnerNode.x, mouseY - spawnerNode.y);
+            if (distance < spawnerNode.radius + 10) {
+                let baseYield = 1;
+                if (state.skills.technobuff.active) baseYield *= 10;
+                let finalYield = Math.round(baseYield * state.clickStrengthMultiplier);
+                
+                state.dupes += finalYield;
+                spawnerNode.pulse = 15;
+                
+                spawnParticle(mouseX, mouseY, state.skills.technobuff.active ? '#3eccff' : '#ffd700', `+${finalYield}`);
+                updateUI();
+            }
+        });
+
+        // Dynamic Upgrades Generation Builder
+        function renderUpgrades() {
+            const container = document.getElementById('upgrades-container');
+            container.innerHTML = '';
+
+            state.upgrades.forEach((up, index) => {
+                const card = document.createElement('div');
+                card.className = 'upgrade-card';
+                card.innerHTML = `
+                    <div class="upgrade-info">
+                        <div class="upgrade-name">
+                            ${up.name}
+                            <span class="upgrade-count" id="count-${up.id}">${up.count}</span>
+                        </div>
+                        <div class="upgrade-desc">${up.desc}</div>
+                    </div>
+                    <div class="upgrade-action">
+                        <button class="btn-buy" id="btn-${up.id}" onclick="buyUpgrade(${index})">
+                            Buy
+                            <span class="cost">${Math.round(up.cost)} Dupes</span>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Upgrade Actions Logic 
+        function buyUpgrade(index) {
+            let up = state.upgrades[index];
+            if (state.dupes >= up.cost) {
+                state.dupes -= up.cost;
+                up.count++;
+                up.cost = up.baseCost * Math.pow(1.15, up.count);
+                
+                recalculateDps();
+                updateUI();
+                renderUpgrades();
+                logMessage(`Acquired structural exploit expansion module: ${up.name}`);
+            }
+        }
+
+        function buyCrownPolish() {
+            if (state.dupes >= state.polishCost) {
+                state.dupes -= state.polishCost;
+                state.polishLevel++;
+                state.clickStrengthMultiplier += 0.5;
+                state.polishCost = Math.round(state.polishCost * 1.8);
+                
+                updateUI();
+                logMessage(`Polished Pig Crown. Click strength optimization increased to ${state.clickStrengthMultiplier}x.`);
+            }
+        }
+
+        function recalculateDps() {
+            state.dps = state.upgrades.reduce((acc, up) => acc + (up.count * up.dps), 0);
+            
+            // Dynamic asset tracking presentation updating
+            document.getElementById('asset-saturation').innerText = (state.dps / 10).toFixed(2) + '%';
+            state.baseLevel = 1 + Math.floor(state.upgrades.reduce((sum, u) => sum + u.count, 0) / 5);
+            document.getElementById('asset-base-lvl').innerText = state.baseLevel;
+        }
+
+        // Active Custom Skills Framework 
+        function activateSkill(skillKey) {
+            let s = state.skills[skillKey];
+            if (s.cooldown > 0 || s.active) return;
+
+            if (skillKey === 'technobuff') {
+                s.active = true;
+                s.activeTimer = s.duration;
+                document.getElementById('skill-1').classList.add('active-buff');
+                logMessage('CRITICAL OVERCLOCK: Techno Buff activated. 10x multiplier authorized.', true);
+            } else if (skillKey === 'potato') {
+                s.charged = true;
+                s.cooldown = s.maxCooldown;
+                document.getElementById('asset-defense').innerText = 'Potato Wall Shield Armed';
+                document.getElementById('asset-defense').style.color = 'var(--accent-gold)';
+                logMessage('DEFENSIVE ARRAY: Potato Wall deployed. Auto-negates next attack vector.');
+            }
+            updateUI();
+        }
+
+        // Incursions mechanics
+        function triggerIncursion() {
+            if (state.incursion.active) return;
+            
+            // Process immediate defense bypass matrices
+            if (state.skills.potato.charged) {
+                state.skills.potato.charged = false;
+                document.getElementById('asset-defense').innerText = 'Stable';
+                document.getElementById('asset-defense').style.color = 'var(--accent-blue)';
+                logMessage('INCURSION BLOCK: Potato Wall completely neutralized incoming raiders automatically.', false);
+                return;
+            }
+
+            state.incursion.active = true;
+            state.incursion.maxHp = 5 + (state.baseLevel * 5);
+            state.incursion.hp = state.incursion.maxHp;
+            state.incursion.timer = 15; // 15 seconds to kill
+
+            document.getElementById('raid-alert').style.display = 'flex';
+            logMessage('WARNING: Rival syndicate incursions targeted into active cache matrices!', true);
+
+            // Populate localized entity vectors inside Canvas context space
+            targets = [];
+            for (let i = 0; i < Math.min(state.incursion.maxHp, 8); i++) {
+                targets.push({
+                    x: Math.random() * (canvas.width - 100) + 50,
+                    y: Math.random() * (canvas.height - 180) + 120,
+                    radius: 20 + Math.random() * 15,
+                    vx: (Math.random() - 0.5) * 3,
+                    vy: (Math.random() - 0.5) * 3
+                });
+            }
+        }
+
+        function resolveIncursion(success) {
+            state.incursion.active = false;
+            document.getElementById('raid-alert').style.display = 'none';
+            targets = [];
+
+            if (success) {
+                let reward = Math.round(state.dps * 12) + 20;
+                state.dupes += reward;
+                logMessage(`INCURSION PURGED: Rival nodes collapsed. Recovered data scrap: +${reward} dupes.`, false);
+            } else {
+                let loss = Math.round(state.dupes * 0.15);
+                state.dupes -= loss;
+                logMessage(`CACHE RAIDED: Incursion timed out. Rivals stole ${loss} duped materials.`, true);
+            }
+            updateUI();
+        }
+
+        // Global Loop Engine ticks (1 Second Intervals)
+        setInterval(() => {
+            // Apply passive incremental yields
+            if (state.dps > 0) {
+                state.dupes += state.dps;
+                updateUI();
+            }
+
+            // Incursion timer checks
+            if (state.incursion.active) {
+                state.incursion.timer--;
+                if (state.incursion.timer <= 0) {
+                    resolveIncursion(false);
+                }
+            } else {
+                // Random event rolling logic when clean (approx 5% chance per second)
+                if (Math.random() < 0.05) {
+                    triggerIncursion();
+                }
+            }
+
+            // Process skill timers tracking updates
+            Object.keys(state.skills).forEach(key => {
+                let s = state.skills[key];
+                if (s.active) {
+                    s.activeTimer--;
+                    if (s.activeTimer <= 0) {
+                        s.active = false;
+                        s.cooldown = s.maxCooldown;
+                        if (key === 'technobuff') document.getElementById('skill-1').classList.remove('active-buff');
+                        logMessage(`Overclock duration expired. Skill entering recharge cycle: ${key}`);
+                    }
+                } else if (s.cooldown > 0) {
+                    s.cooldown--;
+                }
+            });
+
+            // Randomize visual decorative player counter displays slightly
+            let currentPlayers = parseInt(document.getElementById('player-count').innerText.replace(/,/g, ''));
+            currentPlayers += Math.floor(Math.random() * 11) - 5;
+            document.getElementById('player-count').innerText = currentPlayers.toLocaleString();
+
+            // Randomize TPS slightly around 20.00
+            document.getElementById('tps-display').innerText = (19.85 + Math.random() * 0.15).toFixed(2);
+
+            updateUI();
+        }, 1000);
+
+        // UI View sync function 
+        function updateUI() {
+            document.getElementById('resource-count').innerText = Math.floor(state.dupes).toLocaleString();
+            document.getElementById('polish-cost').innerText = `${state.polishCost} Dupes`;
+
+            // Enable / Disable buttons based on balances
+            document.getElementById('btn-polish').disabled = (state.dupes < state.polishCost);
+
+            state.upgrades.forEach(up => {
+                const btn = document.getElementById(`btn-${up.id}`);
+                if (btn) btn.disabled = (state.dupes < up.cost);
+            });
+
+            // Skills buttons UI states handler
+            let s1 = state.skills.technobuff;
+            const btnS1 = document.getElementById('btn-technobuff');
+            if (s1.active) {
+                btnS1.innerText = `ACTIVE (${s1.activeTimer}s)`;
+                btnS1.disabled = true;
+            } else if (s1.cooldown > 0) {
+                btnS1.innerText = `COOLDOWN (${s1.cooldown}s)`;
+                btnS1.disabled = true;
+            } else {
+                btnS1.innerText = 'ACTIVATE';
+                btnS1.disabled = false;
+            }
+
+            let s2 = state.skills.potato;
+            const btnS2 = document.getElementById('btn-potato');
+            if (s2.charged) {
+                btnS2.innerText = 'ARMED';
+                btnS2.disabled = true;
+            } else if (s2.cooldown > 0) {
+                btnS2.innerText = `COOLDOWN (${s2.cooldown}s)`;
+                btnS2.disabled = true;
+            } else {
+                btnS2.innerText = 'ACTIVATE';
+                btnS2.disabled = false;
+            }
+        }
+
+        // Graphical rendering update ticking animation loops
+        function updateVisualEngine() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Background dynamic matrix grids effect rendering
+            ctx.strokeStyle = 'rgba(42, 42, 53, 0.15)';
+            ctx.lineWidth = 1;
+            const gridSize = 40;
+            for (let x = 0; x < canvas.width; x += gridSize) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+            }
+            for (let y = 0; y < canvas.height; y += gridSize) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+            }
+
+            // Draw Core Base Target System Spawner
+            if (spawnerNode.pulse > 0) spawnerNode.pulse -= 0.5;
+            let radiusVariation = spawnerNode.radius + spawnerNode.pulse;
+
+            let gradient = ctx.createRadialGradient(spawnerNode.x, spawnerNode.y, 5, spawnerNode.x, spawnerNode.y, radiusVariation);
+            gradient.addColorStop(0, '#252533');
+            gradient.addColorStop(0.5, '#111115');
+            gradient.addColorStop(1, 'transparent');
+
+            ctx.beginPath();
+            ctx.arc(spawnerNode.x, spawnerNode.y, radiusVariation, 0, Math.PI * 2);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            // Core Outline Target Ring Ring 
+            ctx.beginPath();
+            ctx.arc(spawnerNode.x, spawnerNode.y, spawnerNode.radius, 0, Math.PI * 2);
+            ctx.strokeStyle = state.skills.technobuff.active ? '#3eccff' : 'var(--accent-gold)';
+            ctx.lineWidth = 2;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = state.skills.technobuff.active ? 'rgba(62,204,255,0.5)' : 'var(--accent-gold-glow)';
+            ctx.stroke();
+            ctx.shadowBlur = 0; // reset
+
+            // Central Core Label text markers
+            ctx.fillStyle = '#ffffff';
+            ctx.font = "14px 'Share Tech Mono'";
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText("CACHE_NODE", spawnerNode.x, spawnerNode.y - 2);
+
+            // Draw Incursion Nodes if active 
+            if (state.incursion.active) {
+                targets.forEach(t => {
+                    // Update movement positions boundary checked 
+                    t.x += t.vx; t.y += t.vy;
+                    if (t.x - t.radius < 0 || t.x + t.radius > canvas.width) t.vx *= -1;
+                    if (t.y - t.radius < 0 || t.y + t.radius > canvas.height) t.vy *= -1;
+
+                    ctx.beginPath();
+                    ctx.arc(t.x, t.y, t.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(255, 62, 62, 0.15)';
+                    ctx.fill();
+
+                    ctx.beginPath();
+                    ctx.arc(t.x, t.y, t.radius - 5, 0, Math.PI * 2);
+                    ctx.strokeStyle = 'var(--accent-red)';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+
+                    ctx.fillStyle = '#ff3e3e';
+                    ctx.font = "10px monospace";
+                    ctx.fillText("INTRUDER", t.x, t.y);
+                });
+            }
+
+            // Draw Flying Interaction Text / Particles Metrics
+            for (let i = particles.length - 1; i >= 0; i--) {
+                let p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.alpha -= 0.02;
+
+                if (p.alpha <= 0) {
+                    particles.splice(i, 1);
+                    continue;
+                }
+
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.fillStyle = p.color;
+                ctx.font = "bold 18px 'VT323'";
+                ctx.fillText(p.text, p.x, p.y);
+                ctx.restore();
+            }
+
+            requestAnimationFrame(updateVisualEngine);
+        }
+
+        // Initialize Runtime Core Engines
+        initCanvas();
+        renderUpgrades();
+        updateUI();
+        logMessage('System Initialization Matrix sequence completed. Base operations standard stable online.');
+        requestAnimationFrame(updateVisualEngine);
+    </script>
+</body>
+</html>
