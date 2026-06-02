@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perlin Topography</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #0a0a0c; color: #e0e0e0; font-family: 'Space Mono', monospace; }
+        #canvas { display: block; cursor: crosshair; }
+        .ui { position: absolute; top: 20px; left: 20px; z-index: 10; pointer-events: none; }
+        a { color: #555; text-decoration: none; font-size: 12px; transition: 0.3s; pointer-events: auto; }
+        a:hover { color: #fff; }
+        .controls { position: absolute; bottom: 20px; right: 20px; text-align: right; pointer-events: none; font-size: 10px; opacity: 0.6; }
+    </style>
+</head>
+<body>
+    <div class="ui">
+        <a href="../index.html">← /grow</a>
+    </div>
+    <div class="controls">CLICK TO REGENERATE<br>PERLIN NOISE TOPOGRAPHY</div>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, zOffset = 0;
+
+        const p = new Uint8Array(512);
+        const permutation = new Uint8Array(256);
+        for(let i=0; i<256; i++) permutation[i] = i;
+        for(let i=255; i>0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [permutation[i], permutation[j]] = [permutation[j], permutation[i]];
+        }
+        for(let i=0; i<512; i++) p[i] = permutation[i % 256];
+
+        function fade(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
+        function lerp(t, a, b) { return a + t * (b - a); }
+        function grad(hash, x, y, z) {
+            const h = hash & 15;
+            const u = h < 8 ? x : y;
+            const v = h < 4 ? y : h === 12 || h === 14 ? x : z;
+            return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
+        }
+
+        function perlin(x, y, z) {
+            const X = Math.floor(x) & 255, Y = Math.floor(y) & 255, Z = Math.floor(z) & 255;
+            x -= Math.floor(x); y -= Math.floor(y); z -= Math.floor(z);
+            const u = fade(x), v = fade(y), w = fade(z);
+            const A = p[X]+Y, AA = p[A]+Z, AB = p[A+1]+Z, B = p[X+1]+Y, BA = p[B]+Z, BB = p[B+1]+Z;
+            return lerp(w, lerp(v, lerp(u, grad(p[AA], x, y, z), grad(p[BA], x-1, y, z)), lerp(u, grad(p[AB], x, y-1, z), grad(p[BB], x-1, y-1, z))), lerp(v, lerp(u, grad(p[AA+1], x, y, z-1), grad(p[BA+1], x-1, y, z-1)), lerp(u, grad(p[AB+1], x, y-1, z-1), grad(p[BB+1], x-1, y-1, z-1))));
+        }
+
+        function draw() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            const imgData = ctx.createImageData(width, height);
+            const data = imgData.data;
+            const zoom = 0.005;
+            
+            for(let x = 0; x < width; x++) {
+                for(let y = 0; y < height; y++) {
+                    let val = perlin(x * zoom, y * zoom, zOffset);
+                    let idx = (x + y * width) * 4;
+                    
+                    let r, g, b;
+                    if (val < -0.1) { r = 20; g = 40; b = 80; }
+                    else if (val < 0) { r = 40; g = 80; b = 120; }
+                    else if (val < 0.2) { r = 100; g = 140; b = 90; }
+                    else if (val < 0.4) { r = 160; g = 150; b = 120; }
+                    else { r = 240; g = 240; b = 250; }
+                    
+                    data[idx] = r + val * 50;
+                    data[idx+1] = g + val * 50;
+                    data[idx+2] = b + val * 50;
+                    data[idx+3] = 255;
+                }
+            }
+            ctx.putImageData(imgData, 0, 0);
+        }
+
+        window.addEventListener('click', () => { zOffset += 10; draw(); });
+        window.addEventListener('resize', draw);
+        draw();
+    </script>
+</body>
+</html>

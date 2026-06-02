@@ -9,7 +9,7 @@
 [game]  Potato War Sim        — out-farm a rival squid using complex math and raw dedication  ✅
 [art]   Strange Attractors    — chaotic, infinitely wrapping particle trails in deep space  ✅
 [game]  Anarchy Ruler         — build a syndicate on a server with no rules, wearing a pig crown  ✅
-[art]   Perlin Topography     — smoothly undulating mountain maps colored by elevation
+[art]   Perlin Topography     — smoothly undulating mountain maps colored by elevation  ✅
 [tool]  Riemann Sums Calc     — slice the area under a curve into increasingly thin rectangles
 [story] The Roundest Object   — a flawless silicon sphere created to redefine the kilogram
 [game]  Portal Speedrun       — calculate perfect Nether portal coordinates using obsidian casting
