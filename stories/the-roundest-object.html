@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Roundest Object</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --accent: #00f2ff;
+            --text: #e0e0e0;
+            --dim: #666;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        #app {
+            max-width: 600px;
+            padding: 2rem;
+            text-align: center;
+        }
+        .nav {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        a { color: var(--dim); text-decoration: none; transition: 0.3s; }
+        a:hover { color: var(--accent); }
+        
+        #sphere-canvas {
+            width: 250px;
+            height: 250px;
+            margin: 2rem auto;
+            image-rendering: pixelated;
+        }
+        
+        .story {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 300;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        #meter {
+            height: 4px;
+            width: 100%;
+            background: #222;
+            margin: 20px 0;
+        }
+        #progress {
+            height: 100%;
+            width: 0%;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+            transition: width 0.3s;
+        }
+
+        button {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 10px 25px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Space Grotesk';
+            transition: all 0.3s;
+        }
+        button:hover { background: var(--accent); color: var(--bg); }
+    </style>
+</head>
+<body>
+    <div class="nav"><a href="../index.html">← /grow</a></div>
+
+    <div id="app">
+        <canvas id="sphere-canvas"></canvas>
+        <div class="story" id="text">
+            The silicon atom is a perfect constant. In a vacuum-sealed chamber, a single sphere—the roundest object ever engineered—waits to redefine the world’s weight.
+        </div>
+        <div id="meter"><div id="progress"></div></div>
+        <button id="btn">Measure</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('sphere-canvas');
+        const ctx = canvas.getContext('2d');
+        const progress = document.getElementById('progress');
+        const text = document.getElementById('text');
+        const btn = document.getElementById('btn');
+        
+        canvas.width = 250;
+        canvas.height = 250;
+
+        let frame = 0;
+        function draw() {
+            ctx.clearRect(0, 0, 250, 250);
+            ctx.beginPath();
+            ctx.arc(125, 125, 100 + Math.sin(frame * 0.05) * 2, 0, Math.PI * 2);
+            ctx.strokeStyle = '#00f2ff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.arc(100, 100, 20, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0, 242, 255, 0.1)';
+            ctx.fill();
+            
+            frame++;
+            requestAnimationFrame(draw);
+        }
+        draw();
+
+        const storyParts = [
+            "Removing the last impurity. The surface is smooth to the scale of atomic layers.",
+            "Counting the atoms. 21,570,000,000,000,000,000,000,000. Exactly.",
+            "The kilogram is no longer an artifact in Paris. It is a fundamental truth of the universe.",
+            "The sphere sits in silence, anchoring the mass of all existence."
+        ];
+        
+        let step = 0;
+        btn.onclick = () => {
+            if(step < storyParts.length) {
+                text.innerText = storyParts[step];
+                progress.style.width = ((step + 1) / storyParts.length) * 100 + '%';
+                step++;
+            }
+            if(step === storyParts.length) btn.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
