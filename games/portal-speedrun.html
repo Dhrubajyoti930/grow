@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Speedrun</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --panel: #16161a;
+            --accent: #4ade80;
+            --text: #e2e8f0;
+            --border: #2d2d34;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        #back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .container {
+            background: var(--panel);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        h1 { font-size: 1.2rem; margin-top: 0; color: var(--accent); }
+        .input-group { margin-bottom: 1.5rem; }
+        label { display: block; font-size: 0.75rem; margin-bottom: 0.5rem; color: #94a3b8; }
+        input {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 10px;
+            color: white;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        button {
+            width: 100%;
+            background: var(--accent);
+            color: black;
+            border: none;
+            padding: 12px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .result {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+        .res-val { font-size: 1.5rem; color: var(--accent); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <a id="back-link" href="../index.html">← /grow</a>
+
+    <div class="container">
+        <h1>PORTAL CALCULATOR</h1>
+        
+        <div class="input-group">
+            <label>Overworld X</label>
+            <input type="number" id="owX" placeholder="e.g. 1200">
+        </div>
+        <div class="input-group">
+            <label>Overworld Z</label>
+            <input type="number" id="owZ" placeholder="e.g. -450">
+        </div>
+        
+        <button onclick="calculate()">CALCULATE NETHER</button>
+
+        <div class="result" id="res" style="display:none;">
+            <label>Nether Coordinates</label>
+            <div class="res-val" id="netherX"></div>
+            <div class="res-val" id="netherZ"></div>
+            <p style="font-size: 0.7rem; color: #64748b; margin-top: 10px;">
+                *Divide Overworld by 8. Always verify alignment with lava source.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function calculate() {
+            const x = document.getElementById('owX').value;
+            const z = document.getElementById('owZ').value;
+            if (x === "" || z === "") return;
+            
+            document.getElementById('netherX').innerText = "X: " + (x / 8).toFixed(1);
+            document.getElementById('netherZ').innerText = "Z: " + (z / 8).toFixed(1);
+            document.getElementById('res').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

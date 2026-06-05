@@ -12,7 +12,7 @@
 [art]   Perlin Topography     — smoothly undulating mountain maps colored by elevation  ✅
 [tool]  Riemann Sums Calc     — slice the area under a curve into increasingly thin rectangles  ✅
 [story] The Roundest Object   — a flawless silicon sphere created to redefine the kilogram  ✅
-[game]  Portal Speedrun       — calculate perfect Nether portal coordinates using obsidian casting
+[game]  Portal Speedrun       — calculate perfect Nether portal coordinates using obsidian casting  ✅
 [tool]  Gradient Ascent       — drop a marble on a 3D loss function surface to find local minima
 [art]   Chladni Sand Patterns — acoustic resonance mapping with generative black sand
 [story] The Infinite Hotel    — a paradox where a fully booked hotel can always fit one more guest
