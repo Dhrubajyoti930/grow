@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient Ascent</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            background: #0a0a0c;
+            color: #e0e0e0;
+            font-family: 'Space Mono', monospace;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #nav {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+        a { color: #555; text-decoration: none; transition: color 0.3s; }
+        a:hover { color: #00ffcc; }
+        canvas { touch-action: none; cursor: crosshair; }
+        .ui {
+            position: absolute;
+            bottom: 20px;
+            text-align: center;
+            pointer-events: none;
+        }
+        h1 { margin: 0; font-size: 1.2rem; letter-spacing: 2px; color: #00ffcc; }
+    </style>
+</head>
+<body>
+
+<div id="nav"><a href="../index.html">← /grow</a></div>
+<div class="ui">
+    <h1>GRADIENT ASCENT</h1>
+    <p>tap to drop marble</p>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let marble = { x: 0, y: 0, vx: 0, vy: 0, active: false };
+
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Loss function: Z = sin(x/50) * cos(y/50) * 20 + (x^2+y^2)/2000
+    function getZ(x, y) {
+        const nx = x - width/2;
+        const ny = y - height/2;
+        return Math.sin(nx/60) * Math.cos(ny/60) * 30 + (nx*nx + ny*ny)/1000;
+    }
+
+    function drawGrid() {
+        ctx.fillStyle = '#0a0a0c';
+        ctx.fillRect(0, 0, width, height);
+        
+        for(let x = 0; x < width; x += 30) {
+            for(let y = 0; y < height; y += 30) {
+                const z = getZ(x, y);
+                const color = Math.floor(z + 50);
+                ctx.fillStyle = `rgb(0, ${color/2}, ${color})`;
+                ctx.fillRect(x, y, 28, 28);
+            }
+        }
+    }
+
+    function update() {
+        if (marble.active) {
+            const h = 2.0;
+            const dx = (getZ(marble.x + h, marble.y) - getZ(marble.x - h, marble.y)) / (2 * h);
+            const dy = (getZ(marble.x, marble.y + h) - getZ(marble.x, marble.y - h)) / (2 * h);
+            
+            marble.vx -= dx * 0.05;
+            marble.vy -= dy * 0.05;
+            marble.vx *= 0.95;
+            marble.vy *= 0.95;
+            marble.x += marble.vx;
+            marble.y += marble.vy;
+        }
+        
+        drawGrid();
+        
+        if (marble.active) {
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#fff';
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.arc(marble.x, marble.y, 8, 0, Math.PI*2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+        requestAnimationFrame(update);
+    }
+
+    canvas.addEventListener('mousedown', (e) => {
+        marble.x = e.clientX;
+        marble.y = e.clientY;
+        marble.vx = 0;
+        marble.vy = 0;
+        marble.active = true;
+    });
+
+    update();
+</script>
+</body>
+</html>
