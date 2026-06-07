@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chladni Sand Patterns</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #0a0a0a; color: #eee; font-family: 'Space Mono', monospace; }
+        #canvas { display: block; cursor: crosshair; }
+        .ui { position: absolute; top: 20px; right: 20px; text-align: right; pointer-events: none; }
+        .back-link { position: absolute; top: 20px; left: 20px; color: #666; text-decoration: none; font-size: 12px; z-index: 10; pointer-events: auto; }
+        .back-link:hover { color: #fff; }
+        .controls { position: absolute; bottom: 20px; left: 20px; right: 20px; display: flex; gap: 10px; z-index: 10; }
+        input[type=range] { flex-grow: 1; accent-color: #fff; }
+    </style>
+</head>
+<body>
+
+    <a href="../index.html" class="back-link">← /grow</a>
+    
+    <div class="ui">
+        <div style="font-size: 10px; letter-spacing: 2px; opacity: 0.5;">CHLADNI RESONANCE</div>
+        <div id="freq-label" style="font-size: 24px; font-weight: bold;">FREQ: 1.0</div>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <div class="controls">
+        <input type="range" id="freq" min="1" max="100" step="0.1" value="5">
+    </div>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const freqSlider = document.getElementById('freq');
+    const freqLabel = document.getElementById('freq-label');
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function draw() {
+        const w = canvas.width;
+        const h = canvas.height;
+        const freq = parseFloat(freqSlider.value);
+        freqLabel.innerText = `FREQ: ${freq.toFixed(1)}`;
+
+        ctx.fillStyle = '#0a0a0a';
+        ctx.fillRect(0, 0, w, h);
+
+        const imageData = ctx.createImageData(w, h);
+        const data = imageData.data;
+
+        // Chladni equation approximation: sin(nx)*sin(my) - sin(mx)*sin(ny)
+        const scale = 0.05;
+        const m = freq * 0.5;
+        const n = freq * 0.2;
+
+        for (let y = 0; y < h; y += 2) {
+            for (let x = 0; x < w; x += 2) {
+                const nx = (x - w/2) * scale;
+                const ny = (y - h/2) * scale;
+                
+                const val = Math.abs(Math.sin(n * nx) * Math.sin(m * ny) - Math.sin(m * nx) * Math.sin(n * ny));
+                
+                if (val < 0.1) { // Sand settles in nodes
+                    for(let i=0; i<4; i++) {
+                        const px = ((y + (i%2)) * w + (x + (i>>1))) * 4;
+                        data[px] = 255;
+                        data[px+1] = 255;
+                        data[px+2] = 255;
+                        data[px+3] = 255;
+                    }
+                }
+            }
+        }
+        ctx.putImageData(imageData, 0, 0);
+        requestAnimationFrame(draw);
+    }
+
+    draw();
+</script>
+</body>
+</html>
