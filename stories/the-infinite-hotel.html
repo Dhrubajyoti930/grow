@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Infinite Hotel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --accent: #00ffcc;
+            --text: #e0e0e0;
+            --panel: #16161a;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        #container {
+            max-width: 600px;
+            padding: 2rem;
+            text-align: center;
+        }
+        .nav {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+        a { color: var(--accent); text-decoration: none; font-size: 0.9rem; letter-spacing: 1px; }
+        h1 { font-family: 'Playfair Display', serif; color: var(--accent); margin-bottom: 2rem; }
+        .pixel-art {
+            width: 128px; height: 128px;
+            background: #111;
+            margin: 0 auto 2rem;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            border: 2px solid var(--accent);
+        }
+        .pixel { background: var(--bg); }
+        .pixel.on { background: var(--accent); }
+        .story-box { background: var(--panel); padding: 2rem; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        button {
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: inherit;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+        button:hover { background: var(--accent); color: var(--bg); }
+        #room-text { min-height: 80px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+<div class="nav"><a href="../index.html">← /grow</a></div>
+
+<div id="container">
+    <div class="pixel-art" id="grid"></div>
+    <div class="story-box">
+        <h1>The Infinite Hotel</h1>
+        <p id="room-text">The lobby is silent. The hotel is fully booked, every room occupied by an infinite number of guests. Yet, the doors slide open.</p>
+        <button onclick="checkIn()">Check In New Guest</button>
+    </div>
+</div>
+
+<script>
+    const grid = document.getElementById('grid');
+    for(let i=0; i<64; i++) {
+        let p = document.createElement('div');
+        p.className = 'pixel';
+        grid.appendChild(p);
+    }
+
+    let guests = 0;
+    const roomText = document.getElementById('room-text');
+
+    function checkIn() {
+        guests++;
+        roomText.innerHTML = `Guest ${guests} arrives. The manager smiles, signals the infinite hallway, and broadcasts a message: <em>"Attention: Everyone, please move from Room N to Room N+1."</em><br><br>The shifts are completed in an instant. Room 1 is now vacant.`;
+        
+        // Update pixel art "lights"
+        const pixels = document.querySelectorAll('.pixel');
+        pixels.forEach((p, i) => {
+            if(i < guests) p.classList.add('on');
+            else p.classList.remove('on');
+        });
+        
+        if(guests > 64) {
+            pixels.forEach(p => p.classList.remove('on'));
+            guests = 0;
+        }
+    }
+</script>
+</body>
+</html>
