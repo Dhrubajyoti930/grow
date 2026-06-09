@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ender Pearl Stasis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --accent: #00ffcc; --danger: #ff4466; --surface: #1a1a1f; }
+        body { margin: 0; background: var(--bg); color: white; font-family: 'Space Grotesk', sans-serif; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; touch-action: manipulation; }
+        #back-link { position: absolute; top: 20px; left: 20px; color: #666; text-decoration: none; font-size: 0.8rem; letter-spacing: 1px; transition: 0.3s; }
+        #back-link:hover { color: var(--accent); }
+        #game-container { position: relative; width: 90vw; max-width: 400px; height: 60vh; border: 1px solid #333; background: var(--surface); overflow: hidden; cursor: crosshair; }
+        .entity { position: absolute; width: 40px; height: 40px; border-radius: 4px; transition: 0.1s; }
+        #player { background: var(--accent); box-shadow: 0 0 15px var(--accent); z-index: 2; }
+        #pearl { background: white; border-radius: 50%; box-shadow: 0 0 10px white; z-index: 1; opacity: 0.7; }
+        .enemy { background: var(--danger); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+        #ui { margin-top: 20px; text-align: center; }
+        button { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 10px 25px; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; }
+        button:active { background: var(--accent); color: black; }
+    </style>
+</head>
+<body>
+    <a href="../index.html" id="back-link">← /grow</a>
+    
+    <div id="game-container" onclick="teleport()">
+        <div id="player" class="entity" style="left: 50%; top: 80%;"></div>
+        <div id="pearl" class="entity" style="left: 10%; top: 10%;"></div>
+    </div>
+
+    <div id="ui">
+        <h2 id="status">EVADE THE VOID</h2>
+        <button onclick="resetGame()">RESET STASIS</button>
+    </div>
+
+    <script>
+        const container = document.getElementById('game-container');
+        const player = document.getElementById('player');
+        const pearl = document.getElementById('pearl');
+        const status = document.getElementById('status');
+        
+        let enemies = [];
+        let gameActive = true;
+
+        function teleport() {
+            if(!gameActive) return;
+            const px = pearl.style.left;
+            const py = pearl.style.top;
+            pearl.style.left = player.style.left;
+            pearl.style.top = player.style.top;
+            player.style.left = px;
+            player.style.top = py;
+        }
+
+        function spawnEnemy() {
+            if(!gameActive) return;
+            const enemy = document.createElement('div');
+            enemy.className = 'entity enemy';
+            enemy.style.left = Math.random() * 80 + 10 + '%';
+            enemy.style.top = '-50px';
+            container.appendChild(enemy);
+            enemies.push({el: enemy, y: -50});
+        }
+
+        function update() {
+            if(!gameActive) return;
+            
+            enemies.forEach((en, index) => {
+                en.y += 3;
+                en.el.style.top = en.y + 'px';
+                
+                const pRect = player.getBoundingClientRect();
+                const eRect = en.el.getBoundingClientRect();
+                
+                if (pRect.left < eRect.right && pRect.right > eRect.left && 
+                    pRect.top < eRect.bottom && pRect.bottom > eRect.top) {
+                    gameOver();
+                }
+
+                if(en.y > container.offsetHeight) {
+                    en.el.remove();
+                    enemies.splice(index, 1);
+                }
+            });
+            requestAnimationFrame(update);
+        }
+
+        function gameOver() {
+            gameActive = false;
+            status.innerText = "STASIS BREACHED";
+            status.style.color = "var(--danger)";
+        }
+
+        function resetGame() {
+            enemies.forEach(e => e.el.remove());
+            enemies = [];
+            gameActive = true;
+            status.innerText = "EVADE THE VOID";
+            status.style.color = "white";
+            requestAnimationFrame(update);
+        }
+
+        setInterval(spawnEnemy, 1200);
+        update();
+    </script>
+</body>
+</html>
