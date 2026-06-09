@@ -163,3 +163,172 @@
 [game]  Sub Bot Defender      — fight off an army of automated accounts to maintain your sub lead
 [tool]  Calculus Chain Rule   — visual gears representing nested derivatives turning one another
 [art]   Spectral Flow         — mapping vector field velocities to an HSV color wheel gradient
+[tool]  Navier-Stokes Viz     — incompressible fluid equations rendered as swirling 2D smoke
+[art]   Diffusion Limited     — particles clustering into frost-fern crystal dendrites
+[story] The Antikythera       — a bronze clockwork computer built to predict eclipses in 80 BC
+[game]  Creeper Compression   — detonate precisely timed chains to carve sculpted terrain art
+[tool]  Jacobian Matrix       — stretch a 2D grid to see how nonlinear maps distort local area
+[art]   Hilbert Curve Fill    — a single line folding to perfectly fill every pixel of a square
+[story] The Banach-Tarski     — how set theory lets you disassemble a sphere into two identical ones
+[game]  Chorus Fruit Clutch   — teleport through End blocks to dodge projectiles at point blank
+[tool]  Simplex Noise Field   — tune octaves and persistence to sculpt organic terrain noise
+[art]   Nodal Standing Waves  — vibrating 2D membrane showing harmonic mode shapes
+[story] The Geoid Shape       — Earth is not a sphere, not an ellipsoid, but a lumpy gravity potato
+[game]  Speedrun Clock Abuse  — exploit in-game timer lag to shave milliseconds off a world record
+[tool]  Quaternion Rotator    — compose two rotations without gimbal lock using hypercomplex math
+[art]   Steiner Chain Rings   — circles rolling inside a ring, each tangent to its neighbors
+[story] The Hairy Ball        — the topological theorem proving wind always has a still point
+[game]  Phantom Force         — bait opponents into mistimed swings using invisible movement delay
+[tool]  Runge-Kutta Stepper   — visualize ODE integration error shrinking with smaller step sizes
+[art]   Torus Knot Ribbon     — parametric p,q knot wound around an invisible donut surface
+[story] The Longitude Problem — how a Yorkshire clockmaker finally let ships know where they were
+[game]  Trident Clutch        — parry incoming arrows mid-air with a precisely aimed riptide throw
+[tool]  Poincaré Section      — slice a 3D phase-space orbit to reveal hidden periodic structure
+[art]   Sunflower Phyllotaxis — seeds packing at the golden angle to maximize radial density
+[story] Project Orion         — the 1960s nuclear pulse spacecraft that could reach Alpha Centauri
+[game]  Enderman Farm Logic   — optimize XP yield by calculating teleportation aggro radii
+[tool]  Gram-Schmidt Process  — watch two skewed vectors rotate into a clean orthonormal basis
+[art]   Tessellation Morph    — Escher lizards smoothly transitioning into fish and back again
+[story] The Great Filter      — Fermi's silence explained by one terrifying evolutionary bottleneck
+[game]  Sculk Sensor Trap     — route vibration signals through calibrated sensors to trigger TNT
+[tool]  Phase Portrait Tracer — draw nullclines on a 2D system and watch equilibria emerge
+[art]   Hexagonal Automata    — triangular grid Game of Life with six-neighbor birth rules
+[story] The Mpemba Effect II  — quantum tunneling as the real explanation for anomalous freezing
+[game]  Notch Apple Meta      — analyze golden apple cooldown windows to execute god-bridge combos
+[tool]  Lagrange Multipliers  — slide a constraint curve over a hilltop to find its highest contact
+[art]   Geodesic Dome Mesh    — subdivided icosahedra projected onto spherical wireframes
+[story] Leaning Tower Stable  — how the tower of Pisa stopped leaning due to underground clay creep
+[game]  Sky Cage Escape       — break out of a redstone prison before the warden locates your heartbeat
+[tool]  Boolean Algebra Gate  — build NAND trees visually and watch voltage propagate
+[art]   Supercell Formation   — rotating mesocyclone thunderheads rendered in turbulent fluid
+[story] The Coastline Paradox — why measuring Britain's coast more precisely makes it infinitely long
+[game]  Pillager Raid Defense — optimize village bell timing and iron golem placement for max kills
+[tool]  Sigmoid Squasher      — slide weights and see how a logistic neuron fires on its input
+[art]   Parametric Seashell   — helicospiral surfaces with adjustable growth and opening angles
+[story] Euler's Identity       — the five constants that shocked a mathematician into religious silence
+[game]  Sky Wars Psychology   — read opponent movement patterns to predict bridging direction
+[tool]  Simplex Method Viz    — hop between vertices of a polytope to minimize a linear objective
+[art]   Barnsley Fern Chaos   — four affine transforms randomly iterated into a photorealistic frond
+[story] The Bell Curve Wars   — the 30-year political firestorm ignited by one statistics textbook
+[game]  Nether Escape Gauntlet — sprint through a bastion without triggering piglin aggro
+[tool]  Bezier Curve Builder  — drag control points and watch the polynomial arc update live
+[art]   Symmetry Group Tiles  — all 17 wallpaper groups rendered as glowing crystal lattices
+[story] Perpetual Motion Club — the long institutional history of machines that almost worked
+[game]  Axolotl Army          — breed an army of rare blue axolotls to cheese underwater temples
+[tool]  Convolution Visualizer — slide a kernel across an image and watch edge detection emerge
+[art]   Lorenz Attractor      — butterfly-wing strange attractor rendered with luminous particle trails
+[story] The Skin Effect       — high-frequency AC current fleeing to the outermost wire surface
+[game]  Jump Boost Parkour    — chain potion-enhanced leaps across an impossible procedural map
+[tool]  Entropy Calculator    — measure the Shannon bits required to describe a shuffled deck
+[art]   Rotational Inertia    — spinning dumbbell animations showing angular momentum conservation
+[story] Ball Lightning Debate — the electromagnetic plasma orbs physicists still cannot explain
+[game]  Loot Table Optimizer  — reverse-engineer mob drop probabilities to min-max Fortune enchants
+[tool]  Wronskian Checker     — test if two solutions to a DE are linearly independent graphically
+[art]   Minimal Surface Mesh  — Schwarz P and D surfaces rendered as soap-film translucent geometry
+[story] The Memory Palace     — how ancient Greek orators memorized four-hour speeches without notes
+[game]  Hardcore Merchant     — travel 1000 blocks to trade emeralds in permadeath mode
+[tool]  Hamiltonian Path Viz  — watch backtracking search attempt every knight's tour on a board
+[art]   Flame Fractal         — iterated function systems generating ember-like chaotic attractors
+[story] The Zero Arm          — how amputees regained touch sensation through nerve remapping
+[game]  Redstone CPU Builder  — wire a 4-bit ALU and execute a basic program in vanilla Minecraft
+[tool]  Softmax Visualizer    — push one logit higher and watch probabilities redistribute across classes
+[art]   Optical Spin Art      — rotating color wheels creating impossible after-image persistence
+[story] The Faint Young Sun   — why ancient Earth was warm enough for life despite a dimmer star
+[game]  Chorus Maze Navigator — solve labyrinthine End city corridors using only sound and wall-hugging
+[tool]  Lebesgue Integral     — partition a function's range rather than domain to handle wild curves
+[art]   Romanesco Spiral      — self-similar fractal broccoli rendered with recursive cone stacking
+[story] The Giant's Causeway  — cooling lava contracting into perfect hexagonal basalt columns
+[game]  Shield Meta Analyzer  — frame-by-frame breakdown of sword-shield timing in competitive duels
+[tool]  Inverse Kinematics    — drag an end-effector and watch a robot arm solve joint angles live
+[art]   Sand Pendulum Trace   — hypocycloidal Lissajous figures drawn in virtual colored sand
+[story] The Butterfly Effect  — tracing a 1972 weather simulation to its sensitive initial condition
+[game]  TNT Minecart Launcher — calculate launch angle and velocity to hit a target 500 blocks away
+[tool]  Root Locus Plotter    — move a feedback gain slider and watch closed-loop poles migrate
+[tool]  Spectral Decomposer   — upload a sound wave, split it into pure harmonic sine components
+[art]   Anamorphic Grid       — distorted perspective grids resolving into coherent images from one angle
+[story] Ramanujan's Taxicab   — the hospital anecdote hiding a deep truth about cubic sums
+[game]  Bed Bomb Timing       — optimize respawn anchor detonation windows in End PvP combat
+[tool]  Affine Cipher Wheel   — slide multiplier and shift dials to encrypt and crack substitution
+[art]   Hypotrochoid Engine   — two-gear spirograph with controllable ratio generating rose curves
+[story] The Mosquito Net      — how a $2 piece of nylon fabric became the most lifesaving invention
+[game]  Ghast Deflector       — calculate arrow launch arc to redirect a fireball back to sender
+[tool]  Spring Force Sim      — hang masses on Hooke-law springs and measure oscillation period
+[art]   Chromatic Aberration  — lens dispersion splitting light into prismatic fringe art
+[story] The Jevons Paradox    — how making engines more efficient caused coal consumption to soar
+[game]  Invisible Enderman    — move without line of sight to avoid triggering the aggro radius
+[tool]  Recurrence Plotter    — embed a 1D signal in phase space to reveal hidden periodicity
+[art]   Circuit Trace Art     — aesthetic PCB routing patterns with glowing via pads
+[story] The Braess Paradox    — adding a road to a traffic network that made everyone drive slower
+[game]  Anvil Drop Snipe      — fall-damage assassinate an opponent using a perfectly aimed anvil
+[tool]  Winding Number Tracer — drag a closed curve around poles to count complex function zeros
+[art]   Anaglyph Stereogram   — red-cyan depth-encoded 3D images of impossible geometric solids
+[story] The Crookes Tube      — how a glowing green beam accidentally discovered the electron
+[game]  Shulker Box Logistics — design a double-chest sorting system with minimal filter lag
+[tool]  Boolean SAT Solver    — clause-by-clause visual walkthrough of DPLL backtracking search
+[art]   Hatching Gradient     — pen-plotter style crosshatch density encoding grayscale values
+[story] The Speed of Dark     — why a shadow can sweep faster than light without violating physics
+[game]  Boss Bar Depleter     — calculate optimal DPS rotation against the Ender Dragon's phases
+[tool]  Stokes Theorem Viz    — compare a surface integral to its boundary curve integral visually
+[art]   Crystal Growth Sim    — nucleation and dendritic branching rendered as twinkling lattice growth
+[story] The Nocebo Effect     — sugar pills that make people genuinely sick through negative belief
+[game]  Book Ban Speedrun     — memorize librarian reset cycles to obtain max enchant books fast
+[tool]  Discrete Cosine Xform — compress an image row by row, watching high frequencies vanish
+[art]   Magnetic Skyrmion     — topologically protected spin vortices rendered as glowing knot fields
+[story] The Halting Problem   — Turing's proof that no program can always predict if another will stop
+[game]  XP Farm Rate Calc     — model mob spawn rates to find the minimum AFK time for level 30
+[tool]  Moiré Interferometer  — overlay two slightly rotated grids and slide their angle to tune fringes
+[art]   Acoustic Hologram     — phase-controlled speaker arrays sculpting levitating droplet patterns
+[story] The Kerr Solution     — what general relativity predicts about the inside of a spinning black hole
+[game]  Creeper Face Mosaic   — arrange dyed wool blocks to build pixel art from a reference image
+[tool]  Lagrangian Mechanics  — replace Newton's forces with energy differences on a rolling bead
+[art]   Hyperbolic Tiling     — Escher-style tessellation in Poincaré disk negatively curved space
+[story] The Mpemba Papers     — the schoolboy who argued with his chemistry teacher and turned out right
+[game]  Speed Bridger Bot     — race an AI that places blocks at theoretical human maximum CPS
+[tool]  Zeta Function Plot    — map Riemann zeros onto the critical strip complex plane
+[art]   Belousov-Zhabotinsky  — oscillating chemical reaction front rendered as pulsing color waves
+[story] The Green Flash       — the atmospheric optics miracle visible at the exact moment of sunset
+[game]  One Cycle Challenge   — beat a dungeon using only the items from a single loot chest
+[tool]  Perceptron Trainer    — click to place red and blue dots, watch the decision boundary learn
+[art]   Phyllotaxis Pinecone  — 3D parametric surface packing scales at Fibonacci divergence angle
+[story] The Kelvin Wake       — why every boat's wake makes the same 39-degree angle regardless of speed
+[game]  Magma Cube Stacker    — exploit slime AI pathfinding to build a pyramid of large cubes
+[tool]  Fourier Heat Solver   — decompose an initial temperature spike into decaying sinusoidal modes
+[art]   Voxel Cave System     — procedurally carved 3D caverns with bioluminescent moss lighting
+[story] The Mpemba Debate III — 2016 Nature paper reigniting the debate with quantum thermodynamic data
+[game]  Trident Riptide Run   — chain riptide launches in rain to cross the ocean without a boat
+[tool]  Nullspace Projector   — input a matrix and highlight the vectors it collapses to zero
+[art]   Recursive Mirrors     — two facing reflections rendered to arbitrary depth with ray marching
+[story] The Bicycle Mystery   — why a riderless bike self-corrects, and why no one fully understands it
+[game]  Splash Potion Grid    — calculate AoE potion splash radii for max crowd-control efficiency
+[tool]  Green's Function Map  — show how a point impulse response builds up a system's full solution
+[art]   Turbulent Cascade     — energy flowing from large eddies down to molecular-scale heat
+[story] The Shape of Water    — surface tension explained by quantum attraction between polar molecules
+[game]  Sand Dupe Glitch       — exploit falling-block entity behavior to generate infinite resources
+[tool]  Frequency Response    — sweep a sine input through a filter and plot gain versus frequency
+[art]   Penrose Stairs Loop   — M.C. Escher's impossible staircase animated with walking figures
+[story] Pavlov's Metronome    — the conditioning experiment that accidentally worked on the experimenter
+[game]  Arrow Spam Defense    — calculate projectile spread variance to find optimal defensive range
+[tool]  Sturm-Liouville Modes — slide boundary conditions to shift orthogonal eigenfunction shapes
+[art]   Geodesic Shadow       — parallel light casting icosahedral projection shadows on a flat plane
+[story] The Mpemba Reversal   — 2023 experiments suggesting the effect may not be real after all
+[game]  Grindstone Optimizer  — minimize repair cost by calculating enchantment penalty thresholds
+[tool]  Euler Method Plotter  — step through a slope field with adjustable h to visualize ODE error
+[art]   Cymatics Salt Plate   — resonance mode visualizer with adjustable frequency and plate geometry
+[story] The Mpemba Trilogy    — wrapping all three chapters into one definitive explainer of hot ice
+[game]  Classic Bed Wars      — resource collection, team upgrades, and bridge destruction tutorial
+[tool]  Chi-Square Tester     — roll virtual dice and watch the goodness-of-fit statistic converge
+[art]   Möbius Music Roll     — a piano roll printed on a non-orientable surface playing itself twice
+[story] The Great Oxidation   — the cyanobacterial pollution event that nearly ended all life on Earth
+[game]  Fox Hunt Navigator    — triangulate a hidden radio transmitter using directional antenna logic
+[tool]  Nyquist Sampler       — alias a sine wave by dropping below its Nyquist frequency live
+[art]   Geodesic Watercolor   — triangulated mesh rendering with ink-bleed diffusion at each edge
+[story] The Antineutron       — Fermi's careful terminology for an idea that could not yet be named
+[game]  Alchemy Table Crafts  — discover hidden reagent combinations through systematic experimentation
+[tool]  Gram Matrix Visualizer — compute pairwise dot products of vectors to measure their similarity
+[art]   Voronoi Rain Ripples  — Poisson-disc seeded wave interference on a water surface texture
+[story] The Mpemba Endgame    — what the debate ultimately reveals about reproducibility in science
+[game]  Charged Creeper Farm  — funnel lightning strikes to produce rare mob heads for decoration
+[tool]  Modular Arithmetic    — clock-face visualizer stepping through residue classes and inverses
+[art]   Spiral Phased Array   — antenna radiation patterns rendered as glowing polar interference lobes
+[story] The Flea Circus        — whether Victorian performers actually trained fleas or just faked it
+[game]  Nether Roof Glitch    — build above bedrock to traverse the dimension without obstruction
