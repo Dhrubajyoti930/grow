@@ -20,7 +20,7 @@ INJECT_START  = "// GENERATED_PAGES_START"
 INJECT_END    = "// GENERATED_PAGES_END"
 TAG_DIRS      = {"game": "games", "tool": "tools", "art": "art", "story": "stories"}
 
-MODEL = "gemini-3.1-flash"
+MODEL = "gemini-3.1-pro"
 
 client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
