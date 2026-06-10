@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vector Flow Viz</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --accent: #00f2ff; --ui: #1a1a1f; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: var(--bg); font-family: 'JetBrains Mono', monospace; color: #fff; }
+        #canvas { display: block; cursor: crosshair; }
+        .ui { position: absolute; bottom: 20px; left: 20px; right: 20px; background: var(--ui); padding: 20px; border-radius: 8px; border: 1px solid #333; display: flex; gap: 20px; align-items: flex-end; flex-wrap: wrap; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .input-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 200px; }
+        input { background: #000; border: 1px solid #444; color: var(--accent); padding: 10px; border-radius: 4px; font-family: inherit; font-size: 14px; }
+        .nav { position: absolute; top: 20px; left: 20px; z-index: 10; }
+        a { color: #888; text-decoration: none; font-size: 12px; }
+        a:hover { color: #fff; }
+        h1 { margin: 0 0 10px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="nav"><a href="../index.html">← /grow</a></div>
+    <canvas id="canvas"></canvas>
+    <div class="ui">
+        <div class="input-group">
+            <h1>dx/dt</h1>
+            <input type="text" id="dx" value="sin(y)">
+        </div>
+        <div class="input-group">
+            <h1>dy/dt</h1>
+            <input type="text" id="dy" value="sin(x)">
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const dxInput = document.getElementById('dx');
+        const dyInput = document.getElementById('dy');
+        
+        let width, height, particles = [];
+        const count = 800;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.life = Math.random() * 200;
+            }
+            update() {
+                const nx = (this.x / width) * 4 - 2;
+                const ny = (this.y / height) * 4 - 2;
+                try {
+                    const dx = eval(dxInput.value.replace(/sin/g, 'Math.sin').replace(/cos/g, 'Math.cos').replace(/x/g, nx).replace(/y/g, ny));
+                    const dy = eval(dyInput.value.replace(/sin/g, 'Math.sin').replace(/cos/g, 'Math.cos').replace(/x/g, nx).replace(/y/g, ny));
+                    this.x += dx * 2;
+                    this.y += dy * 2;
+                } catch(e) {}
+                this.life--;
+                if (this.life < 0 || this.x < 0 || this.x > width || this.y < 0 || this.y > height) this.reset();
+            }
+            draw() {
+                ctx.fillStyle = `rgba(0, 242, 255, ${this.life / 200})`;
+                ctx.fillRect(this.x, this.y, 1, 1);
+            }
+        }
+
+        function init() {
+            resize();
+            for(let i = 0; i < count; i++) particles.push(new Particle());
+            animate();
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(10, 10, 12, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', resize);
+        init();
+    </script>
+</body>
+</html>
