@@ -19,7 +19,7 @@
 [game]  Ender Pearl Stasis    — trigger teleportation traps to escape impossible combat scenarios  ✅
 [tool]  Vector Flow Viz       — input differential equations, watch the glowing vector field evolve  ✅
 [art]   Golden Ratio Spirals  — Fibonacci sequences drawn as expanding nautilus shells  ✅
-[story] The Demon Core        — a slipped screwdriver, a blue flash, and a physicist's fatal mistake
+[story] The Demon Core        — a slipped screwdriver, a blue flash, and a physicist's fatal mistake  ✅
 [game]  Floor is Lava Parkour — pixel-perfect jumping across disappearing slime blocks
 [tool]  Markov Chain Sim      — watch state transitions flow between nodes based on probabilities
 [art]   Boids Flocking        — thousands of glowing arrows swarming like starlings at dusk

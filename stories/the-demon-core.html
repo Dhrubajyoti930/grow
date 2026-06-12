@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Demon Core</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --text: #d1d1d1;
+            --accent: #00f2ff;
+            --danger: #ff3e3e;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            line-height: 1.6;
+        }
+
+        #back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: var(--accent);
+            text-decoration: none;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        #back-link:hover { opacity: 1; }
+
+        #container {
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .core {
+            width: 150px;
+            height: 150px;
+            margin: 40px auto;
+            border: 2px solid #333;
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.3s;
+            background: radial-gradient(circle at 30% 30%, #444, #000);
+        }
+
+        .core:hover { transform: scale(1.05); }
+
+        #screwdriver {
+            width: 8px;
+            height: 100px;
+            background: #666;
+            margin: -20px auto 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        #ui {
+            font-family: 'Courier Prime', monospace;
+            margin-top: 30px;
+        }
+
+        #flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.1s;
+        }
+
+        .story-text {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .danger { color: var(--danger); }
+    </style>
+</head>
+<body>
+
+    <a href="../index.html" id="back-link">← /grow</a>
+
+    <div id="flash"></div>
+
+    <div id="container">
+        <div id="story">
+            <h1 style="color: var(--accent);">The Demon Core</h1>
+            <p class="story-text">The beryllium sphere rests on the workbench. A slight tremor in the hand. A screwdriver tip, barely a millimeter from catastrophe.</p>
+            <p id="status">Hold the screwdriver steady.</p>
+        </div>
+
+        <div id="core" class="core" onclick="slip()"></div>
+        <div id="screwdriver"></div>
+    </div>
+
+    <script>
+        let slipped = false;
+
+        function slip() {
+            if (slipped) return;
+            slipped = true;
+
+            const core = document.getElementById('core');
+            const flash = document.getElementById('flash');
+            const status = document.getElementById('status');
+            const story = document.getElementById('story');
+
+            core.style.boxShadow = "0 0 100px #00f2ff";
+            flash.style.opacity = "1";
+            
+            setTimeout(() => {
+                flash.style.opacity = "0";
+                status.innerHTML = "<span class='danger'>CRITICALITY ACHIEVED.</span>";
+                story.innerHTML += "<p>A sudden, agonizing heat. The air tastes of ozone and copper. The blue glow burns into your retinas, a silent signal that the physics of the universe have turned against you.</p>";
+                document.body.style.background = "#1a0a0a";
+            }, 100);
+        }
+    </script>
+</body>
+</html>
