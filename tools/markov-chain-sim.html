@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markov Chain Sim</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --panel: #16161a;
+            --accent: #00ff9d;
+            --text: #e0e0e0;
+            --dim: #666;
+        }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #nav { position: absolute; top: 20px; left: 20px; z-index: 10; }
+        a { color: var(--dim); text-decoration: none; font-size: 0.8rem; transition: 0.3s; }
+        a:hover { color: var(--accent); }
+        
+        #canvas-container { flex-grow: 1; width: 100%; position: relative; cursor: crosshair; }
+        canvas { display: block; }
+        
+        .ui { 
+            background: var(--panel); 
+            padding: 20px; 
+            width: 100%; 
+            box-sizing: border-box; 
+            border-top: 1px solid #333;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        button {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        button:hover { background: var(--accent); color: var(--bg); }
+    </style>
+</head>
+<body>
+
+    <div id="nav"><a href="../index.html">← /grow</a></div>
+    <div id="canvas-container"><canvas id="sim"></canvas></div>
+    
+    <div class="ui">
+        <div style="font-size: 0.7rem; color: var(--dim)">TRANSITION PROBABILITY SIMULATOR</div>
+        <button onclick="init()">RESET SYSTEM</button>
+    </div>
+
+<script>
+    const canvas = document.getElementById('sim');
+    const ctx = canvas.getContext('2d');
+    let nodes = [];
+    let particles = [];
+    const numNodes = 4;
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight - 80;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Node {
+        constructor(x, y, id) {
+            this.x = x; this.y = y; this.id = id;
+            this.connections = Array.from({length: numNodes}, () => Math.random());
+            const sum = this.connections.reduce((a, b) => a + b, 0);
+            this.connections = this.connections.map(p => p / sum);
+        }
+        draw() {
+            ctx.fillStyle = '#00ff9d';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, 6, 0, Math.PI*2);
+            ctx.fill();
+        }
+    }
+
+    function init() {
+        nodes = [];
+        particles = [];
+        const pad = 100;
+        for(let i=0; i<numNodes; i++) {
+            nodes.push(new Node(
+                pad + Math.random() * (canvas.width - pad*2),
+                pad + Math.random() * (canvas.height - pad*2),
+                i
+            ));
+        }
+        for(let i=0; i<15; i++) particles.push({
+            nodeIdx: Math.floor(Math.random() * numNodes),
+            targetIdx: null,
+            progress: 0,
+            speed: 0.02
+        });
+    }
+
+    function update() {
+        ctx.fillStyle = 'rgba(10, 10, 12, 0.2)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        nodes.forEach(n => n.draw());
+
+        particles.forEach(p => {
+            if (p.targetIdx === null) {
+                const rand = Math.random();
+                let acc = 0;
+                for(let i=0; i<numNodes; i++) {
+                    acc += nodes[p.nodeIdx].connections[i];
+                    if (rand < acc) { p.targetIdx = i; break; }
+                }
+            }
+
+            p.progress += p.speed;
+            if (p.progress >= 1) {
+                p.nodeIdx = p.targetIdx;
+                p.targetIdx = null;
+                p.progress = 0;
+            }
+
+            const start = nodes[p.nodeIdx];
+            const end = nodes[p.targetIdx];
+            const x = start.x + (end.x - start.x) * p.progress;
+            const y = start.y + (end.y - start.y) * p.progress;
+
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.arc(x, y, 2, 0, Math.PI*2);
+            ctx.fill();
+        });
+
+        requestAnimationFrame(update);
+    }
+
+    init();
+    update();
+</script>
+</body>
+</html>

@@ -21,7 +21,7 @@
 [art]   Golden Ratio Spirals  — Fibonacci sequences drawn as expanding nautilus shells  ✅
 [story] The Demon Core        — a slipped screwdriver, a blue flash, and a physicist's fatal mistake  ✅
 [game]  Floor is Lava Parkour — pixel-perfect jumping across disappearing slime blocks  ✅
-[tool]  Markov Chain Sim      — watch state transitions flow between nodes based on probabilities
+[tool]  Markov Chain Sim      — watch state transitions flow between nodes based on probabilities  ✅
 [art]   Boids Flocking        — thousands of glowing arrows swarming like starlings at dusk
 [story] The Double Slit       — an electron acts as a wave until the universe catches it looking
 [game]  End Crystal Bomber    — chaotic, explosive combat meta relying on indestructible crystals
