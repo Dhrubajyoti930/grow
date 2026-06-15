@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boids Flocking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #050505;
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+        }
+        #back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+            text-decoration: none;
+            color: #666;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: color 0.3s;
+        }
+        #back-link:hover { color: #fff; }
+        canvas { display: block; }
+        #ui {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            text-align: right;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="../index.html" id="back-link">← /grow</a>
+    <div id="ui">Boids Flocking<br>1500 entities</div>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const boids = [];
+        const count = 1500;
+        const speedLimit = 2.5;
+        const visualRange = 50;
+
+        function init() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            for (let i = 0; i < count; i++) {
+                boids.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: Math.random() * 2 - 1,
+                    vy: Math.random() * 2 - 1
+                });
+            }
+        }
+
+        function update() {
+            for (let b of boids) {
+                let closeDx = 0, closeDy = 0;
+                let xVelAvg = 0, yVelAvg = 0;
+                let xPosAvg = 0, yPosAvg = 0;
+                let neighbors = 0;
+
+                for (let other of boids) {
+                    if (b === other) continue;
+                    let dx = other.x - b.x;
+                    let dy = other.y - b.y;
+                    if (Math.abs(dx) < visualRange && Math.abs(dy) < visualRange) {
+                        if (Math.sqrt(dx*dx + dy*dy) < 15) {
+                            closeDx += b.x - other.x;
+                            closeDy += b.y - other.y;
+                        }
+                        xVelAvg += other.vx;
+                        yVelAvg += other.vy;
+                        xPosAvg += other.x;
+                        yPosAvg += other.y;
+                        neighbors++;
+                    }
+                }
+
+                if (neighbors > 0) {
+                    b.vx += (xVelAvg / neighbors - b.vx) * 0.05;
+                    b.vy += (yVelAvg / neighbors - b.vy) * 0.05;
+                    b.vx += (xPosAvg / neighbors - b.x) * 0.001;
+                    b.vy += (yPosAvg / neighbors - b.y) * 0.001;
+                }
+
+                b.vx += closeDx * 0.05;
+                b.vy += closeDy * 0.05;
+
+                const speed = Math.sqrt(b.vx * b.vx + b.vy * b.vy);
+                if (speed > speedLimit) {
+                    b.vx = (b.vx / speed) * speedLimit;
+                    b.vy = (b.vy / speed) * speedLimit;
+                }
+
+                b.x += b.vx;
+                b.y += b.vy;
+
+                if (b.x < 0) b.x = width; if (b.x > width) b.x = 0;
+                if (b.y < 0) b.y = height; if (b.y > height) b.y = 0;
+            }
+        }
+
+        function draw() {
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.2)';
+            ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = '#fff';
+            ctx.shadowBlur = 5;
+            ctx.shadowColor = '#0af';
+            
+            for (let b of boids) {
+                const angle = Math.atan2(b.vy, b.vx);
+                ctx.save();
+                ctx.translate(b.x, b.y);
+                ctx.rotate(angle);
+                ctx.beginPath();
+                ctx.moveTo(4, 0);
+                ctx.lineTo(-3, 3);
+                ctx.lineTo(-3, -3);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function loop() {
+            update();
+            draw();
+            requestAnimationFrame(loop);
+        }
+
+        window.addEventListener('resize', init);
+        init();
+        loop();
+    </script>
+</body>
+</html>
