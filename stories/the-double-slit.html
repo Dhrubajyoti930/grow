@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Double Slit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --text: #e0e0e0; --accent: #00f2ff; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Courier Prime', monospace; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        #back-link { position: absolute; top: 20px; left: 20px; color: var(--accent); text-decoration: none; font-size: 0.8rem; z-index: 10; }
+        .container { max-width: 600px; padding: 100px 20px; text-align: center; }
+        #canvas-container { margin: 40px auto; position: relative; height: 200px; width: 100%; cursor: pointer; border-bottom: 2px solid #333; }
+        canvas { width: 100%; height: 100%; image-rendering: pixelated; }
+        .text-box { min-height: 100px; line-height: 1.6; }
+        .btn { border: 1px solid var(--accent); padding: 10px 20px; background: transparent; color: var(--accent); cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        .btn:hover { background: var(--accent); color: var(--bg); }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<a id="back-link" href="../index.html">← /grow</a>
+
+<div class="container">
+    <div id="story" class="text-box">
+        <p id="msg">An electron travels through the void. It is a ghost, a wave of probability, existing everywhere and nowhere at once.</p>
+    </div>
+    
+    <div id="canvas-container">
+        <canvas id="stage"></canvas>
+    </div>
+
+    <button id="action" class="btn">Observe</button>
+</div>
+
+<script>
+    const canvas = document.getElementById('stage');
+    const ctx = canvas.getContext('2d');
+    const msg = document.getElementById('msg');
+    const btn = document.getElementById('action');
+    
+    canvas.width = 600; canvas.height = 200;
+    let state = 0; // 0: wave, 1: particle, 2: reset
+    let x = 0;
+
+    function drawWave() {
+        ctx.clearRect(0, 0, 600, 200);
+        ctx.strokeStyle = '#00f2ff';
+        ctx.beginPath();
+        for(let i=0; i<600; i++) {
+            ctx.lineTo(i, 100 + Math.sin(i * 0.05 + x) * 40);
+        }
+        ctx.stroke();
+        x += 0.2;
+        if(state === 0) requestAnimationFrame(drawWave);
+    }
+
+    function drawParticle() {
+        ctx.clearRect(0, 0, 600, 200);
+        ctx.fillStyle = '#ff0055';
+        ctx.fillRect(295, 95, 10, 10);
+        msg.innerHTML = "The universe flinches. Caught in the act of being, the wave collapses. You have pinned the electron to a single point in space.";
+        btn.innerText = "Reset";
+    }
+
+    btn.addEventListener('click', () => {
+        if(state === 0) {
+            state = 1;
+            drawParticle();
+        } else {
+            state = 0;
+            x = 0;
+            msg.innerHTML = "An electron travels through the void. It is a ghost, a wave of probability, existing everywhere and nowhere at once.";
+            btn.innerText = "Observe";
+            drawWave();
+        }
+    });
+
+    drawWave();
+</script>
+
+</body>
+</html>
