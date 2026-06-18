@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fourier Tracer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --accent: #00ff9d; --text: #e0e0e0; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: 'Space Mono', monospace; }
+        #back-link { position: absolute; top: 20px; left: 20px; color: var(--accent); text-decoration: none; font-size: 12px; z-index: 10; opacity: 0.7; }
+        #back-link:hover { opacity: 1; }
+        canvas { display: block; touch-action: none; cursor: crosshair; }
+        .ui { position: absolute; bottom: 20px; left: 20px; pointer-events: none; }
+        h1 { margin: 0; font-size: 18px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); }
+        p { font-size: 10px; opacity: 0.6; margin: 5px 0; }
+        .controls { position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; }
+        button { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 5px 15px; cursor: pointer; font-family: inherit; font-size: 10px; }
+        button:hover { background: var(--accent); color: var(--bg); }
+    </style>
+</head>
+<body>
+    <a id="back-link" href="../index.html">← /grow</a>
+    <div class="ui">
+        <h1>Fourier Tracer</h1>
+        <p>DRAW A CLOSED SHAPE TO GENERATE EPICYCLES</p>
+    </div>
+    <div class="controls">
+        <button onclick="clearCanvas()">CLEAR</button>
+    </div>
+    <canvas id="canvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let drawing = false, points = [], fourierPoints = [], time = 0;
+
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize); resize();
+
+    canvas.addEventListener('mousedown', () => { drawing = true; points = []; });
+    canvas.addEventListener('mousemove', e => { if(drawing) points.push({x: e.clientX - canvas.width/2, y: e.clientY - canvas.height/2}); });
+    canvas.addEventListener('mouseup', () => { drawing = false; processFourier(); });
+    canvas.addEventListener('touchstart', (e) => { drawing = true; points = []; e.preventDefault(); });
+    canvas.addEventListener('touchmove', (e) => { if(drawing) points.push({x: e.touches[0].clientX - canvas.width/2, y: e.touches[0].clientY - canvas.height/2}); });
+    canvas.addEventListener('touchend', () => { drawing = false; processFourier(); });
+
+    let epicycles = [];
+    function processFourier() {
+        if(points.length < 2) return;
+        epicycles = points.map((p, i) => {
+            let angle = (2 * Math.PI * i) / points.length;
+            return {
+                amp: Math.sqrt(p.x**2 + p.y**2) / points.length * 2,
+                freq: i - Math.floor(points.length/2),
+                phase: Math.atan2(p.y, p.x)
+            };
+        }).sort((a,b) => Math.abs(b.amp) - Math.abs(a.amp));
+        fourierPoints = [];
+    }
+
+    function draw() {
+        ctx.fillStyle = 'rgba(10, 10, 12, 0.2)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        ctx.translate(canvas.width/2, canvas.height/2);
+
+        if(points.length > 0 && !drawing) {
+            let x = 0, y = 0;
+            for(let ep of epicycles) {
+                let prevX = x, prevY = y;
+                let angle = ep.freq * time + ep.phase;
+                x += ep.amp * Math.cos(angle);
+                y += ep.amp * Math.sin(angle);
+                
+                ctx.strokeStyle = 'rgba(0, 255, 157, 0.1)';
+                ctx.beginPath();
+                ctx.arc(prevX, prevY, Math.abs(ep.amp), 0, Math.PI*2);
+                ctx.stroke();
+                
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.beginPath();
+                ctx.moveTo(prevX, prevY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+            }
+            fourierPoints.unshift({x, y});
+            if(fourierPoints.length > 500) fourierPoints.pop();
+            ctx.beginPath();
+            ctx.strokeStyle = '#00ff9d';
+            for(let i=0; i<fourierPoints.length; i++) ctx.lineTo(fourierPoints[i].x, fourierPoints[i].y);
+            ctx.stroke();
+            time += 0.02;
+        } else {
+            ctx.strokeStyle = '#fff';
+            ctx.beginPath();
+            points.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+            ctx.stroke();
+        }
+        ctx.restore();
+        requestAnimationFrame(draw);
+    }
+    function clearCanvas() { points = []; fourierPoints = []; epicycles = []; time = 0; }
+    draw();
+</script>
+</body>
+</html>

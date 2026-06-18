@@ -25,7 +25,7 @@
 [art]   Boids Flocking        — thousands of glowing arrows swarming like starlings at dusk  ✅
 [story] The Double Slit       — an electron acts as a wave until the universe catches it looking  ✅
 [game]  End Crystal Bomber    — chaotic, explosive combat meta relying on indestructible crystals  ✅
-[tool]  Fourier Tracer        — draw a closed curve, output the spinning epicycles that generate it
+[tool]  Fourier Tracer        — draw a closed curve, output the spinning epicycles that generate it  ✅
 [art]   Reaction-Diffusion    — Turing patterns simulating the spots on a leopard's skin
 [story] The Shade Balls       — dumping 96 million black spheres into a reservoir to stop chemistry
 [game]  Skyblock Economist    — crash the virtual economy with an automated mob farm
