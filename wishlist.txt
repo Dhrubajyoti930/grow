@@ -26,7 +26,7 @@
 [story] The Double Slit       — an electron acts as a wave until the universe catches it looking  ✅
 [game]  End Crystal Bomber    — chaotic, explosive combat meta relying on indestructible crystals  ✅
 [tool]  Fourier Tracer        — draw a closed curve, output the spinning epicycles that generate it  ✅
-[art]   Reaction-Diffusion    — Turing patterns simulating the spots on a leopard's skin
+[art]   Reaction-Diffusion    — Turing patterns simulating the spots on a leopard's skin  ✅
 [story] The Shade Balls       — dumping 96 million black spheres into a reservoir to stop chemistry
 [game]  Skyblock Economist    — crash the virtual economy with an automated mob farm
 [tool]  Eigenvalue Finder     — visually locate vectors that only scale during a transformation

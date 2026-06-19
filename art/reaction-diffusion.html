@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reaction-Diffusion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #0a0a0a; color: #e0e0e0; font-family: 'Space Mono', monospace; overflow: hidden; }
+        canvas { display: block; image-rendering: pixelated; width: 100vw; height: 100vh; cursor: crosshair; }
+        .ui { position: absolute; top: 20px; left: 20px; z-index: 10; pointer-events: none; }
+        a { color: #555; text-decoration: none; font-size: 12px; transition: 0.3s; pointer-events: auto; }
+        a:hover { color: #fff; }
+        h1 { font-size: 14px; margin: 20px 0 0 0; letter-spacing: 2px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+<div class="ui">
+    <a href="../index.html">← /grow</a>
+    <h1>Reaction-Diffusion</h1>
+</div>
+
+<canvas id="c"></canvas>
+
+<script>
+    const canvas = document.getElementById('c');
+    const gl = canvas.getContext('webgl');
+
+    let width, height;
+    let buffer1, buffer2;
+    let currentBuffer;
+
+    const vs = `attribute vec2 p; void main() { gl_Position = vec4(p, 0.0, 1.0); }`;
+    const fs = `
+        precision highp float;
+        uniform vec2 res;
+        uniform sampler2D tex;
+        uniform vec2 mouse;
+        uniform float mouseDown;
+        void main() {
+            vec2 uv = gl_FragCoord.xy / res;
+            vec2 step = 1.0 / res;
+            vec2 feedKill = vec2(0.037, 0.06);
+            
+            vec2 center = texture2D(tex, uv).rg;
+            vec2 lap = vec2(0.0);
+            lap += texture2D(tex, uv + vec2(step.x, 0.0)).rg * 0.2;
+            lap += texture2D(tex, uv - vec2(step.x, 0.0)).rg * 0.2;
+            lap += texture2D(tex, uv + vec2(0.0, step.y)).rg * 0.2;
+            lap += texture2D(tex, uv - vec2(0.0, step.y)).rg * 0.2;
+            lap += texture2D(tex, uv + step).rg * 0.05;
+            lap += texture2D(tex, uv - step).rg * 0.05;
+            lap -= center;
+
+            float reaction = center.r * center.g * center.g;
+            vec2 delta = vec2(
+                1.0 * lap.r - reaction + feedKill.x * (1.0 - center.r),
+                0.5 * lap.g + reaction - (feedKill.x + feedKill.y) * center.g
+            );
+
+            vec2 next = center + delta;
+            if(mouseDown > 0.5 && length(gl_FragCoord.xy - mouse) < 20.0) next.g = 1.0;
+            gl_FragColor = vec4(clamp(next, 0.0, 1.0), 0.0, 1.0);
+        }
+    `;
+
+    function createShader(gl, type, source) {
+        const s = gl.createShader(type);
+        gl.shaderSource(s, source);
+        gl.compileShader(s);
+        return s;
+    }
+
+    const prog = gl.createProgram();
+    gl.attachShader(prog, createShader(gl, gl.VERTEX_SHADER, vs));
+    gl.attachShader(prog, createShader(gl, gl.FRAGMENT_SHADER, fs));
+    gl.linkProgram(prog);
+    gl.useProgram(prog);
+
+    const posLoc = gl.getAttribLocation(prog, "p");
+    const resLoc = gl.getUniformLocation(prog, "res");
+    const mouseLoc = gl.getUniformLocation(prog, "mouse");
+    const mdLoc = gl.getUniformLocation(prog, "mouseDown");
+
+    const buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(posLoc);
+    gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+
+    let mouse = [0,0], mouseDown = 0;
+    window.onmousemove = e => { mouse = [e.clientX, window.innerHeight - e.clientY]; };
+    window.onmousedown = () => mouseDown = 1;
+    window.onmouseup = () => mouseDown = 0;
+
+    function resize() {
+        width = canvas.width = window.innerWidth / 2;
+        height = canvas.height = window.innerHeight / 2;
+        gl.viewport(0, 0, width, height);
+        const data = new Float32Array(width * height * 4);
+        for(let i=0; i<data.length; i+=4) { data[i] = 1.0; if(Math.random() > 0.99) data[i+1] = 1.0; }
+        buffer1 = createTex(data);
+        buffer2 = createTex(data);
+        currentBuffer = buffer1;
+    }
+
+    function createTex(data) {
+        const tex = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, tex);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.FLOAT, data);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+        return tex;
+    }
+
+    const fb = gl.createFramebuffer();
+    function render() {
+        gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, currentBuffer === buffer1 ? buffer2 : buffer1);
+        gl.uniform2f(resLoc, width, height);
+        gl.uniform2f(mouseLoc, mouse[0]/2, mouse[1]/2);
+        gl.uniform1f(mdLoc, mouseDown);
+        gl.bindTexture(gl.TEXTURE_2D, currentBuffer);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        currentBuffer = currentBuffer === buffer1 ? buffer2 : buffer1;
+        
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        gl.bindTexture(gl.TEXTURE_2D, currentBuffer);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        requestAnimationFrame(render);
+    }
+
+    gl.getExtension('OES_texture_float');
+    resize();
+    render();
+</script>
+</body>
+</html>
