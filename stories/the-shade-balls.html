@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Shade Balls</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --accent: #222;
+            --text: #e0e0e0;
+            --ball: #1a1a1a;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #nav {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+        }
+
+        a { color: #666; text-decoration: none; font-size: 0.8rem; letter-spacing: 2px; }
+        a:hover { color: #fff; }
+
+        .container {
+            max-width: 600px;
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        h1 { font-weight: 300; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 40px; }
+
+        .story-text {
+            line-height: 1.8;
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+
+        #reservoir {
+            width: 300px;
+            height: 200px;
+            background: #051420;
+            border: 4px solid #333;
+            margin: 0 auto 30px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+
+        .ball {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle at 4px 4px, #444, #000);
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        button {
+            background: transparent;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 15px 30px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        button:hover { background: #111; border-color: #fff; }
+    </style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="../index.html">← /grow</a>
+</div>
+
+<div class="container">
+    <h1>The Shade Balls</h1>
+    <div class="story-text" id="story">
+        The reservoir sits still, a basin of light-hungry water. Sunlight strikes the surface, triggering a chemical reaction—the synthesis of bromate, a carcinogen born of chlorine and bromide. The solution is simple: 96 million black spheres. They rain down, a cascade of obsidian, choking the light, ending the chemistry.
+    </div>
+
+    <div id="reservoir" onclick="dropBall()"></div>
+    <button onclick="fillAll()">Release 96 Million</button>
+</div>
+
+<script>
+    const reservoir = document.getElementById('reservoir');
+    
+    function dropBall() {
+        const b = document.createElement('div');
+        b.className = 'ball';
+        b.style.left = Math.random() * (reservoir.offsetWidth - 12) + 'px';
+        b.style.top = '-20px';
+        reservoir.appendChild(b);
+        
+        let pos = -20;
+        let limit = Math.random() * 150 + 20;
+        
+        function fall() {
+            if (pos < limit) {
+                pos += 5;
+                b.style.top = pos + 'px';
+                requestAnimationFrame(fall);
+            }
+        }
+        fall();
+    }
+
+    function fillAll() {
+        for(let i=0; i<60; i++) {
+            setTimeout(dropBall, i * 50);
+        }
+        document.getElementById('story').innerText = "The surface is veiled. The reaction stalls. The water remains dormant, silent, and shielded. The black ocean is complete.";
+    }
+</script>
+
+</body>
+</html>
