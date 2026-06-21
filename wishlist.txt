@@ -28,7 +28,7 @@
 [tool]  Fourier Tracer        — draw a closed curve, output the spinning epicycles that generate it  ✅
 [art]   Reaction-Diffusion    — Turing patterns simulating the spots on a leopard's skin  ✅
 [story] The Shade Balls       — dumping 96 million black spheres into a reservoir to stop chemistry  ✅
-[game]  Skyblock Economist    — crash the virtual economy with an automated mob farm
+[game]  Skyblock Economist    — crash the virtual economy with an automated mob farm  ✅
 [tool]  Eigenvalue Finder     — visually locate vectors that only scale during a transformation
 [art]   Double Pendulum       — long-exposure light painting of chaotic swinging motion
 [story] The Centennial Light  — a bulb in a California fire station that has burned for 120 years

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyblock Economist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --panel: #16161a; --accent: #00f2ff; --text: #e0e0e0; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'VT323', monospace; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        #back-link { position: absolute; top: 20px; left: 20px; color: var(--accent); text-decoration: none; font-size: 1.2rem; }
+        .container { width: 90%; max-width: 600px; text-align: center; margin-top: 80px; }
+        .stats { background: var(--panel); padding: 20px; border: 2px solid #333; border-radius: 8px; margin-bottom: 20px; }
+        .currency { font-size: 2rem; color: #ffd700; margin: 10px 0; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        button { background: #222; color: #fff; border: 2px solid var(--accent); padding: 15px; cursor: pointer; font-family: 'Press Start 2P', cursive; font-size: 0.7rem; transition: 0.3s; }
+        button:hover:not(:disabled) { background: var(--accent); color: #000; }
+        button:disabled { border-color: #555; color: #555; cursor: not-allowed; }
+        .log { margin-top: 20px; height: 100px; overflow-y: auto; border: 1px solid #333; padding: 10px; font-size: 0.9rem; color: #888; }
+        h1 { font-family: 'Press Start 2P', cursive; font-size: 1.2rem; color: var(--accent); }
+    </style>
+</head>
+<body>
+
+<a id="back-link" href="../index.html">← /grow</a>
+
+<div class="container">
+    <h1>Skyblock Economist</h1>
+    <div class="stats">
+        <div>COINS: <span id="coins">0</span></div>
+        <div class="currency" id="money">$0.00</div>
+        <div>MARKET SATURATION: <span id="sat">0</span>%</div>
+    </div>
+
+    <div class="grid">
+        <button onclick="manualKill()">SLAY MOB</button>
+        <button onclick="buyFarm()">AUTO-FARM<br><span id="cost">Cost: $15</span></button>
+    </div>
+
+    <div class="log" id="log">Welcome to the void. Farm to crash the market.</div>
+</div>
+
+<script>
+    let coins = 0;
+    let money = 0;
+    let farms = 0;
+    let farmCost = 15;
+    let saturation = 0;
+
+    const coinsEl = document.getElementById('coins');
+    const moneyEl = document.getElementById('money');
+    const costEl = document.getElementById('cost');
+    const satEl = document.getElementById('sat');
+    const logEl = document.getElementById('log');
+
+    function update() {
+        coinsEl.innerText = Math.floor(coins);
+        moneyEl.innerText = '$' + money.toFixed(2);
+        costEl.innerText = 'Cost: $' + Math.floor(farmCost);
+        satEl.innerText = saturation.toFixed(1);
+    }
+
+    function log(msg) {
+        logEl.innerHTML = `> ${msg}<br>${logEl.innerHTML}`;
+    }
+
+    function manualKill() {
+        coins += 1;
+        money += (0.5 * (1 - (saturation / 100)));
+        saturation += 0.1;
+        update();
+    }
+
+    function buyFarm() {
+        if (money >= farmCost) {
+            money -= farmCost;
+            farms++;
+            farmCost *= 1.5;
+            log("Farm automated. Market taking strain.");
+            update();
+        }
+    }
+
+    setInterval(() => {
+        if (farms > 0) {
+            coins += (farms * 0.5);
+            money += (farms * 0.2 * (1 - (saturation / 100)));
+            saturation += 0.05;
+            if (saturation > 100) saturation = 100;
+            update();
+        }
+    }, 1000);
+</script>
+</body>
+</html>
