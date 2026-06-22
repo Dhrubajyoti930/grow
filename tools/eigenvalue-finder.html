@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eigenvalue Finder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --accent: #00f2ff; --panel: #16161a; --text: #e0e0e0; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; overflow: hidden; display: flex; flex-direction: column; align-items: center; }
+        a { color: var(--accent); text-decoration: none; font-size: 0.9rem; position: absolute; top: 20px; left: 20px; z-index: 10; }
+        canvas { touch-action: none; cursor: crosshair; margin-top: 60px; border: 1px solid #333; background: #000; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .ui { position: absolute; bottom: 20px; text-align: center; background: var(--panel); padding: 15px; border-radius: 8px; border: 1px solid #333; pointer-events: none; }
+        .matrix { display: grid; grid-template-columns: repeat(2, 40px); gap: 10px; margin-bottom: 10px; font-weight: bold; color: var(--accent); }
+    </style>
+</head>
+<body>
+    <a href="../index.html">← /grow</a>
+    <canvas id="cvs"></canvas>
+    <div class="ui">
+        <div>Transformation Matrix</div>
+        <div class="matrix" id="matDisplay"></div>
+        <small>Drag to find vectors that remain collinear with origin.</small>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cvs');
+        const ctx = canvas.getContext('2d');
+        const matDisplay = document.getElementById('matDisplay');
+        
+        let width, height;
+        const M = [1.5, 0.5, 0.5, 1.2];
+        let mouse = { x: 100, y: 100 };
+
+        function resize() {
+            width = canvas.width = Math.min(window.innerWidth - 40, 600);
+            height = canvas.height = 400;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        canvas.addEventListener('mousemove', e => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left - width/2;
+            mouse.y = -(e.clientY - rect.top - height/2);
+        });
+
+        function draw() {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, width, height);
+            ctx.translate(width/2, height/2);
+            ctx.scale(1, -1);
+
+            // Draw Grid
+            ctx.strokeStyle = '#222';
+            ctx.beginPath();
+            for(let i=-200; i<200; i+=40) { ctx.moveTo(i, -200); ctx.lineTo(i, 200); ctx.moveTo(-200, i); ctx.lineTo(200, i); }
+            ctx.stroke();
+
+            // Transform vector
+            const vx = mouse.x, vy = mouse.y;
+            const tx = M[0] * vx + M[1] * vy;
+            const ty = M[2] * vx + M[3] * vy;
+
+            // Check if collinear (Cross product near 0)
+            const cross = Math.abs(vx * ty - vy * tx);
+            const isEigen = cross < 500;
+
+            // Draw Original
+            ctx.strokeStyle = '#555';
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(vx, vy); ctx.stroke();
+
+            // Draw Transformed
+            ctx.strokeStyle = isEigen ? '#00f2ff' : '#ff3e3e';
+            ctx.lineWidth = 4;
+            ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(tx, ty); ctx.stroke();
+            
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            requestAnimationFrame(draw);
+        }
+
+        matDisplay.innerHTML = `<span>${M[0]}</span><span>${M[1]}</span><span>${M[2]}</span><span>${M[3]}</span>`;
+        draw();
+    </script>
+</body>
+</html>
