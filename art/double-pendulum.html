@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Double Pendulum</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #0a0a0c; color: #fff; font-family: 'Inter', sans-serif; overflow: hidden; }
+        canvas { display: block; }
+        #ui { position: absolute; top: 20px; left: 20px; z-index: 10; pointer-events: none; }
+        a { color: #555; text-decoration: none; font-size: 12px; letter-spacing: 1px; transition: color 0.3s; pointer-events: auto; }
+        a:hover { color: #fff; }
+        .controls { position: absolute; bottom: 20px; width: 100%; text-align: center; color: #333; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+<div id="ui">
+    <a href="../index.html">← /grow</a>
+</div>
+
+<div class="controls">Chaos is a ladder</div>
+
+<canvas id="canvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    let r1 = 150, r2 = 150;
+    let m1 = 20, m2 = 20;
+    let a1 = Math.PI / 2, a2 = Math.PI / 2;
+    let a1_v = 0, a2_v = 0;
+    let g = 1;
+
+    const trail = [];
+    const maxTrail = 200;
+
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    function draw() {
+        ctx.fillStyle = 'rgba(10, 10, 12, 0.15)';
+        ctx.fillRect(0, 0, width, height);
+
+        let num1 = -g * (2 * m1 + m2) * Math.sin(a1);
+        let num2 = -m2 * g * Math.sin(a1 - 2 * a2);
+        let num3 = -2 * Math.sin(a1 - a2) * m2 * (a2_v * a2_v * r2 + a1_v * a1_v * r1 * Math.cos(a1 - a2));
+        let den = r1 * (2 * m1 + m2 - m2 * Math.cos(2 * a1 - 2 * a2));
+        let a1_a = (num1 + num2 + num3) / den;
+
+        num1 = 2 * Math.sin(a1 - a2);
+        num2 = (a1_v * a1_v * r1 * (m1 + m2));
+        num3 = g * (m1 + m2) * Math.cos(a1);
+        let num4 = a2_v * a2_v * r2 * m2 * Math.cos(a1 - a2);
+        den = r2 * (2 * m1 + m2 - m2 * Math.cos(2 * a1 - 2 * a2));
+        let a2_a = (num1 * (num2 + num3 + num4)) / den;
+
+        a1_v += a1_a;
+        a2_v += a2_a;
+        a1 += a1_v;
+        a2 += a2_v;
+
+        a1_v *= 0.999;
+        a2_v *= 0.999;
+
+        let x1 = r1 * Math.sin(a1) + width / 2;
+        let y1 = r1 * Math.cos(a1) + height / 3;
+        let x2 = x1 + r2 * Math.sin(a2);
+        let y2 = y1 + r2 * Math.cos(a2);
+
+        trail.push({x: x2, y: y2});
+        if (trail.length > maxTrail) trail.shift();
+
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+        ctx.lineWidth = 1;
+        for (let i = 0; i < trail.length - 1; i++) {
+            ctx.moveTo(trail[i].x, trail[i].y);
+            ctx.lineTo(trail[i+1].x, trail[i+1].y);
+        }
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.moveTo(width / 2, height / 3);
+        ctx.lineTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+
+        ctx.fillStyle = '#fff';
+        ctx.beginPath();
+        ctx.arc(x1, y1, 4, 0, Math.PI * 2);
+        ctx.arc(x2, y2, 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        requestAnimationFrame(draw);
+    }
+
+    draw();
+</script>
+</body>
+</html>

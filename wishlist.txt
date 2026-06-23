@@ -30,7 +30,7 @@
 [story] The Shade Balls       — dumping 96 million black spheres into a reservoir to stop chemistry  ✅
 [game]  Skyblock Economist    — crash the virtual economy with an automated mob farm  ✅
 [tool]  Eigenvalue Finder     — visually locate vectors that only scale during a transformation  ✅
-[art]   Double Pendulum       — long-exposure light painting of chaotic swinging motion
+[art]   Double Pendulum       — long-exposure light painting of chaotic swinging motion  ✅
 [story] The Centennial Light  — a bulb in a California fire station that has burned for 120 years
 [game]  TNT Cannon Crafter    — engineer redstone artillery to breach obsidian walls
 [tool]  Basis Transformer     — drag basis vectors to see how the entire 2D plane morphs
