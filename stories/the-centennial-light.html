@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Centennial Light</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=Libre+Baskerville:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --text: #e0e0e0;
+            --accent: #ffcc33;
+            --dim: #666;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Libre Baskerville', serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        nav { width: 100%; max-width: 600px; margin-bottom: 2rem; }
+        nav a { color: var(--dim); text-decoration: none; font-family: 'Courier Prime', monospace; font-size: 0.9rem; }
+        nav a:hover { color: var(--accent); }
+
+        article { max-width: 600px; }
+        h1 { font-family: 'Courier Prime', monospace; color: var(--accent); margin-bottom: 2rem; border-bottom: 1px solid #333; padding-bottom: 1rem; }
+
+        #bulb-container {
+            text-align: center;
+            margin: 3rem 0;
+            position: relative;
+        }
+
+        #bulb-glow {
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(255,204,51,0.4) 0%, rgba(255,204,51,0) 70%);
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            filter: blur(20px);
+            animation: flicker 4s infinite alternate;
+        }
+
+        @keyframes flicker { 0%, 100% { opacity: 0.6; } 50% { opacity: 0.9; } }
+
+        .pixel-art {
+            font-family: monospace;
+            white-space: pre;
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(255,204,51,0.5);
+            font-size: 8px;
+            line-height: 1;
+        }
+
+        p { margin-bottom: 1.5rem; }
+        .date { font-family: 'Courier Prime', monospace; color: var(--accent); font-size: 0.8rem; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="../index.html">← /grow</a>
+    </nav>
+
+    <article>
+        <h1>The Centennial Light</h1>
+        
+        <div id="bulb-container">
+            <div id="bulb-glow"></div>
+            <div class="pixel-art">
+     .---.
+    /     \
+   | () () |
+    \  ^  /
+     '---'
+      | |
+     _|_|_
+            </div>
+        </div>
+
+        <p class="date">LIVERMORE, CALIFORNIA — 1901 TO PRESENT</p>
+        
+        <p>It is not a miracle, though the engineers who inspect it speak as if it were. It is simply a carbon filament, coiled by hand in a factory before the world knew the shape of the coming century.</p>
+        
+        <p>In the rafters of Fire Station No. 6, it has outlived the men who installed it, the trucks that roared beneath it, and the very concept of the modern incandescent bulb. It burns with a dim, weary amber—a stubborn refusal to succumb to the planned obsolescence of the future.</p>
+        
+        <p>Sometimes, the power cuts. The town plunges into darkness, the hum of the fire station goes silent, and the bulb sighs into blackness. But when the current returns, it wakes. Always. It does not flicker out of exhaustion; it persists out of habit.</p>
+        
+        <p>It is the longest-burning light in history, a solitary beacon watching a world that moves too fast to notice a stationary, glowing soul.</p>
+    </article>
+
+</body>
+</html>
