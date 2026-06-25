@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TNT Cannon Crafter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #1a1a1a; --panel: #2d2d2d; --accent: #ff4500; --text: #e0e0e0; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Roboto', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        #back-link { position: absolute; top: 20px; left: 20px; color: var(--accent); text-decoration: none; font-family: 'Press Start 2P', cursive; font-size: 10px; }
+        .game-container { margin-top: 60px; width: 90%; max-width: 600px; background: var(--panel); padding: 20px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; }
+        h1 { font-family: 'Press Start 2P', cursive; font-size: 1.2rem; color: var(--accent); margin-bottom: 20px; }
+        #canvas { width: 100%; height: 200px; background: #000; border: 4px solid #444; margin-bottom: 20px; position: relative; overflow: hidden; }
+        .stats { display: flex; justify-content: space-between; margin-bottom: 20px; font-family: monospace; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        button { padding: 15px; border: none; background: #444; color: white; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        button:hover { background: var(--accent); }
+        .wall { position: absolute; right: 20px; top: 50px; width: 40px; height: 100px; background: #333; border: 2px solid #555; }
+    </style>
+</head>
+<body>
+    <a id="back-link" href="../index.html">← /grow</a>
+    <div class="game-container">
+        <h1>TNT CRAFTER</h1>
+        <div id="canvas">
+            <div id="cannon" style="position:absolute; left:20px; bottom:20px; width:60px; height:30px; background:var(--accent);"></div>
+            <div class="wall" id="wall"></div>
+        </div>
+        <div class="stats">
+            <span>Power: <span id="pwr">1</span></span>
+            <span>Wall HP: <span id="hp">100</span></span>
+        </div>
+        <div class="controls">
+            <button onclick="upgrade()">Upgrade Powder</button>
+            <button onclick="fire()">FIRE TNT</button>
+        </div>
+    </div>
+    <script>
+        let power = 1;
+        let hp = 100;
+        const wall = document.getElementById('wall');
+        const hpText = document.getElementById('hp');
+        const pwrText = document.getElementById('pwr');
+
+        function upgrade() {
+            power += 1;
+            pwrText.innerText = power;
+        }
+
+        function fire() {
+            const tnt = document.createElement('div');
+            tnt.style.cssText = `position:absolute; left:80px; bottom:30px; width:20px; height:20px; background:red; transition:all ${1/power}s linear;`;
+            document.getElementById('canvas').appendChild(tnt);
+            
+            setTimeout(() => {
+                tnt.style.left = 'calc(100% - 60px)';
+                tnt.style.bottom = '80px';
+            }, 10);
+
+            setTimeout(() => {
+                tnt.remove();
+                hp -= (power * 5);
+                if(hp <= 0) {
+                    hp = 100;
+                    alert("WALL BREACHED!");
+                }
+                hpText.innerText = hp;
+                wall.style.opacity = hp/100;
+            }, 1000 / power);
+        }
+    </script>
+</body>
+</html>

@@ -32,7 +32,7 @@
 [tool]  Eigenvalue Finder     — visually locate vectors that only scale during a transformation  ✅
 [art]   Double Pendulum       — long-exposure light painting of chaotic swinging motion  ✅
 [story] The Centennial Light  — a bulb in a California fire station that has burned for 120 years  ✅
-[game]  TNT Cannon Crafter    — engineer redstone artillery to breach obsidian walls
+[game]  TNT Cannon Crafter    — engineer redstone artillery to breach obsidian walls  ✅
 [tool]  Basis Transformer     — drag basis vectors to see how the entire 2D plane morphs
 [art]   Gyroid Surfaces       — infinitely connected, triply periodic minimal surfaces
 [story] Monty Hall Problem    — why switching doors gives you a 66% chance of winning the car
