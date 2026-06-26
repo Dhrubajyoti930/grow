@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Basis Transformer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #0a0a0a; font-family: 'Space Grotesk', sans-serif; color: #fff; }
+        #nav { position: absolute; top: 20px; left: 20px; z-index: 10; }
+        a { color: #666; text-decoration: none; font-size: 14px; transition: color 0.3s; }
+        a:hover { color: #fff; }
+        canvas { display: block; touch-action: none; cursor: crosshair; }
+        .ui { position: absolute; bottom: 20px; left: 20px; pointer-events: none; }
+        h1 { font-size: 18px; font-weight: 500; letter-spacing: 2px; margin: 0; text-transform: uppercase; }
+        p { font-size: 12px; color: #444; margin: 5px 0 0 0; }
+    </style>
+</head>
+<body>
+
+<div id="nav"><a href="../index.html">← /grow</a></div>
+<div class="ui">
+    <h1>Basis Transformer</h1>
+    <p>Drag the endpoints of the basis vectors</p>
+</div>
+<canvas id="canvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, centerX, centerY;
+    
+    let iVec = { x: 100, y: 0 };
+    let jVec = { x: 0, y: -100 };
+    let dragging = null;
+
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        centerX = width / 2;
+        centerY = height / 2;
+    }
+
+    function drawGrid() {
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = '#1a1a1a';
+        for (let x = 0; x < width; x += 50) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke(); }
+        for (let y = 0; y < height; y += 50) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke(); }
+    }
+
+    function drawTransformedGrid() {
+        ctx.lineWidth = 0.5;
+        ctx.strokeStyle = '#333';
+        for (let x = -10; x <= 10; x++) {
+            ctx.beginPath();
+            ctx.moveTo(centerX + x * iVec.x - 10 * jVec.x, centerY + x * iVec.y - 10 * jVec.y);
+            ctx.lineTo(centerX + x * iVec.x + 10 * jVec.x, centerY + x * iVec.y + 10 * jVec.y);
+            ctx.stroke();
+        }
+        for (let y = -10; y <= 10; y++) {
+            ctx.beginPath();
+            ctx.moveTo(centerX + y * jVec.x - 10 * iVec.x, centerY + y * jVec.y - 10 * iVec.y);
+            ctx.lineTo(centerX + y * jVec.x + 10 * iVec.x, centerY + y * jVec.y + 10 * iVec.y);
+            ctx.stroke();
+        }
+    }
+
+    function drawVector(v, color, label) {
+        ctx.beginPath();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 4;
+        ctx.moveTo(centerX, centerY);
+        ctx.lineTo(centerX + v.x, centerY + v.y);
+        ctx.stroke();
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(centerX + v.x, centerY + v.y, 8, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        drawGrid();
+        drawTransformedGrid();
+        drawVector(iVec, '#ff3e3e', 'i');
+        drawVector(jVec, '#3e8eff', 'j');
+        requestAnimationFrame(animate);
+    }
+
+    function getPos(e) {
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: clientX - centerX, y: clientY - centerY };
+    }
+
+    canvas.addEventListener('mousedown', e => {
+        const p = getPos(e);
+        if (Math.hypot(p.x - iVec.x, p.y - iVec.y) < 30) dragging = iVec;
+        else if (Math.hypot(p.x - jVec.x, p.y - jVec.y) < 30) dragging = jVec;
+    });
+
+    window.addEventListener('mousemove', e => {
+        if (dragging) {
+            const p = getPos(e);
+            dragging.x = p.x;
+            dragging.y = p.y;
+        }
+    });
+
+    window.addEventListener('mouseup', () => dragging = null);
+    canvas.addEventListener('touchstart', e => {
+        const p = getPos(e);
+        if (Math.hypot(p.x - iVec.x, p.y - iVec.y) < 50) dragging = iVec;
+        else if (Math.hypot(p.x - jVec.x, p.y - jVec.y) < 50) dragging = jVec;
+    });
+    window.addEventListener('touchmove', e => { if (dragging) { const p = getPos(e); dragging.x = p.x; dragging.y = p.y; } });
+    window.addEventListener('touchend', () => dragging = null);
+
+    window.addEventListener('resize', resize);
+    resize();
+    animate();
+</script>
+</body>
+</html>
