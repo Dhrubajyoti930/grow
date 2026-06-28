@@ -35,7 +35,7 @@
 [game]  TNT Cannon Crafter    — engineer redstone artillery to breach obsidian walls  ✅
 [tool]  Basis Transformer     — drag basis vectors to see how the entire 2D plane morphs  ✅
 [art]   Gyroid Surfaces       — infinitely connected, triply periodic minimal surfaces  ✅
-[story] Monty Hall Problem    — why switching doors gives you a 66% chance of winning the car
+[story] Monty Hall Problem    — why switching doors gives you a 66% chance of winning the car  ✅
 [game]  MLG Water Drop        — jump from the skybox, land in a single block of water
 [tool]  Complex Mapper        — see how a grid transforms under complex mapping functions
 [art]   Fractal Brownian      — generating hyper-realistic, jagged cloud formations
