@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MLG Water Drop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; padding: 0; background: #0a0a0c; color: #fff; font-family: 'Press Start 2P', cursive; overflow: hidden; touch-action: none; }
+        #game-ui { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; }
+        #back-link { position: absolute; top: 20px; left: 20px; color: #555; text-decoration: none; font-size: 10px; z-index: 20; }
+        #back-link:hover { color: #00ffcc; }
+        canvas { display: block; image-rendering: pixelated; }
+        .hud { position: absolute; top: 20px; text-align: center; pointer-events: none; }
+        #msg { margin-top: 20px; color: #00ffcc; font-size: 12px; }
+        button { background: #1a1a1a; border: 2px solid #00ffcc; color: #00ffcc; padding: 15px 30px; font-family: 'Press Start 2P'; cursor: pointer; margin-top: 20px; }
+        button:hover { background: #00ffcc; color: #000; }
+    </style>
+</head>
+<body>
+    <a href="../index.html" id="back-link">← /grow</a>
+    <div id="game-ui">
+        <div id="hud" class="hud">
+            <h1 id="title">MLG DROP</h1>
+            <div id="msg">TAP TO MLG</div>
+            <button id="start-btn">START</button>
+        </div>
+    </div>
+    <canvas id="game"></canvas>
+
+    <script>
+        const canvas = document.getElementById('game');
+        const ctx = canvas.getContext('2d');
+        const ui = document.getElementById('game-ui');
+        const startBtn = document.getElementById('start-btn');
+        const hud = document.getElementById('hud');
+
+        let height = 0, velocity = 0, gameActive = false, score = 0;
+        let waterY = 2000;
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function draw() {
+            ctx.fillStyle = '#0a0a0c';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if(gameActive) {
+                velocity += 0.5;
+                height -= velocity;
+                
+                ctx.fillStyle = '#444';
+                for(let i=0; i<10; i++) ctx.fillRect(canvas.width/2 - 20, height + i*100, 40, 40);
+                
+                ctx.fillStyle = '#00ccff';
+                ctx.fillRect(canvas.width/2 - 30, height + waterY, 60, 60);
+
+                if (height + waterY > canvas.height - 100 && height + waterY < canvas.height - 50) {
+                    if (velocity < 25) win(); else lose("TOO FAST!");
+                }
+                if (height + waterY < -100) lose("MISSED!");
+            }
+            requestAnimationFrame(draw);
+        }
+
+        function win() {
+            gameActive = false;
+            document.getElementById('msg').innerHTML = "MLG SUCCESS!";
+            ui.style.display = 'flex';
+        }
+
+        function lose(reason) {
+            gameActive = false;
+            document.getElementById('msg').innerHTML = reason;
+            ui.style.display = 'flex';
+        }
+
+        startBtn.onclick = () => {
+            height = 0; velocity = 0;
+            gameActive = true;
+            ui.style.display = 'none';
+        };
+
+        window.addEventListener('mousedown', () => { if(gameActive) velocity -= 15; });
+        draw();
+    </script>
+</body>
+</html>
