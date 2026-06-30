@@ -37,7 +37,7 @@
 [art]   Gyroid Surfaces       — infinitely connected, triply periodic minimal surfaces  ✅
 [story] Monty Hall Problem    — why switching doors gives you a 66% chance of winning the car  ✅
 [game]  MLG Water Drop        — jump from the skybox, land in a single block of water  ✅
-[tool]  Complex Mapper        — see how a grid transforms under complex mapping functions
+[tool]  Complex Mapper        — see how a grid transforms under complex mapping functions  ✅
 [art]   Fractal Brownian      — generating hyper-realistic, jagged cloud formations
 [story] Closed Timelike Curve — how general relativity makes time travel mathematically sound
 [game]  Blind Speedrun        — memorize audio cues to beat the final boss without looking

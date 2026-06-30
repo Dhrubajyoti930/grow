@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complex Mapper</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --panel: #16161a;
+            --accent: #00ff9d;
+            --text: #e0e0e0;
+        }
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Space Mono', monospace;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+        a { color: var(--accent); text-decoration: none; font-size: 0.8rem; letter-spacing: 1px; }
+        .main-container { flex: 1; display: flex; position: relative; }
+        canvas { flex: 1; cursor: crosshair; }
+        .controls {
+            width: 300px;
+            background: var(--panel);
+            padding: 20px;
+            border-left: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        select, input {
+            width: 100%;
+            background: #000;
+            border: 1px solid #444;
+            color: var(--accent);
+            padding: 10px;
+            outline: none;
+            font-family: inherit;
+        }
+        label { font-size: 0.7rem; text-transform: uppercase; color: #888; }
+        .hint { font-size: 0.7rem; color: #555; margin-top: auto; }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="../index.html">← /grow</a>
+    <div style="font-weight: 700; font-size: 1.2rem;">COMPLEX_MAPPER</div>
+</header>
+
+<div class="main-container">
+    <canvas id="canvas"></canvas>
+    <div class="controls">
+        <label>Transformation Function</label>
+        <select id="funcSelect">
+            <option value="z2">f(z) = z²</option>
+            <option value="exp">f(z) = exp(z)</option>
+            <option value="sin">f(z) = sin(z)</option>
+            <option value="inv">f(z) = 1/z</option>
+            <option value="z3">f(z) = z³ + z</option>
+        </select>
+        <label>Grid Density</label>
+        <input type="range" id="density" min="10" max="50" value="25">
+        <div class="hint">Move mouse over the grid to observe local coordinate transformation.</div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const funcSelect = document.getElementById('funcSelect');
+    const densityInput = document.getElementById('density');
+    
+    let width, height;
+    let mouse = { x: 0, y: 0 };
+
+    function resize() {
+        width = canvas.width = canvas.offsetWidth;
+        height = canvas.height = canvas.offsetHeight;
+    }
+    window.addEventListener('resize', resize);
+    canvas.addEventListener('mousemove', e => {
+        mouse.x = (e.clientX / width - 0.5) * 4;
+        mouse.y = -(e.clientY / height - 0.5) * 4;
+    });
+    resize();
+
+    const functions = {
+        z2: (z) => ({ re: z.re*z.re - z.im*z.im, im: 2*z.re*z.im }),
+        exp: (z) => ({ re: Math.exp(z.re) * Math.cos(z.im), im: Math.exp(z.re) * Math.sin(z.im) }),
+        sin: (z) => ({ re: Math.sin(z.re) * Math.cosh(z.im), im: Math.cos(z.re) * Math.sinh(z.im) }),
+        inv: (z) => { 
+            let d = z.re*z.re + z.im*z.im;
+            return { re: z.re/d, im: -z.im/d };
+        },
+        z3: (z) => ({ re: z.re**3 - 3*z.re*z.im**2 + z.re, im: 3*z.re**2*z.im - z.im**3 + z.im })
+    };
+
+    function draw() {
+        ctx.fillStyle = '#0a0a0c';
+        ctx.fillRect(0, 0, width, height);
+        
+        const N = parseInt(densityInput.value);
+        const scale = 100;
+        const centerX = width / 2;
+        const centerY = height / 2;
+
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 1;
+
+        for (let i = -N; i <= N; i++) {
+            ctx.beginPath();
+            for (let j = -N; j <= N; j++) {
+                let z = { re: i/5, im: j/5 };
+                let res = functions[funcSelect.value](z);
+                let x = res.re * scale + centerX;
+                let y = -res.im * scale + centerY;
+                if (j === -N) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            ctx.beginPath();
+            for (let j = -N; j <= N; j++) {
+                let z = { re: j/5, im: i/5 };
+                let res = functions[funcSelect.value](z);
+                let x = res.re * scale + centerX;
+                let y = -res.im * scale + centerY;
+                if (j === -N) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+</script>
+</body>
+</html>
