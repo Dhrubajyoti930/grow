@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fractal Brownian</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #0a0a0a; color: #fff; font-family: 'Inter', sans-serif; }
+        canvas { display: block; width: 100vw; height: 100vh; image-rendering: pixelated; }
+        .ui { position: absolute; top: 20px; left: 20px; z-index: 10; pointer-events: none; }
+        a { color: #666; text-decoration: none; font-size: 12px; letter-spacing: 1px; pointer-events: auto; transition: 0.3s; }
+        a:hover { color: #fff; }
+        .controls { position: absolute; bottom: 20px; right: 20px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 4px; backdrop-filter: blur(5px); font-size: 10px; text-transform: uppercase; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+
+<div class="ui">
+    <a href="../index.html">← /grow</a>
+</div>
+
+<div class="controls">Fractal Brownian Motion // Jagged Synthesis</div>
+
+<canvas id="c"></canvas>
+
+<script id="fs" type="x-shader/x-fragment">
+    precision highp float;
+    uniform vec2 u_res;
+    uniform float u_time;
+
+    // Hash function for pseudo-randomness
+    float hash(vec2 p) {
+        p = fract(p * vec2(123.34, 456.21));
+        p += dot(p, p + 45.32);
+        return fract(p.x * p.y);
+    }
+
+    // Value noise
+    float noise(vec2 p) {
+        vec2 i = floor(p);
+        vec2 f = fract(p);
+        f = f * f * (3.0 - 2.0 * f);
+        float a = hash(i);
+        float b = hash(i + vec2(1.0, 0.0));
+        float c = hash(i + vec2(0.0, 1.0));
+        float d = hash(i + vec2(1.0, 1.0));
+        return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+    }
+
+    // Fractal Brownian Motion
+    float fbm(vec2 p) {
+        float v = 0.0;
+        float amp = 0.5;
+        for (int i = 0; i < 6; i++) {
+            v += amp * noise(p);
+            p *= 2.05;
+            amp *= 0.5;
+        }
+        return v;
+    }
+
+    void main() {
+        vec2 uv = gl_FragCoord.xy / u_res.xy;
+        uv.x *= u_res.x / u_res.y;
+        
+        vec2 q = vec2(fbm(uv + u_time * 0.1), fbm(uv + vec2(1.0)));
+        vec2 r = vec2(fbm(uv + 1.0 + q + u_time * 0.05), fbm(uv + 5.2 + q));
+        
+        float f = fbm(uv + r);
+        
+        vec3 col = mix(vec3(0.05, 0.08, 0.12), vec3(0.9, 0.95, 1.0), clamp(f * 4.0, 0.0, 1.0));
+        col = mix(col, vec3(0.1, 0.1, 0.1), clamp(length(q), 0.0, 1.0));
+        
+        gl_FragColor = vec4(col, 1.0);
+    }
+</script>
+
+<script>
+    const canvas = document.getElementById('c');
+    const gl = canvas.getContext('webgl');
+    const program = gl.createProgram();
+
+    function createShader(gl, type, source) {
+        const s = gl.createShader(type);
+        gl.shaderSource(s, source);
+        gl.compileShader(s);
+        return s;
+    }
+
+    const vs = `attribute vec2 p; void main() { gl_Position = vec4(p, 0.0, 1.0); }`;
+    const fs = document.getElementById('fs').text;
+    gl.attachShader(program, createShader(gl, gl.VERTEX_SHADER, vs));
+    gl.attachShader(program, createShader(gl, gl.FRAGMENT_SHADER, fs));
+    gl.linkProgram(program);
+    gl.useProgram(program);
+
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+    const pos = gl.getAttribLocation(program, "p");
+    gl.enableVertexAttribArray(pos);
+    gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+
+    const resLoc = gl.getUniformLocation(program, "u_res");
+    const timeLoc = gl.getUniformLocation(program, "u_time");
+
+    function render(t) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        gl.uniform2f(resLoc, canvas.width, canvas.height);
+        gl.uniform1f(timeLoc, t * 0.001);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        requestAnimationFrame(render);
+    }
+    render(0);
+</script>
+
+</body>
+</html>
