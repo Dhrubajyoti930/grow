@@ -39,7 +39,7 @@
 [game]  MLG Water Drop        — jump from the skybox, land in a single block of water  ✅
 [tool]  Complex Mapper        — see how a grid transforms under complex mapping functions  ✅
 [art]   Fractal Brownian      — generating hyper-realistic, jagged cloud formations  ✅
-[story] Closed Timelike Curve — how general relativity makes time travel mathematically sound
+[story] Closed Timelike Curve — how general relativity makes time travel mathematically sound  ✅
 [game]  Blind Speedrun        — memorize audio cues to beat the final boss without looking
 [tool]  Taylor Series Graph   — add polynomial terms and watch them hug the sine wave
 [art]   Gravitational Lensing — bending a starry background texture around a black hole
