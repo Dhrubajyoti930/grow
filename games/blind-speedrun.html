@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Blind Speedrun</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --text: #e0e0e0; --accent: #00ff9d; --danger: #ff4757; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); color: var(--text); font-family: 'Space Mono', monospace; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; touch-action: manipulation; }
+        #back-link { position: absolute; top: 20px; left: 20px; color: var(--accent); text-decoration: none; font-size: 0.8rem; z-index: 10; }
+        #game-ui { text-align: center; max-width: 90%; }
+        h1 { font-family: 'Press Start 2P', cursive; font-size: 1.2rem; margin-bottom: 2rem; color: var(--accent); text-shadow: 0 0 10px rgba(0,255,157,0.3); }
+        #screen { width: 200px; height: 200px; border: 2px solid #333; margin: 0 auto 2rem; display: flex; align-items: center; justify-content: center; position: relative; background: radial-gradient(circle, #1a1a20, #0a0a0c); }
+        .pixel-heart { width: 40px; height: 40px; background: var(--accent); clip-path: polygon(50% 0%, 100% 35%, 80% 100%, 50% 80%, 20% 100%, 0% 35%); }
+        button { background: transparent; border: 2px solid var(--accent); color: var(--accent); padding: 1rem 2rem; font-family: 'Press Start 2P', cursive; cursor: pointer; transition: 0.3s; }
+        button:active { background: var(--accent); color: var(--bg); transform: scale(0.95); }
+        #status { height: 2rem; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+    <a href="../index.html" id="back-link">← /grow</a>
+    <div id="game-ui">
+        <h1>BLIND RUN</h1>
+        <div id="screen"><div id="indicator" class="pixel-heart" style="opacity:0"></div></div>
+        <div id="status">PRESS START</div>
+        <button id="start-btn">START</button>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const startBtn = document.getElementById('start-btn');
+        const indicator = document.getElementById('indicator');
+        const status = document.getElementById('status');
+        let gameState = 'IDLE'; // IDLE, PLAYING, WAITING
+        let sequence = [];
+        let playerIdx = 0;
+        let startTime;
+
+        function playTone(freq, duration) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.frequency.value = freq;
+            osc.start();
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        async function startLevel() {
+            gameState = 'PLAYING';
+            startBtn.style.display = 'none';
+            status.innerText = "LISTEN...";
+            sequence = [440, 554, 659, 880];
+            for(let freq of sequence) {
+                await new Promise(r => setTimeout(r, 600));
+                indicator.style.opacity = 1;
+                playTone(freq, 0.4);
+                setTimeout(() => indicator.style.opacity = 0, 300);
+            }
+            status.innerText = "REPEAT!";
+            gameState = 'WAITING';
+            playerIdx = 0;
+            startTime = Date.now();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if(gameState !== 'WAITING') return;
+            const keyMap = {'a': 440, 's': 554, 'd': 659, 'f': 880};
+            if(keyMap[e.key]) {
+                check(keyMap[e.key]);
+            }
+        });
+
+        function check(freq) {
+            if(freq === sequence[playerIdx]) {
+                playTone(freq, 0.2);
+                playerIdx++;
+                if(playerIdx === sequence.length) {
+                    status.innerText = "VICTORY: " + (Date.now() - startTime) + "ms";
+                    gameState = 'IDLE';
+                    startBtn.style.display = 'inline-block';
+                    startBtn.innerText = "AGAIN";
+                }
+            } else {
+                playTone(150, 0.5);
+                status.innerText = "FAILED!";
+                gameState = 'IDLE';
+                startBtn.style.display = 'inline-block';
+            }
+        }
+
+        startBtn.addEventListener('click', () => {
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            startLevel();
+        });
+    </script>
+</body>
+</html>
