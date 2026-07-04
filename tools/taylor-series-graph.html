@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taylor Series Graph</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --accent: #00ff9d; --text: #e0e0e0; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        a { color: var(--accent); text-decoration: none; font-size: 0.9rem; margin: 20px; display: block; }
+        .container { width: 100%; max-width: 800px; padding: 20px; text-align: center; }
+        canvas { background: #121216; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.5); width: 100%; max-width: 600px; height: 300px; touch-action: none; }
+        .controls { margin-top: 30px; display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        input[type=range] { width: 100%; max-width: 400px; accent-color: var(--accent); }
+        .val { font-size: 2rem; font-weight: 600; color: var(--accent); }
+        h1 { font-weight: 300; letter-spacing: 2px; margin-bottom: 5px; }
+        .pixel-art { image-rendering: pixelated; width: 40px; height: 40px; background: var(--accent); clip-path: polygon(0 0, 100% 0, 100% 75%, 75% 75%, 75% 100%, 25% 100%, 25% 75%, 0 75%); margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div style="width: 100%; text-align: left;"><a href="../index.html">← /grow</a></div>
+    
+    <div class="container">
+        <div class="pixel-art"></div>
+        <h1>TAYLOR SERIES</h1>
+        <canvas id="canvas"></canvas>
+        <div class="controls">
+            <p>Degree of Polynomial: <span id="nVal" class="val">1</span></p>
+            <input type="range" id="nSlider" min="1" max="15" step="2" value="1">
+            <p style="opacity: 0.6; font-size: 0.8rem;">Approximating sin(x) centered at x=0</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const slider = document.getElementById('nSlider');
+        const nVal = document.getElementById('nVal');
+
+        function factorial(n) { return n <= 1 ? 1 : n * factorial(n - 1); }
+
+        function draw() {
+            canvas.width = canvas.offsetWidth * 2;
+            canvas.height = canvas.offsetHeight * 2;
+            const w = canvas.width, h = canvas.height;
+            const n = parseInt(slider.value);
+            nVal.innerText = n;
+
+            ctx.clearRect(0, 0, w, h);
+            ctx.strokeStyle = "#444";
+            ctx.beginPath();
+            ctx.moveTo(0, h/2); ctx.lineTo(w, h/2);
+            ctx.moveTo(w/2, 0); ctx.lineTo(w/2, h);
+            ctx.stroke();
+
+            // Draw Sine
+            ctx.beginPath();
+            ctx.strokeStyle = "#555";
+            ctx.lineWidth = 4;
+            for(let i=0; i<w; i++) {
+                let x = (i - w/2) / 50;
+                let y = Math.sin(x);
+                ctx.lineTo(i, h/2 - y * 50);
+            }
+            ctx.stroke();
+
+            // Draw Taylor
+            ctx.beginPath();
+            ctx.strokeStyle = "#00ff9d";
+            ctx.lineWidth = 2;
+            for(let i=0; i<w; i++) {
+                let x = (i - w/2) / 50;
+                let y = 0;
+                for(let k=0; k<=n; k++) {
+                    y += (Math.pow(-1, k) * Math.pow(x, 2*k+1)) / factorial(2*k+1);
+                }
+                ctx.lineTo(i, h/2 - y * 50);
+            }
+            ctx.stroke();
+        }
+
+        slider.oninput = draw;
+        window.onresize = draw;
+        draw();
+    </script>
+</body>
+</html>
