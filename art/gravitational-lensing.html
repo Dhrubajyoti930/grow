@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gravitational Lensing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #050505; color: #fff; font-family: 'Inter', sans-serif; }
+        canvas { display: block; cursor: crosshair; }
+        .ui { position: absolute; top: 20px; left: 20px; z-index: 10; }
+        a { color: #888; text-decoration: none; font-size: 12px; letter-spacing: 1px; transition: color 0.3s; }
+        a:hover { color: #fff; }
+        .instructions { position: absolute; bottom: 20px; width: 100%; text-align: center; color: #444; font-size: 10px; pointer-events: none; text-transform: uppercase; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+
+<div class="ui"><a href="../index.html">← /grow</a></div>
+<div class="instructions">Move cursor to distort spacetime</div>
+<canvas id="canvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, stars;
+    let mouse = { x: -1000, y: -1000 };
+
+    function init() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        stars = Array.from({ length: 800 }, () => ({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            size: Math.random() * 1.5
+        }));
+    }
+
+    function draw() {
+        ctx.fillStyle = '#050505';
+        ctx.fillRect(0, 0, width, height);
+
+        // Draw stars
+        ctx.fillStyle = '#ffffff';
+        stars.forEach(s => {
+            let dx = s.x - mouse.x;
+            let dy = s.y - mouse.y;
+            let dist = Math.sqrt(dx * dx + dy * dy);
+            let pull = Math.min(100, 2000 / (dist + 50));
+            
+            let ox = s.x + (dx / dist) * pull * (dist < 150 ? -1 : 0.1);
+            let oy = s.y + (dy / dist) * pull * (dist < 150 ? -1 : 0.1);
+            
+            ctx.beginPath();
+            ctx.arc(ox, oy, s.size, 0, Math.PI * 2);
+            ctx.fill();
+        });
+
+        // Draw Black Hole
+        let grad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 40);
+        grad.addColorStop(0, '#000');
+        grad.addColorStop(0.8, '#000');
+        grad.addColorStop(1, '#111');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(mouse.x, mouse.y, 40, 0, Math.PI * 2);
+        ctx.fill();
+
+        requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+    window.addEventListener('touchmove', e => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; });
+    window.addEventListener('resize', init);
+
+    init();
+    draw();
+</script>
+</body>
+</html>

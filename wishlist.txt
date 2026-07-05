@@ -42,7 +42,7 @@
 [story] Closed Timelike Curve — how general relativity makes time travel mathematically sound  ✅
 [game]  Blind Speedrun        — memorize audio cues to beat the final boss without looking  ✅
 [tool]  Taylor Series Graph   — add polynomial terms and watch them hug the sine wave  ✅
-[art]   Gravitational Lensing — bending a starry background texture around a black hole
+[art]   Gravitational Lensing — bending a starry background texture around a black hole  ✅
 [story] The Number 42         — how mathematicians finally solved the sum of three cubes
 [game]  Amnesia Clone         — run and hide from terrifying monsters, no weapons allowed
 [tool]  Dot Product Projector — cast shadows of one vector onto another to find the scalar
