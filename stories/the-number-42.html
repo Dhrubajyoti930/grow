@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Number 42</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --accent: #00ff9d;
+            --text: #e0e0e0;
+            --dim: #666;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 650px;
+            width: 100%;
+        }
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: var(--dim);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            transition: color 0.3s;
+        }
+        .back-link:hover { color: var(--accent); }
+        header { margin: 60px 0 40px; text-align: center; }
+        h1 { 
+            font-family: 'Space Mono', monospace;
+            letter-spacing: -2px;
+            font-size: 3rem;
+            margin: 0;
+            color: var(--accent);
+        }
+        .pixel-art {
+            image-rendering: pixelated;
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            background: var(--accent);
+            clip-path: polygon(25% 0%, 75% 0%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%, 0% 25%);
+        }
+        .content p { margin-bottom: 20px; font-weight: 300; }
+        .equation {
+            background: #15151a;
+            padding: 20px;
+            border-left: 4px solid var(--accent);
+            font-family: 'Space Mono', monospace;
+            margin: 30px 0;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+        .solve-btn {
+            display: block;
+            margin: 40px auto;
+            padding: 12px 24px;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            cursor: pointer;
+            font-family: 'Space Mono', monospace;
+            transition: 0.3s;
+        }
+        .solve-btn:hover { background: var(--accent); color: var(--bg); }
+        #result { text-align: center; font-family: 'Space Mono', monospace; color: var(--accent); opacity: 0; transition: 0.5s; }
+    </style>
+</head>
+<body>
+
+<a href="../index.html" class="back-link">← /grow</a>
+
+<div class="container">
+    <header>
+        <div class="pixel-art"></div>
+        <h1>42</h1>
+    </header>
+
+    <div class="content">
+        <p>For decades, mathematicians were haunted by a single, stubborn integer. The problem was simple to state but monstrous to compute: <strong>Can 42 be expressed as the sum of three cubes?</strong></p>
+        <p>The equation <em>x³ + y³ + z³ = k</em> had been solved for every number under 100, except for two: 33 and 42. In 2019, Andrew Booker and Andrew Sutherland finally cracked the code using Charity Engine—a global grid of half a million home computers.</p>
+        
+        <div class="equation">
+            (-80538738812075974)³ + <br>
+            (80435758145817515)³ + <br>
+            (12602123297335631)³ = 42
+        </div>
+
+        <p>The solution proved that even the most trivial-looking questions can require planetary-scale collaboration to answer.</p>
+    </div>
+
+    <button class="solve-btn" onclick="reveal()">Verify Calculation</button>
+    <div id="result">42 = 42. Verified.</div>
+</div>
+
+<script>
+    function reveal() {
+        const res = document.getElementById('result');
+        res.style.opacity = '1';
+    }
+</script>
+
+</body>
+</html>
