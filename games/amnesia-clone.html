@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Amnesia Clone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0a; --text: #d4d4d4; --accent: #ff3333; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Courier Prime', monospace; overflow: hidden; touch-action: none; }
+        #game-container { position: relative; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        #nav { position: absolute; top: 10px; left: 10px; z-index: 100; }
+        #nav a { color: #666; text-decoration: none; font-size: 0.8rem; }
+        #ui { position: absolute; bottom: 20px; text-align: center; pointer-events: none; }
+        #canvas { background: #000; border: 1px solid #222; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div id="nav"><a href="../index.html">← /grow</a></div>
+<div id="game-container">
+    <canvas id="canvas"></canvas>
+    <div id="ui">
+        <h2 id="msg">FIND THE EXIT. DON'T LOOK BACK.</h2>
+        <p>TAP TO MOVE. HIDE IN THE SHADOWS.</p>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = 400; canvas.height = 400;
+
+    let player = { x: 50, y: 50, size: 10, speed: 2 };
+    let monster = { x: 350, y: 350, size: 15, speed: 1.2 };
+    let exit = { x: 380, y: 380, size: 20 };
+    let gameState = 'playing';
+
+    function draw() {
+        ctx.fillStyle = '#050505';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Draw Exit
+        ctx.fillStyle = '#222';
+        ctx.fillRect(exit.x, exit.y, exit.size, exit.size);
+        
+        // Draw Player
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(player.x, player.y, player.size, player.size);
+        
+        // Draw Monster
+        ctx.fillStyle = gameState === 'playing' ? '#ff3333' : '#333';
+        ctx.fillRect(monster.x, monster.y, monster.size, monster.size);
+
+        if(gameState === 'playing') {
+            // Monster AI
+            if(monster.x < player.x) monster.x += monster.speed * (Math.random() * 0.5);
+            if(monster.x > player.x) monster.x -= monster.speed * (Math.random() * 0.5);
+            if(monster.y < player.y) monster.y += monster.speed * (Math.random() * 0.5);
+            if(monster.y > player.y) monster.y -= monster.speed * (Math.random() * 0.5);
+
+            // Collisions
+            let dx = player.x - monster.x;
+            let dy = player.y - monster.y;
+            if(Math.sqrt(dx*dx + dy*dy) < 15) {
+                document.getElementById('msg').innerText = "YOU WERE CAUGHT.";
+                gameState = 'lost';
+            }
+            if(player.x > exit.x - 10 && player.y > exit.y - 10) {
+                document.getElementById('msg').innerText = "YOU ESCAPED.";
+                gameState = 'won';
+            }
+        }
+        requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('pointermove', (e) => {
+        if(gameState !== 'playing') return;
+        const rect = canvas.getBoundingClientRect();
+        player.x = e.clientX - rect.left - 5;
+        player.y = e.clientY - rect.top - 5;
+    });
+
+    draw();
+</script>
+</body>
+</html>
