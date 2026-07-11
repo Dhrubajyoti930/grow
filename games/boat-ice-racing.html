@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Boat Ice Racing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; background: #050505; color: #fff; font-family: 'Space Grotesk', sans-serif; overflow: hidden; touch-action: none; }
+        #ui { position: absolute; top: 20px; left: 20px; z-index: 10; pointer-events: none; }
+        a { color: #555; text-decoration: none; pointer-events: auto; font-size: 14px; transition: 0.3s; }
+        a:hover { color: #fff; }
+        canvas { display: block; }
+        .hud { position: absolute; bottom: 20px; right: 20px; text-align: right; pointer-events: none; }
+        .speed { font-size: 3rem; font-weight: 700; letter-spacing: -2px; color: #00f2ff; text-shadow: 0 0 10px #00f2ff; }
+    </style>
+</head>
+<body>
+
+    <div id="ui">
+        <a href="../index.html">← /grow</a>
+        <h1>BOAT ICE RACING</h1>
+    </div>
+
+    <div class="hud">
+        <div id="speed" class="speed">MACH 0.0</div>
+        <div>STABILITY: <span id="stab">100</span>%</div>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const speedEl = document.getElementById('speed');
+        const stabEl = document.getElementById('stab');
+
+        let width, height;
+        let boat = { x: 0, y: 0, angle: 0, velocity: 0, drift: 0 };
+        let keys = {};
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        window.addEventListener('keydown', e => keys[e.code] = true);
+        window.addEventListener('keyup', e => keys[e.code] = false);
+        resize();
+
+        function drawBoat(x, y, angle) {
+            ctx.save();
+            ctx.translate(width/2, height/2);
+            ctx.rotate(angle);
+            ctx.fillStyle = '#8B4513';
+            ctx.fillRect(-15, -30, 30, 60);
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(-12, -25, 24, 10);
+            ctx.restore();
+        }
+
+        function update() {
+            if (keys['ArrowLeft']) boat.angle -= 0.05;
+            if (keys['ArrowRight']) boat.angle += 0.05;
+            if (keys['ArrowUp']) boat.velocity = Math.min(boat.velocity + 0.1, 5);
+            else boat.velocity = Math.max(boat.velocity - 0.02, 0);
+
+            boat.drift += (boat.angle - boat.drift) * 0.1;
+            
+            const mach = (boat.velocity * 600).toFixed(1);
+            speedEl.innerText = `MACH ${mach}`;
+            stabEl.innerText = Math.max(0, 100 - Math.abs(boat.angle - boat.drift) * 20).toFixed(0);
+
+            ctx.fillStyle = '#0a1a2a';
+            ctx.fillRect(0, 0, width, height);
+            
+            // Draw Ice Grid
+            ctx.strokeStyle = '#1a3a5a';
+            for(let i=0; i<20; i++) {
+                let offset = (Date.now() * boat.velocity * 0.5) % 100;
+                ctx.beginPath();
+                ctx.moveTo(0, i * 50 + offset); ctx.lineTo(width, i * 50 + offset);
+                ctx.stroke();
+            }
+
+            drawBoat(boat.x, boat.y, boat.drift);
+            requestAnimationFrame(update);
+        }
+
+        update();
+    </script>
+</body>
+</html>
