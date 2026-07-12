@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Determinant Area</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0a; --accent: #00ff9d; --text: #e0e0e0; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        a { color: var(--accent); text-decoration: none; font-size: 0.9rem; position: absolute; top: 20px; left: 20px; }
+        .container { margin-top: 80px; text-align: center; width: 100%; max-width: 500px; padding: 20px; }
+        canvas { background: #111; border: 1px solid #333; border-radius: 8px; cursor: crosshair; touch-action: none; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        input { width: 60px; background: #222; border: 1px solid #444; color: var(--accent); padding: 5px; text-align: center; border-radius: 4px; }
+        .stat { font-size: 1.5rem; margin-top: 20px; color: var(--accent); }
+    </style>
+</head>
+<body>
+    <a href="../index.html">← /grow</a>
+    <div class="container">
+        <h1>Determinant Area</h1>
+        <canvas id="canvas" width="400" height="400"></canvas>
+        <div class="controls">
+            <div>a <input type="number" id="a" value="1" step="0.1"> b <input type="number" id="b" value="0" step="0.1"></div>
+            <div>c <input type="number" id="c" value="0" step="0.1"> d <input type="number" id="d" value="1" step="0.1"></div>
+        </div>
+        <div class="stat" id="det">Area: 1.00</div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const inputs = ['a', 'b', 'c', 'd'].map(id => document.getElementById(id));
+        const detDisplay = document.getElementById('det');
+
+        function draw() {
+            const a = parseFloat(inputs[0].value);
+            const b = parseFloat(inputs[1].value);
+            const c = parseFloat(inputs[2].value);
+            const d = parseFloat(inputs[3].value);
+            const det = Math.abs(a * d - b * c);
+            
+            ctx.clearRect(0, 0, 400, 400);
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 1;
+            for(let i=0; i<=400; i+=40) {
+                ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,400); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(400,i); ctx.stroke();
+            }
+
+            ctx.save();
+            ctx.translate(200, 200);
+            ctx.scale(100, -100);
+            
+            ctx.fillStyle = 'rgba(0, 255, 157, 0.2)';
+            ctx.strokeStyle = '#00ff9d';
+            ctx.lineWidth = 0.03;
+            
+            ctx.beginPath();
+            ctx.moveTo(0,0);
+            ctx.lineTo(a, c);
+            ctx.lineTo(a + b, c + d);
+            ctx.lineTo(b, d);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            
+            ctx.restore();
+            detDisplay.innerText = `Area: ${det.toFixed(2)}`;
+        }
+
+        inputs.forEach(input => input.addEventListener('input', draw));
+        draw();
+    </script>
+</body>
+</html>
