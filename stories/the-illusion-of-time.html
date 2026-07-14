@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Illusion of Time</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --panel: #141417;
+            --accent: #50fa7b;
+            --text: #e0e0e0;
+            --dim: #888;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        #container {
+            max-width: 600px;
+            padding: 40px 20px;
+            width: 100%;
+        }
+        .back-link {
+            display: block;
+            margin-bottom: 40px;
+            color: var(--dim);
+            text-decoration: none;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.9rem;
+        }
+        .back-link:hover { color: var(--accent); }
+        h1 { font-family: 'Courier Prime', monospace; letter-spacing: -1px; color: var(--accent); }
+        .pixel-art {
+            width: 64px;
+            height: 64px;
+            image-rendering: pixelated;
+            background: #222;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #333;
+        }
+        .clock-box {
+            background: var(--panel);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid #222;
+            margin: 30px 0;
+            text-align: center;
+        }
+        #reaction-btn {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.1s;
+        }
+        #reaction-btn:active { transform: scale(0.95); }
+        .log { margin-top: 20px; font-family: 'Courier Prime', monospace; font-size: 0.8rem; color: var(--dim); }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <a href="../index.html" class="back-link">← /grow</a>
+        
+        <h1>The Illusion of Time</h1>
+        <p>You think you perceive the world in real-time. You don't. Your brain is a master editor, stitching together sensory data with a slight delay, rearranging the sequence to make sense of a chaotic universe.</p>
+        
+        <div class="pixel-art">⏱️</div>
+        
+        <p>This is known as <strong>Chronostasis</strong>. When you flick your eyes from one point to another, your brain freezes the image input to avoid the blur of motion. It backfills the gap, making it seem as if the clock ticked longer than it actually did.</p>
+
+        <div class="clock-box">
+            <div id="timer">00:00:00</div>
+            <button id="reaction-btn">CLICK WHEN READY</button>
+            <div id="result" class="log"></div>
+        </div>
+
+        <p>Try to click this button the exact millisecond it pulses. You will find that your consciousness arrives at the "now" only after the event has already passed. You are living in the ghost of the immediate past.</p>
+    </div>
+
+    <script>
+        const btn = document.getElementById('reaction-btn');
+        const res = document.getElementById('result');
+        const timer = document.getElementById('timer');
+        let startTime;
+        let waiting = false;
+
+        function updateTime() {
+            const now = new Date();
+            timer.innerText = now.toTimeString().split(' ')[0];
+            requestAnimationFrame(updateTime);
+        }
+        updateTime();
+
+        btn.addEventListener('click', () => {
+            if (!waiting) {
+                btn.innerText = "WAIT FOR THE FLASH...";
+                waiting = true;
+                res.innerText = "Focusing...";
+                
+                setTimeout(() => {
+                    startTime = Date.now();
+                    btn.style.background = "#fff";
+                    btn.innerText = "CLICK NOW!";
+                }, Math.random() * 3000 + 1000);
+            } else {
+                const diff = Date.now() - startTime;
+                btn.style.background = "var(--accent)";
+                btn.innerText = "CLICK WHEN READY";
+                res.innerText = `Reaction latency: ${diff}ms. Your brain took ${diff}ms to process the visual signal, decide, and execute. You are currently living ${diff}ms in the past.`;
+                waiting = false;
+            }
+        });
+    </script>
+</body>
+</html>
