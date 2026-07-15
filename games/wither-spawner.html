@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wither Spawner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --panel: #1a1a1f; --accent: #4ade80; --danger: #f87171; --sand: #eab308; }
+        body { background: var(--bg); color: #e5e7eb; font-family: 'Press Start 2P', cursive; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        #back-link { position: absolute; top: 20px; left: 20px; color: #6b7280; text-decoration: none; font-size: 10px; }
+        #game-container { margin-top: 60px; width: 90%; max-width: 600px; text-align: center; }
+        .stats { display: flex; justify-content: space-around; margin-bottom: 20px; font-size: 12px; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px auto; max-width: 300px; }
+        .slot { height: 80px; background: var(--panel); border: 2px solid #333; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; transition: 0.2s; }
+        .slot:hover { border-color: #555; }
+        .btn { background: #374151; color: white; border: none; padding: 15px 30px; font-family: inherit; cursor: pointer; margin-top: 20px; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        #message { height: 40px; margin-top: 20px; color: var(--accent); }
+    </style>
+</head>
+<body>
+
+<a id="back-link" href="../index.html">← /grow</a>
+
+<div id="game-container">
+    <h1>WITHER SPAWNER</h1>
+    <div class="stats">
+        <div>💀 <span id="skulls">0</span></div>
+        <div>⏳ <span id="sand">0</span></div>
+    </div>
+    
+    <div class="grid" id="altar">
+        <div class="slot" onclick="add('sand')">🧱</div>
+        <div class="slot" onclick="add('sand')">🧱</div>
+        <div class="slot" onclick="add('sand')">🧱</div>
+        <div class="slot" onclick="add('skull')">💀</div>
+        <div class="slot" onclick="add('skull')">💀</div>
+        <div class="slot" onclick="add('skull')">💀</div>
+    </div>
+
+    <button class="btn" id="spawn-btn" onclick="spawnWither()">SPAWN WITHER</button>
+    <div id="message"></div>
+</div>
+
+<script>
+    let resources = { skulls: 0, sand: 0 };
+    
+    function add(type) {
+        if(type === 'skull') resources.skulls++;
+        else resources.sand++;
+        update();
+    }
+
+    function update() {
+        document.getElementById('skulls').innerText = resources.skulls;
+        document.getElementById('sand').innerText = resources.sand;
+    }
+
+    function spawnWither() {
+        if(resources.skulls >= 3 && resources.sand >= 4) {
+            resources.skulls -= 3;
+            resources.sand -= 4;
+            update();
+            const msg = document.getElementById('message');
+            msg.innerText = "WITHER HAS BEEN SUMMONED!";
+            msg.style.color = "var(--danger)";
+            setTimeout(() => { msg.innerText = ""; msg.style.color = "var(--accent)"; }, 3000);
+        } else {
+            alert("Need 3 Skulls and 4 Soul Sand!");
+        }
+    }
+</script>
+</body>
+</html>
