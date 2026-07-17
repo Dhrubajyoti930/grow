@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generative Origami</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            background: #0a0a0c;
+            color: #e0e0e0;
+            font-family: 'Space Mono', monospace;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        #ui {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+        a {
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+            transition: color 0.3s;
+        }
+        a:hover { color: #fff; }
+        canvas {
+            cursor: pointer;
+            touch-action: none;
+        }
+        .info {
+            position: absolute;
+            bottom: 30px;
+            text-align: center;
+            pointer-events: none;
+            opacity: 0.5;
+            font-size: 10px;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="ui">
+    <a href="../index.html">← /grow</a>
+</div>
+
+<div class="info">TAP TO FOLD VIRTUAL PAPER</div>
+
+<canvas id="canvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    let cranes = [];
+
+    class Crane {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 50 + 40;
+            this.color = `hsl(${Math.random() * 360}, 50%, 70%)`;
+            this.rotation = Math.random() * Math.PI * 2;
+            this.time = 0;
+        }
+
+        draw() {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.rotation);
+            ctx.strokeStyle = this.color;
+            ctx.lineWidth = 1.5;
+            
+            // Abstract Origami Crane Path
+            ctx.beginPath();
+            // Body
+            ctx.moveTo(0, 0);
+            ctx.lineTo(-this.size, -this.size/2);
+            ctx.lineTo(0, -this.size/4);
+            ctx.lineTo(this.size, -this.size/2);
+            ctx.lineTo(0, 0);
+            // Neck
+            ctx.lineTo(0, -this.size * 0.8);
+            ctx.lineTo(this.size/3, -this.size);
+            // Tail
+            ctx.moveTo(-this.size, -this.size/2);
+            ctx.lineTo(-this.size * 1.2, -this.size * 0.8);
+            ctx.stroke();
+            
+            ctx.restore();
+        }
+    }
+
+    function animate() {
+        ctx.fillStyle = 'rgba(10, 10, 12, 0.1)';
+        ctx.fillRect(0, 0, width, height);
+        cranes.forEach(c => c.draw());
+        requestAnimationFrame(animate);
+    }
+
+    canvas.addEventListener('click', (e) => {
+        cranes.push(new Crane(e.clientX, e.clientY));
+        if (cranes.length > 20) cranes.shift();
+    });
+
+    animate();
+</script>
+</body>
+</html>
