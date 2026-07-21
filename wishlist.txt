@@ -58,7 +58,7 @@
 [story] Galvani's Frog        — the bizarre twitching amphibian legs that discovered electricity  ✅
 [game]  Axe PvP Tactics       — manage shield cooldowns and axe crits in sweaty duels  ✅
 [tool]  Binomial Expander     — Pascal's triangle interactive generator with combinatorics rules  ✅
-[art]   Voronoi Stained Glass — cell-fracture algorithms generating cathedral-style windows
+[art]   Voronoi Stained Glass — cell-fracture algorithms generating cathedral-style windows  ✅
 [story] The Supersonic Whip   — the physics of a leather bullwhip cracking faster than sound
 [game]  Half Heart Hardcore   — survive a massive open world where literally any damage is fatal
 [tool]  Matrix Multiplier     — step-by-step visualizer of rows dipping into columns
