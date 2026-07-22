@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Supersonic Whip</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --accent: #00f2ff;
+            --text: #e0e0e0;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 650px;
+            width: 100%;
+        }
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: var(--accent);
+            text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            opacity: 0.7;
+            transition: 0.3s;
+        }
+        .back-link:hover { opacity: 1; }
+        h1 {
+            color: var(--accent);
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-top: 60px;
+        }
+        .physics-box {
+            background: #151518;
+            border: 1px solid #333;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+        .pixel-whip {
+            height: 4px;
+            background: linear-gradient(90deg, #5c4033, var(--accent));
+            width: 100%;
+            margin: 40px 0;
+            position: relative;
+        }
+        .pixel-whip::after {
+            content: "⚡";
+            position: absolute;
+            right: 0;
+            top: -15px;
+            font-size: 20px;
+        }
+        button {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+        button:hover { background: var(--accent); color: var(--bg); }
+        #crack-sound { display: none; }
+    </style>
+</head>
+<body>
+
+<a href="../index.html" class="back-link">← /grow</a>
+
+<div class="container">
+    <h1>The Supersonic Whip</h1>
+    
+    <p>A bullwhip is not merely a tool; it is a masterpiece of kinetic energy transfer. Its crack is the first human-made sound to break the sound barrier.</p>
+
+    <div class="physics-box">
+        [ KINETIC ENERGY EQUATION ]<br>
+        E = ½mv²<br>
+        The whip acts as a tapering waveguide. As energy travels from the thick handle (high mass) to the thin lash (low mass), the velocity must increase to conserve momentum.
+    </div>
+
+    <p>As the whip is flicked, a loop—the "wave"—travels down the leather length. Because the mass of the whip decreases exponentially toward the tip, the speed of that wave accelerates until it exceeds 343 meters per second.</p>
+
+    <div class="pixel-whip" id="whip"></div>
+
+    <button onclick="crack()">CRACK THE WHIP</button>
+</div>
+
+<script>
+    function crack() {
+        const w = document.getElementById('whip');
+        w.style.transition = "transform 0.1s ease-out";
+        w.style.transform = "translateX(-20px)";
+        setTimeout(() => {
+            w.style.transform = "translateX(0)";
+        }, 100);
+        
+        // Visual 'boom'
+        const flash = document.createElement('div');
+        flash.style.position = 'fixed';
+        flash.style.top = '0'; flash.style.left = '0';
+        flash.style.width = '100vw'; flash.style.height = '100vh';
+        flash.style.background = 'white';
+        flash.style.opacity = '0.2';
+        document.body.appendChild(flash);
+        setTimeout(() => document.body.removeChild(flash), 50);
+    }
+</script>
+
+</body>
+</html>
