@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Half Heart Hardcore</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0a; --accent: #ff3e3e; --text: #e0e0e0; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); color: var(--text); font-family: 'Courier Prime', monospace; overflow: hidden; display: flex; align-items: center; justify-content: center; user-select: none; }
+        #game-ui { position: absolute; top: 20px; left: 20px; z-index: 10; }
+        a { color: #666; text-decoration: none; font-size: 0.8rem; transition: 0.3s; }
+        a:hover { color: var(--text); }
+        #canvas { cursor: crosshair; }
+        #overlay { position: absolute; text-align: center; background: rgba(0,0,0,0.85); padding: 2rem; border: 1px solid #333; }
+        h1 { color: var(--accent); margin: 0 0 10px 0; letter-spacing: 2px; }
+        button { background: none; border: 1px solid var(--accent); color: var(--accent); padding: 10px 20px; cursor: pointer; font-family: inherit; font-weight: bold; margin-top: 15px; }
+        button:hover { background: var(--accent); color: #000; }
+        .stats { position: absolute; bottom: 20px; right: 20px; text-align: right; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+<div id="game-ui">
+    <a href="../index.html">← /grow</a>
+</div>
+
+<div id="overlay">
+    <h1>HALF HEART HARDCORE</h1>
+    <p>Massive world. One hit, you die.</p>
+    <button onclick="startGame()">ENTER WORLD</button>
+</div>
+
+<div class="stats">
+    <div id="score">DISTANCE: 0m</div>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const overlay = document.getElementById('overlay');
+    const scoreEl = document.getElementById('score');
+
+    let w, h, player, hazards, gameActive = false, distance = 0;
+
+    function init() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+    }
+
+    class Player {
+        constructor() { this.x = w/2; this.y = h/2; this.size = 8; }
+        draw() {
+            ctx.fillStyle = '#ff3e3e';
+            ctx.fillRect(this.x - this.size/2, this.y - this.size/2, this.size, this.size);
+        }
+    }
+
+    function startGame() {
+        overlay.style.display = 'none';
+        player = new Player();
+        hazards = [];
+        distance = 0;
+        gameActive = true;
+        animate();
+    }
+
+    function animate() {
+        if(!gameActive) return;
+        ctx.clearRect(0,0,w,h);
+        
+        distance += 0.1;
+        scoreEl.innerText = `DISTANCE: ${Math.floor(distance)}m`;
+
+        if(Math.random() < 0.05) {
+            hazards.push({
+                x: Math.random() * w,
+                y: -10,
+                speed: 2 + Math.random() * 5,
+                size: 10 + Math.random() * 20
+            });
+        }
+
+        hazards.forEach((h, i) => {
+            h.y += h.speed;
+            ctx.fillStyle = '#333';
+            ctx.fillRect(h.x, h.y, h.size, h.size);
+
+            if(Math.hypot(h.x + h.size/2 - player.x, h.y + h.size/2 - player.y) < (h.size/2 + 5)) {
+                gameOver();
+            }
+            if(h.y > h) hazards.splice(i, 1);
+        });
+
+        player.draw();
+        requestAnimationFrame(animate);
+    }
+
+    function gameOver() {
+        gameActive = false;
+        overlay.innerHTML = `<h1>CRITICAL FAILURE</h1><p>You survived ${Math.floor(distance)}m</p><button onclick="location.reload()">RETRY</button>`;
+        overlay.style.display = 'block';
+    }
+
+    window.addEventListener('mousemove', e => { if(player) { player.x = e.clientX; player.y = e.clientY; }});
+    window.addEventListener('touchmove', e => { if(player) { player.x = e.touches[0].clientX; player.y = e.touches[0].clientY; }});
+    window.addEventListener('resize', init);
+    init();
+</script>
+</body>
+</html>
