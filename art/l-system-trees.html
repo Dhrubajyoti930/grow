@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L-System Trees</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --accent: #4ade80;
+            --text: #e2e8f0;
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--bg);
+            font-family: 'Space Mono', monospace;
+            color: var(--text);
+        }
+        canvas { display: block; cursor: crosshair; }
+        .ui {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .ui a {
+            display: inline-block;
+            pointer-events: auto;
+            text-decoration: none;
+            color: var(--accent);
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        h1 { font-size: 1.2rem; margin: 0; pointer-events: auto; }
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 0.7rem;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ui">
+        <a href="../index.html">← /grow</a>
+        <h1>L-SYSTEM TREES</h1>
+    </div>
+
+    <div class="controls">Click to generate mutation</div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            draw();
+        }
+
+        class LSystem {
+            constructor() {
+                this.axiom = "X";
+                this.rules = {
+                    "X": "F+[[X]-X]-F[-FX]+X",
+                    "F": "FF"
+                };
+                this.iterations = 5;
+                this.angle = 25 * Math.PI / 180;
+            }
+
+            mutate() {
+                this.angle = (20 + Math.random() * 15) * Math.PI / 180;
+                this.iterations = 4 + Math.floor(Math.random() * 2);
+            }
+
+            generate() {
+                let current = this.axiom;
+                for (let i = 0; i < this.iterations; i++) {
+                    let next = "";
+                    for (let char of current) {
+                        next += this.rules[char] || char;
+                    }
+                    current = next;
+                }
+                return current;
+            }
+        }
+
+        const tree = new LSystem();
+
+        function draw() {
+            ctx.clearRect(0, 0, width, height);
+            const instructions = tree.generate();
+            const stack = [];
+            let x = width / 2;
+            let y = height - 50;
+            let angle = -Math.PI / 2;
+            let len = height / (Math.pow(2, tree.iterations) * 1.5);
+
+            ctx.strokeStyle = '#4ade80';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+
+            for (let char of instructions) {
+                if (char === 'F') {
+                    x += Math.cos(angle) * len;
+                    y += Math.sin(angle) * len;
+                    ctx.lineTo(x, y);
+                } else if (char === '+') {
+                    angle += tree.angle + (Math.random() * 0.1 - 0.05);
+                } else if (char === '-') {
+                    angle -= tree.angle + (Math.random() * 0.1 - 0.05);
+                } else if (char === '[') {
+                    stack.push({x, y, angle});
+                } else if (char === ']') {
+                    let state = stack.pop();
+                    x = state.x;
+                    y = state.y;
+                    angle = state.angle;
+                    ctx.moveTo(x, y);
+                }
+            }
+            ctx.stroke();
+        }
+
+        window.addEventListener('resize', resize);
+        window.addEventListener('click', () => {
+            tree.mutate();
+            draw();
+        });
+
+        resize();
+    </script>
+</body>
+</html>
