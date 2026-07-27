@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Yoyo Trickster</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --neon: #00f2ff; --accent: #ff007a; }
+        body { margin: 0; background: var(--bg); color: white; font-family: 'Space Grotesk', sans-serif; overflow: hidden; display: flex; flex-direction: column; align-items: center; height: 100vh; touch-action: none; }
+        #ui { position: absolute; top: 20px; left: 20px; z-index: 10; }
+        a { color: #666; text-decoration: none; font-size: 14px; transition: 0.3s; }
+        a:hover { color: white; }
+        #game-container { width: 100%; max-width: 500px; height: 80vh; position: relative; margin-top: 10vh; display: flex; justify-content: center; align-items: flex-end; }
+        canvas { width: 100%; height: 100%; }
+        #score-board { position: absolute; top: 10px; right: 20px; font-size: 2rem; font-weight: 700; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
+        #hint { position: absolute; bottom: 50px; color: #444; font-size: 0.9rem; pointer-events: none; }
+    </style>
+</head>
+<body>
+
+<div id="ui"><a href="../index.html">← /grow</a></div>
+<div id="score-board">0</div>
+<div id="game-container">
+    <canvas id="canvas"></canvas>
+    <div id="hint">TAP TO YOYO</div>
+</div>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const scoreEl = document.getElementById('score-board');
+    let score = 0;
+    let yoyo = { x: 250, y: 100, vy: 0, rad: 20, stringLen: 200 };
+    let canvasW, canvasH;
+
+    function resize() {
+        canvasW = canvas.width = canvas.offsetWidth;
+        canvasH = canvas.height = canvas.offsetHeight;
+        yoyo.x = canvasW / 2;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function update() {
+        // Physics
+        yoyo.vy += 0.5; // Gravity
+        yoyo.y += yoyo.vy;
+
+        // String limit
+        if (yoyo.y > yoyo.stringLen) {
+            yoyo.y = yoyo.stringLen;
+            yoyo.vy *= -0.8; // Bounce
+        }
+
+        // Render
+        ctx.clearRect(0, 0, canvasW, canvasH);
+        
+        // Draw string
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(canvasW / 2, 0);
+        ctx.lineTo(yoyo.x, yoyo.y);
+        ctx.stroke();
+
+        // Draw yoyo
+        ctx.fillStyle = '#00f2ff';
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = '#00f2ff';
+        ctx.beginPath();
+        ctx.arc(yoyo.x, yoyo.y, yoyo.rad, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        requestAnimationFrame(update);
+    }
+
+    function tap() {
+        if (yoyo.y > yoyo.stringLen - 50) {
+            yoyo.vy -= 15;
+            score++;
+            scoreEl.innerText = score;
+            document.getElementById('hint').style.opacity = 0;
+        }
+    }
+
+    window.addEventListener('mousedown', tap);
+    window.addEventListener('touchstart', (e) => { e.preventDefault(); tap(); });
+
+    update();
+</script>
+</body>
+</html>
