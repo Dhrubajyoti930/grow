@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topology Morpher</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --accent: #00ff9d;
+            --text: #e0e0e0;
+        }
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: var(--bg); color: var(--text);
+            font-family: 'Space Mono', monospace;
+            overflow: hidden; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+        }
+        #back-link {
+            position: absolute; top: 20px; left: 20px;
+            color: var(--accent); text-decoration: none;
+            font-size: 0.8rem; letter-spacing: 1px;
+            z-index: 10;
+        }
+        #canvas-container {
+            width: 100%; height: 80vh; display: flex;
+            align-items: center; justify-content: center;
+        }
+        canvas { max-width: 100%; max-height: 100%; image-rendering: pixelated; }
+        .ui { text-align: center; margin-top: 20px; }
+        h1 { font-size: 1.2rem; margin-bottom: 10px; color: var(--accent); }
+    </style>
+</head>
+<body>
+
+<a href="../index.html" id="back-link">← /grow</a>
+
+<div id="canvas-container">
+    <canvas id="morphCanvas" width="400" height="400"></canvas>
+</div>
+
+<div class="ui">
+    <h1>TOPOLOGY MORPHER</h1>
+    <div id="status">MUG ↔ DONUT</div>
+</div>
+
+<script>
+    const canvas = document.getElementById('morphCanvas');
+    const ctx = canvas.getContext('2d');
+    let t = 0;
+
+    function draw() {
+        ctx.fillStyle = '#0a0a0c';
+        ctx.fillRect(0, 0, 400, 400);
+        
+        t += 0.015;
+        const progress = (Math.sin(t) + 1) / 2; // 0 to 1
+        
+        ctx.strokeStyle = '#00ff9d';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+
+        // Parametric morph between Mug (torus-like) and Donut (torus)
+        // Using polar coordinates to simulate the homeomorphism
+        for (let i = 0; i <= 100; i++) {
+            let angle = (i / 100) * Math.PI * 2;
+            
+            // Base torus radius
+            let r_base = 60 + 30 * Math.sin(angle * 3);
+            
+            // Morphing logic: 
+            // At p=0, add a handle (mug). At p=1, flatten to circle (donut).
+            let handle = (1 - progress) * 40 * Math.sin(angle * 2);
+            
+            let x = 200 + (r_base + handle) * Math.cos(angle);
+            let y = 200 + (r_base + handle) * Math.sin(angle);
+            
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        
+        ctx.closePath();
+        ctx.stroke();
+
+        // Decorative pixelated aesthetics
+        ctx.fillStyle = '#1a1a1f';
+        ctx.fillRect(0, 0, 400, 5);
+        ctx.fillRect(0, 395, 400, 5);
+
+        requestAnimationFrame(draw);
+    }
+
+    draw();
+</script>
+</body>
+</html>
