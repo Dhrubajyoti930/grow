@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interference Ripples</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --accent: #00ffcc; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: var(--bg); font-family: 'Space Mono', monospace; }
+        canvas { display: block; touch-action: none; }
+        #ui { position: absolute; top: 20px; left: 20px; z-index: 10; pointer-events: none; }
+        a { color: var(--accent); text-decoration: none; font-size: 12px; pointer-events: auto; letter-spacing: 1px; text-transform: uppercase; }
+        .controls { position: absolute; bottom: 20px; right: 20px; color: #444; font-size: 10px; pointer-events: none; text-align: right; }
+    </style>
+</head>
+<body>
+
+    <div id="ui">
+        <a href="../index.html">← /grow</a>
+    </div>
+
+    <div class="controls">INTERACTIVE MOIRÉ INTERFERENCE<br>DRAG TO DISTORT</div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let t = 0;
+        let mouse = { x: 0, y: 0 };
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+        window.addEventListener('touchmove', e => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; });
+        resize();
+
+        function draw() {
+            ctx.fillStyle = '#0a0a0c';
+            ctx.fillRect(0, 0, width, height);
+            
+            ctx.strokeStyle = '#00ffcc';
+            ctx.lineWidth = 1;
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const targetX = mouse.x || centerX;
+            const targetY = mouse.y || centerY;
+
+            t += 0.02;
+
+            for (let i = 0; i < 400; i += 10) {
+                ctx.beginPath();
+                // Pattern 1: Center
+                ctx.arc(centerX, centerY, i + Math.sin(t) * 20, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Pattern 2: Mouse follow
+                ctx.beginPath();
+                ctx.arc(targetX, targetY, (i * 0.8) + Math.cos(t) * 10, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // Grid overlay for moiré texture
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+            for (let x = 0; x < width; x += 20) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x + Math.sin(t + x*0.01)*50, height); ctx.stroke();
+            }
+
+            requestAnimationFrame(draw);
+        }
+
+        draw();
+    </script>
+</body>
+</html>
