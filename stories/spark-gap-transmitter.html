@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spark-Gap Transmitter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=IBM+Plex+Mono:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --panel: #16161a;
+            --accent: #00f2ff;
+            --text: #d1d1d1;
+            --dim: #666;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Mono', monospace;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.6;
+        }
+        #container { max-width: 800px; width: 100%; }
+        nav { margin-bottom: 40px; }
+        nav a { color: var(--dim); text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
+        nav a:hover { color: var(--accent); }
+        h1 { font-family: 'Courier Prime', monospace; color: var(--accent); letter-spacing: 2px; }
+        
+        #spark-box {
+            background: var(--panel);
+            padding: 20px;
+            border-left: 4px solid var(--accent);
+            margin: 20px 0;
+            cursor: pointer;
+            text-align: center;
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+        .pixel-art {
+            font-size: 2rem;
+            margin: 20px 0;
+        }
+
+        .story-text { margin-bottom: 20px; }
+        
+        #indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #333;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .active #indicator { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+
+        .btn {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 10px 20px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+        .btn:hover { background: var(--accent); color: var(--bg); }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <nav><a href="../index.html">← /grow</a></nav>
+        
+        <h1>Spark-Gap Transmitter</h1>
+        
+        <div id="story">
+            <p>In the late 19th century, physicists weren't looking for music or news. They were playing with lightning.</p>
+            <p>By discharging high-voltage capacitors across a narrow gap, they created violent, brilliant arcs of electricity. It was crude, it was dangerous, and it was loud.</p>
+            <p>But those sparks were doing something unexpected. Every pop of electricity sent a ripple through the unseen fabric of the ether—electromagnetic waves.</p>
+        </div>
+
+        <div id="spark-box" onclick="triggerSpark()">
+            <div class="pixel-art" id="art">⚡ ─ ─ ⚡</div>
+            <p>CLICK TO TRANSMIT</p>
+        </div>
+
+        <div id="log"></div>
+
+        <script>
+            function triggerSpark() {
+                const art = document.getElementById('art');
+                const log = document.getElementById('log');
+                
+                art.innerText = "⚡ █ █ ⚡";
+                document.getElementById('spark-box').style.borderColor = "white";
+                
+                const span = document.createElement('div');
+                span.innerHTML = `<span id="indicator" class="active"></span>SIGNAL DETECTED: 800kHz - STATIC BURST`;
+                log.prepend(span);
+
+                setTimeout(() => {
+                    art.innerText = "⚡ ─ ─ ⚡";
+                    document.getElementById('spark-box').style.borderColor = "var(--accent)";
+                }, 100);
+            }
+        </script>
+        
+        <div class="story-text">
+            <p>They realized that if you could strike the spark in rhythm, you could encode messages. The "Dot" and the "Dash" became the pulse of the world, effectively inventing wireless radio by total accident.</p>
+        </div>
+    </div>
+</body>
+</html>

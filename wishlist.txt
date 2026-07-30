@@ -67,7 +67,7 @@
 [game]  Yoyo Trickster        — physics-based rhythm game mimicking classic trick videos  ✅
 [tool]  Topology Morpher      — continuous deformation animation of a coffee mug into a donut  ✅
 [art]   Interference Ripples  — intersecting wave patterns creating beautiful moiré illusions  ✅
-[story] Spark-Gap Transmitter — how raw high-voltage sparks accidentally invented wireless radio
+[story] Spark-Gap Transmitter — how raw high-voltage sparks accidentally invented wireless radio  ✅
 [game]  Trap Crafter          — lure hunters into elaborate TNT and cobweb traps
 [tool]  Logistic Map          — slide the growth rate parameter to watch chaos theory emerge
 [art]   Quantum Superposition — hazy, probabilistic electron clouds snapping to specific orbitals
