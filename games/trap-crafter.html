@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trap Crafter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --panel: #16161a; --text: #e0e0e0; --accent: #ff4757; --grid: #1f1f26; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Press+Start+2P', cursive; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+        #back { position: absolute; top: 20px; left: 20px; color: var(--accent); text-decoration: none; font-size: 10px; }
+        #game-container { position: relative; border: 4px solid var(--grid); background: var(--panel); padding: 10px; }
+        canvas { display: block; image-rendering: pixelated; cursor: crosshair; }
+        #ui { margin-top: 20px; display: flex; gap: 10px; }
+        button { background: var(--grid); border: 2px solid var(--text); color: var(--text); padding: 10px; cursor: pointer; font-family: inherit; font-size: 8px; }
+        button.active { border-color: var(--accent); color: var(--accent); }
+        #score { margin-bottom: 10px; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+<a id="back" href="../index.html">← /grow</a>
+<div id="score">TRAPS: 0 | HUNTERS: 0</div>
+<div id="game-container">
+    <canvas id="canvas"></canvas>
+</div>
+<div id="ui">
+    <button id="btn-tnt" onclick="setTool('tnt')">TNT [1]</button>
+    <button id="btn-web" onclick="setTool('web')">WEB [2]</button>
+    <button onclick="clearMap()">CLEAR</button>
+</div>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const gridSize = 20;
+    const cols = 20, rows = 15;
+    canvas.width = cols * gridSize;
+    canvas.height = rows * gridSize;
+
+    let map = Array(rows).fill().map(() => Array(cols).fill(0));
+    let hunters = [];
+    let tool = 'tnt';
+    let score = 0;
+
+    function setTool(t) { tool = t; document.querySelectorAll('button').forEach(b => b.classList.remove('active')); event.target.classList.add('active'); }
+    function clearMap() { map = Array(rows).fill().map(() => Array(cols).fill(0)); hunters = []; }
+
+    canvas.addEventListener('mousedown', e => {
+        const rect = canvas.getBoundingClientRect();
+        const x = Math.floor((e.clientX - rect.left) / gridSize);
+        const y = Math.floor((e.clientY - rect.top) / gridSize);
+        map[y][x] = tool === 'tnt' ? 1 : 2;
+        draw();
+    });
+
+    function spawnHunter() {
+        if(Math.random() < 0.1) hunters.push({ x: 0, y: Math.floor(Math.random() * rows), speed: 0.05 });
+    }
+
+    function update() {
+        spawnHunter();
+        hunters.forEach((h, i) => {
+            let cell = map[Math.floor(h.y)][Math.floor(h.x)];
+            let speed = (cell === 2) ? 0.01 : h.speed;
+            h.x += speed;
+            if (h.x >= cols) { hunters.splice(i, 1); }
+            if (cell === 1) { hunters.splice(i, 1); map[Math.floor(h.y)][Math.floor(h.x)] = 0; score++; }
+        });
+        document.getElementById('score').innerText = `TRAPS: ${score} | HUNTERS: ${hunters.length}`;
+        draw();
+        requestAnimationFrame(update);
+    }
+
+    function draw() {
+        ctx.fillStyle = '#16161a'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+        for(let y=0; y<rows; y++) for(let x=0; x<cols; x++) {
+            if(map[y][x] === 1) { ctx.fillStyle = '#ff4757'; ctx.fillRect(x*gridSize+2, y*gridSize+2, gridSize-4, gridSize-4); }
+            if(map[y][x] === 2) { ctx.strokeStyle = '#ffffff'; ctx.strokeRect(x*gridSize+2, y*gridSize+2, gridSize-4, gridSize-4); }
+        }
+        ctx.fillStyle = '#00ffcc';
+        hunters.forEach(h => ctx.fillRect(h.x * gridSize, h.y * gridSize + 5, 10, 10));
+    }
+
+    update();
+</script>
+</body>
+</html>
