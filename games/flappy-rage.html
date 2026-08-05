@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Flappy Rage</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; background: #0a0a0a; color: #ff3333; font-family: 'Press Start 2P', cursive; overflow: hidden; touch-action: none; }
+        #back-link { position: absolute; top: 20px; left: 20px; color: #444; text-decoration: none; font-size: 10px; z-index: 10; }
+        #game-container { position: relative; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; }
+        canvas { border-left: 2px solid #222; border-right: 2px solid #222; background: #000; box-shadow: 0 0 50px rgba(255,0,0,0.1); }
+        #ui { position: absolute; text-align: center; pointer-events: none; }
+        .hidden { display: none; }
+        h1 { font-size: 24px; margin-bottom: 20px; text-shadow: 2px 2px #550000; }
+    </style>
+</head>
+<body>
+
+    <a href="../index.html" id="back-link">← /grow</a>
+    
+    <div id="game-container">
+        <div id="ui">
+            <h1 id="msg">FLAPPY RAGE</h1>
+            <p id="sub">TAP TO FLAP</p>
+        </div>
+        <canvas id="gameCanvas"></canvas>
+    </div>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const ui = document.getElementById('ui');
+    const msg = document.getElementById('msg');
+    const sub = document.getElementById('sub');
+
+    canvas.width = 400;
+    canvas.height = 600;
+
+    let bird = { x: 50, y: 300, v: 0, gravity: 0.5, jump: -8, size: 20 };
+    let pipes = [];
+    let score = 0;
+    let gameActive = false;
+    let frame = 0;
+
+    function reset() {
+        bird.y = 300; bird.v = 0;
+        pipes = []; score = 0;
+        gameActive = true;
+        ui.classList.add('hidden');
+        loop();
+    }
+
+    function createPipe() {
+        let gap = 150;
+        let min = 50, max = 400;
+        let y = Math.floor(Math.random() * (max - min + 1)) + min;
+        pipes.push({ x: 400, top: y - gap/2, bottom: 600 - (y + gap/2), passed: false });
+    }
+
+    function update() {
+        if (!gameActive) return;
+
+        bird.v += bird.gravity;
+        bird.y += bird.v;
+
+        if (bird.y + bird.size > 600 || bird.y < 0) gameOver();
+
+        if (frame % 100 === 0) createPipe();
+
+        pipes.forEach((p, i) => {
+            p.x -= 3;
+            if (p.x + 50 < 0) pipes.splice(i, 1);
+            
+            if (bird.x + bird.size > p.x && bird.x < p.x + 50 && 
+               (bird.y < p.top || bird.y + bird.size > 600 - p.bottom)) gameOver();
+            
+            if (p.x + 50 < bird.x && !p.passed) { score++; p.passed = true; }
+        });
+
+        frame++;
+    }
+
+    function draw() {
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = '#ff3333';
+        ctx.fillRect(bird.x, bird.y, bird.size, bird.size);
+
+        ctx.fillStyle = '#555';
+        pipes.forEach(p => {
+            ctx.fillRect(p.x, 0, 50, p.top);
+            ctx.fillRect(p.x, 600 - p.bottom, 50, p.bottom);
+        });
+
+        ctx.fillStyle = '#fff';
+        ctx.font = '20px "Press Start 2P"';
+        ctx.fillText(score, 20, 40);
+
+        if (gameActive) {
+            update();
+            requestAnimationFrame(draw);
+        }
+    }
+
+    function gameOver() {
+        gameActive = false;
+        msg.innerText = "YOU DIED";
+        sub.innerText = "TAP TO RETRY";
+        ui.classList.remove('hidden');
+    }
+
+    window.addEventListener('mousedown', () => {
+        if (!gameActive) reset();
+        else bird.v = bird.jump;
+    });
+
+    window.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (!gameActive) reset();
+        else bird.v = bird.jump;
+    });
+
+    draw();
+</script>
+</body>
+</html>
