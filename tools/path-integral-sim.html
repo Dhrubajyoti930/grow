@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Path Integral Sim</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --accent: #00ff9d; --dim: #444; }
+        body { margin: 0; background: var(--bg); color: #eee; font-family: 'Space Mono', monospace; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        a { color: var(--dim); text-decoration: none; font-size: 0.8rem; position: absolute; top: 20px; left: 20px; transition: 0.3s; }
+        a:hover { color: var(--accent); }
+        .container { max-width: 600px; width: 90%; padding-top: 60px; text-align: center; }
+        canvas { background: #000; border: 1px solid #222; margin: 20px 0; cursor: crosshair; image-rendering: pixelated; width: 100%; max-width: 500px; aspect-ratio: 1/1; }
+        .controls { font-size: 0.7rem; color: var(--dim); margin-bottom: 20px; }
+        h1 { font-size: 1.2rem; margin: 0; letter-spacing: 2px; color: var(--accent); }
+    </style>
+</head>
+<body>
+    <a href="../index.html">← /grow</a>
+    <div class="container">
+        <h1>PATH INTEGRAL SIM</h1>
+        <canvas id="sim"></canvas>
+        <div class="controls">SUMMING OVER HISTORIES... TAP TO DISTURB FIELD</div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('sim');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 256; canvas.height = 256;
+        
+        let time = 0;
+        const slits = [100, 156];
+        const state = new Float32Array(256 * 256);
+        const buffer = new Float32Array(256 * 256);
+
+        function draw() {
+            time += 0.05;
+            
+            // Add interference from slits
+            for(let s of slits) {
+                let wave = Math.sin(time) * 128;
+                buffer[s * 256 + 20] += wave;
+            }
+
+            // Simple wave propagation
+            for (let y = 1; y < 255; y++) {
+                for (let x = 1; x < 255; x++) {
+                    let idx = y * 256 + x;
+                    buffer[idx] = (state[idx-1] + state[idx+1] + state[idx-256] + state[idx+256]) / 2 - buffer[idx];
+                    buffer[idx] *= 0.99; 
+                }
+            }
+
+            let temp = state.set(buffer);
+            buffer.set(state);
+
+            // Render
+            const imgData = ctx.createImageData(256, 256);
+            for (let i = 0; i < state.length; i++) {
+                let val = state[i] + 128;
+                imgData.data[i * 4] = val * 0.2;
+                imgData.data[i * 4 + 1] = val;
+                imgData.data[i * 4 + 2] = val * 0.8;
+                imgData.data[i * 4 + 3] = 255;
+            }
+            ctx.putImageData(imgData, 0, 0);
+            
+            // Draw slits
+            ctx.fillStyle = "#000";
+            ctx.fillRect(20, 0, 5, 100);
+            ctx.fillRect(20, 120, 5, 16);
+            ctx.fillRect(20, 172, 5, 84);
+            
+            requestAnimationFrame(draw);
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            let rect = canvas.getBoundingClientRect();
+            let x = Math.floor(((e.clientX - rect.left)/rect.width) * 256);
+            let y = Math.floor(((e.clientY - rect.top)/rect.height) * 256);
+            if(y > 0 && y < 256 && x > 0 && x < 256) state[y*256+x] = 255;
+        });
+
+        draw();
+    </script>
+</body>
+</html>
