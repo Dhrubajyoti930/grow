@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atomic Time Dilation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --accent: #00f2ff;
+            --text: #e0e0e0;
+            --dim: #666;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 600px;
+            padding: 40px 20px;
+        }
+        a { color: var(--accent); text-decoration: none; font-family: 'JetBrains Mono'; font-size: 0.9rem; }
+        h1 { font-weight: 700; letter-spacing: -1px; margin-bottom: 2rem; color: #fff; }
+        .pixel-art {
+            image-rendering: pixelated;
+            width: 120px;
+            height: 120px;
+            background: #111;
+            border: 1px solid #333;
+            margin: 20px auto;
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+        }
+        .pixel { background: #000; }
+        .pixel.on { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+
+        #visualizer { margin: 40px 0; text-align: center; }
+        .clock { font-family: 'JetBrains Mono'; font-size: 1.2rem; margin: 10px; color: var(--accent); }
+        
+        button {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: 'JetBrains Mono';
+            transition: 0.3s;
+        }
+        button:hover { background: var(--accent); color: var(--bg); }
+        
+        .content { font-size: 1.1rem; color: #aaa; }
+        .back-link { position: fixed; top: 20px; left: 20px; }
+    </style>
+</head>
+<body>
+
+    <a href="../index.html" class="back-link">← /grow</a>
+
+    <div class="container">
+        <h1>Atomic Time Dilation</h1>
+        
+        <div id="visualizer">
+            <div id="canvas" class="pixel-art"></div>
+            <p>Head Clock: <span id="head-clock" class="clock">0.000000000s</span></p>
+            <p>Foot Clock: <span id="foot-clock" class="clock">0.000000000s</span></p>
+            <button onclick="toggleTime()">SIMULATE GRAVITY</button>
+        </div>
+
+        <div class="content">
+            <p>According to General Relativity, time is not absolute. It is a local experience dictated by the curvature of spacetime. The closer you are to a massive object—like Earth—the slower time moves for you.</p>
+            <p>This means your feet, being closer to the planet's center of mass, exist in a deeper gravitational well than your head. Over a lifetime, your head ages a few billionths of a second more than your feet.</p>
+            <p>We perceive this as negligible, but for atomic clocks, the difference is measurable, proven, and undeniable. Gravity is not just a force; it is a time-tapering distortion.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        for(let i=0; i<64; i++) {
+            const div = document.createElement('div');
+            div.className = 'pixel';
+            canvas.appendChild(div);
+        }
+
+        let running = false;
+        let headTime = 0;
+        let footTime = 0;
+
+        function toggleTime() {
+            running = !running;
+        }
+
+        function update() {
+            if(running) {
+                headTime += 1.000000001;
+                footTime += 1.000000000;
+                document.getElementById('head-clock').innerText = (headTime/1e9).toFixed(9) + 's';
+                document.getElementById('foot-clock').innerText = (footTime/1e9).toFixed(9) + 's';
+                
+                // Animate pixels
+                document.querySelectorAll('.pixel').forEach((p, i) => {
+                    if(Math.random() > 0.8) p.classList.add('on');
+                    else p.classList.remove('on');
+                });
+            }
+            requestAnimationFrame(update);
+        }
+        update();
+    </script>
+</body>
+</html>
