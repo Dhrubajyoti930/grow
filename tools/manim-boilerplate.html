@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manim Boilerplate</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --panel: #16161a;
+            --accent: #00ff9d;
+            --text: #e1e1e6;
+            --muted: #666;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--panel);
+            padding: 40px;
+            border-radius: 8px;
+            border: 1px solid #222;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .nav-back {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        h1 { font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; margin-bottom: 2rem; border-left: 4px solid var(--accent); padding-left: 15px; }
+
+        .control-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-size: 0.8rem; color: var(--muted); }
+        select, input {
+            width: 100%;
+            background: #0f0f12;
+            border: 1px solid #333;
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .output-box {
+            margin-top: 30px;
+            background: #000;
+            padding: 20px;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        pre { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--accent); overflow-x: auto; }
+
+        button {
+            background: var(--accent);
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .pixel-art {
+            image-rendering: pixelated;
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<a href="../index.html" class="nav-back">← /grow</a>
+
+<div class="container">
+    <div class="pixel-art"></div>
+    <h1>Manim Boilerplate</h1>
+    
+    <div class="control-group">
+        <label>Scene Name</label>
+        <input type="text" id="sceneName" value="MyScene" oninput="updateCode()">
+    </div>
+    
+    <div class="control-group">
+        <label>Object Type</label>
+        <select id="objType" onchange="updateCode()">
+            <option value="Circle()">Circle</option>
+            <option value="Square()">Square</option>
+            <option value="Text('Hello')">Text</option>
+        </select>
+    </div>
+
+    <div class="output-box">
+        <pre id="codeOutput"></pre>
+        <button onclick="copyCode()">Copy Code</button>
+    </div>
+</div>
+
+<script>
+    function updateCode() {
+        const name = document.getElementById('sceneName').value;
+        const obj = document.getElementById('objType').value;
+        const code = `from manim import *
+
+class ${name}(Scene):
+    def construct(self):
+        obj = ${obj}
+        self.play(Create(obj))
+        self.play(FadeOut(obj))`;
+        
+        document.getElementById('codeOutput').textContent = code;
+    }
+
+    function copyCode() {
+        const text = document.getElementById('codeOutput').textContent;
+        navigator.clipboard.writeText(text);
+        alert('Copied to clipboard!');
+    }
+
+    updateCode();
+</script>
+
+</body>
+</html>
