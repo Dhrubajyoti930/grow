@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poisson Disc Sampling</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0c;
+            color: #e0e0e0;
+            font-family: 'Space Grotesk', sans-serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #nav {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+        a {
+            color: #555;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        a:hover { color: #fff; }
+        canvas {
+            cursor: crosshair;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+        .ui {
+            position: absolute;
+            bottom: 20px;
+            text-align: center;
+            pointer-events: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 10px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="nav"><a href="../index.html">← /grow</a></div>
+    <canvas id="canvas"></canvas>
+    <div class="ui">Click to regenerate</div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, cellSize, grid, active, radius = 15;
+
+        function init() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            
+            cellSize = radius / Math.sqrt(2);
+            grid = [];
+            active = [];
+            
+            const cols = Math.ceil(width / cellSize);
+            const rows = Math.ceil(height / cellSize);
+            for (let i = 0; i < cols * rows; i++) grid[i] = undefined;
+
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+            const pos = {x, y};
+            grid[Math.floor(x/cellSize) + Math.floor(y/cellSize) * cols] = pos;
+            active.push(pos);
+            
+            ctx.fillStyle = '#0a0a0c';
+            ctx.fillRect(0, 0, width, height);
+            draw();
+        }
+
+        function draw() {
+            while (active.length > 0) {
+                let randIndex = Math.floor(Math.random() * active.length);
+                let pos = active[randIndex];
+                let found = false;
+
+                for (let n = 0; n < 30; n++) {
+                    let a = Math.random() * Math.PI * 2;
+                    let m = Math.random() * radius + radius;
+                    let newX = pos.x + Math.cos(a) * m;
+                    let newY = pos.y + Math.sin(a) * m;
+
+                    if (newX >= 0 && newX < width && newY >= 0 && newY < height) {
+                        let col = Math.floor(newX / cellSize);
+                        let row = Math.floor(newY / cellSize);
+                        let ok = true;
+                        
+                        for (let i = -1; i <= 1; i++) {
+                            for (let j = -1; j <= 1; j++) {
+                                let index = (col + i) + (row + j) * Math.ceil(width / cellSize);
+                                if (grid[index]) {
+                                    let d = Math.hypot(newX - grid[index].x, newY - grid[index].y);
+                                    if (d < radius) ok = false;
+                                }
+                            }
+                        }
+
+                        if (ok) {
+                            let newPos = {x: newX, y: newY};
+                            grid[col + row * Math.ceil(width / cellSize)] = newPos;
+                            active.push(newPos);
+                            ctx.fillStyle = '#ffffff';
+                            ctx.beginPath();
+                            ctx.arc(newX, newY, 2, 0, Math.PI * 2);
+                            ctx.fill();
+                            found = true;
+                        }
+                    }
+                }
+                if (!found) active.splice(randIndex, 1);
+            }
+        }
+
+        window.addEventListener('mousedown', init);
+        window.addEventListener('resize', init);
+        init();
+    </script>
+</body>
+</html>
