@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeno's Arrow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --text: #e0e0e0;
+            --accent: #50fa7b;
+            --dim: #444;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: var(--dim);
+            text-decoration: none;
+            font-family: 'Courier Prime', monospace;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover { color: var(--accent); }
+
+        #stage {
+            width: 100%;
+            max-width: 600px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .pixel-arrow {
+            font-size: 4rem;
+            margin: 2rem 0;
+            display: inline-block;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .text-box {
+            line-height: 1.6;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .state-indicator {
+            font-family: 'Courier Prime', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.2rem;
+            color: var(--accent);
+            margin-top: 1rem;
+        }
+
+        #arrow {
+            position: relative;
+            display: inline-block;
+            animation: none;
+        }
+
+        @keyframes fly {
+            0% { transform: translateX(-100vw); }
+            100% { transform: translateX(100vw); }
+        }
+
+        .flying { animation: fly 0.5s linear infinite; }
+        .frozen { animation: none; transform: translateX(0); }
+    </style>
+</head>
+<body>
+
+    <a href="../index.html" class="back-link">← /grow</a>
+
+    <div id="stage">
+        <div id="arrow" class="frozen">➤</div>
+        <div class="state-indicator" id="status">State: At Rest</div>
+        
+        <div class="text-box" id="story">
+            <p>At any given moment, the arrow occupies a space equal to its own length.</p>
+            <p>If it occupies a space equal to its length, it is not moving.</p>
+            <p>Therefore, at every instant of its flight, the arrow is still.</p>
+        </div>
+
+        <button id="toggle" style="background:transparent; border:1px solid #444; color:#fff; padding: 10px 20px; cursor:pointer;">Toggle Flight</button>
+    </div>
+
+    <script>
+        const arrow = document.getElementById('arrow');
+        const status = document.getElementById('status');
+        const toggle = document.getElementById('toggle');
+        let isFlying = false;
+
+        toggle.addEventListener('click', () => {
+            isFlying = !isFlying;
+            if (isFlying) {
+                arrow.className = 'flying';
+                status.innerText = 'State: In Motion?';
+                toggle.innerText = 'Interrupt Time';
+            } else {
+                arrow.className = 'frozen';
+                status.innerText = 'State: At Rest';
+                toggle.innerText = 'Release Arrow';
+            }
+        });
+    </script>
+</body>
+</html>
