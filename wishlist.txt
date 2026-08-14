@@ -80,7 +80,7 @@
 [tool]  Manim Boilerplate     — visual UI to generate the Python code for elegant math animations  ✅
 [art]   Poisson Disc Sampling — perfectly distributed, non-overlapping organic dot patterns  ✅
 [story] Zeno's Arrow          — the philosophical paradox that an arrow in flight is always at rest  ✅
-[game]  Pig Jousting          — ride saddle-equipped hogs into tournament combat
+[game]  Pig Jousting          — ride saddle-equipped hogs into tournament combat  ✅
 [tool]  Heat Equation         — simulate thermal dispersion across a 2D metal plate over time
 [art]   Superformula Shapes   — tweaking parameters to generate starfish, leaves, and astroids
 [story] The Bismuth Staircase — melting toxic-looking metal on a stove to grow iridescent crystals
