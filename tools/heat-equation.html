@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heat Equation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --panel: #16161a;
+            --accent: #ff4d4d;
+            --text: #e0e0e0;
+        }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Space Mono', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        nav { width: 100%; padding: 20px; box-sizing: border-box; }
+        a { color: var(--accent); text-decoration: none; font-size: 0.9rem; letter-spacing: 1px; }
+        .container { display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 20px; }
+        canvas { 
+            background: #000; 
+            image-rendering: pixelated; 
+            cursor: crosshair; 
+            border: 2px solid #2a2a30;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            max-width: 100%;
+        }
+        .controls { background: var(--panel); padding: 20px; border-radius: 8px; display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
+        button { background: var(--accent); border: none; color: white; padding: 8px 16px; cursor: pointer; font-family: inherit; font-weight: bold; }
+        button:hover { opacity: 0.9; }
+        h1 { margin: 0; font-size: 1.5rem; color: #fff; }
+    </style>
+</head>
+<body>
+
+<nav><a href="../index.html">← /grow</a></nav>
+
+<div class="container">
+    <h1>HEAT EQUATION</h1>
+    <canvas id="sim" width="100" height="100"></canvas>
+    <div class="controls">
+        <button onclick="reset()">RESET</button>
+        <span style="font-size: 0.8rem; align-self: center;">CLICK/DRAG TO HEAT</span>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('sim');
+    const ctx = canvas.getContext('2d', { alpha: false });
+    const size = 100;
+    let grid = new Float32Array(size * size);
+    let nextGrid = new Float32Array(size * size);
+
+    function reset() { grid.fill(0); }
+
+    function draw() {
+        const imgData = ctx.createImageData(size, size);
+        for (let i = 0; i < grid.length; i++) {
+            const val = grid[i] * 255;
+            imgData.data[i * 4] = val * 1.5;     // R
+            imgData.data[i * 4 + 1] = val * 0.5; // G
+            imgData.data[i * 4 + 2] = val * 0.2; // B
+            imgData.data[i * 4 + 3] = 255;       // A
+        }
+        ctx.putImageData(imgData, 0, 0);
+    }
+
+    function update() {
+        for (let y = 1; y < size - 1; y++) {
+            for (let x = 1; x < size - 1; x++) {
+                let sum = grid[(y-1)*size + x] + grid[(y+1)*size + x] + grid[y*size + (x-1)] + grid[y*size + (x+1)];
+                nextGrid[y*size + x] = (grid[y*size + x] + 0.2 * sum) / 1.8;
+            }
+        }
+        grid.set(nextGrid);
+    }
+
+    function paint(e) {
+        const rect = canvas.getBoundingClientRect();
+        const x = Math.floor((e.clientX - rect.left) / (rect.width / size));
+        const y = Math.floor((e.clientY - rect.top) / (rect.height / size));
+        if (x >= 0 && x < size && y >= 0 && y < size) {
+            grid[y * size + x] = 1.0;
+        }
+    }
+
+    canvas.addEventListener('mousedown', paint);
+    canvas.addEventListener('mousemove', (e) => { if(e.buttons === 1) paint(e); });
+
+    function loop() {
+        update();
+        draw();
+        requestAnimationFrame(loop);
+    }
+    loop();
+</script>
+
+</body>
+</html>
