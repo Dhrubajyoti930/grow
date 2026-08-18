@@ -84,7 +84,7 @@
 [tool]  Heat Equation         — simulate thermal dispersion across a 2D metal plate over time  ✅
 [art]   Superformula Shapes   — tweaking parameters to generate starfish, leaves, and astroids  ✅
 [story] The Bismuth Staircase — melting toxic-looking metal on a stove to grow iridescent crystals  ✅
-[game]  Speedbridger          — hold the optimal angle to bridge without falling off the edge
+[game]  Speedbridger          — hold the optimal angle to bridge without falling off the edge  ✅
 [tool]  Wave Equation         — pluck a virtual 1D string to see harmonic standing waves
 [art]   Penrose Tiling        — aperiodic dart and kite patterns that never repeat the same way
 [story] Why The Sky Is Purple — how our eyes filter atmospheric scattering to see blue instead
