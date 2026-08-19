@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wave Equation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --accent: #00ff9d;
+            --text: #e0e0e0;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Space Mono', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            touch-action: none;
+        }
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            opacity: 0.7;
+        }
+        .back-link:hover { opacity: 1; }
+        canvas {
+            width: 90vw;
+            height: 40vh;
+            cursor: crosshair;
+            image-rendering: pixelated;
+        }
+        .controls {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<a href="../index.html" class="back-link">← /grow</a>
+
+<canvas id="canvas"></canvas>
+
+<div class="controls">
+    [ tap and drag to pluck the string ]
+</div>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    let width, height;
+    const nodes = 100;
+    let y = new Float32Array(nodes);
+    let v = new Float32Array(nodes);
+    let a = new Float32Array(nodes);
+    
+    function resize() {
+        width = canvas.width = window.innerWidth * 0.9;
+        height = canvas.height = window.innerHeight * 0.4;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function draw() {
+        ctx.fillStyle = '#0a0a0c';
+        ctx.fillRect(0, 0, width, height);
+        
+        // Physics update
+        const tension = 0.5;
+        const damping = 0.99;
+        
+        for(let i = 1; i < nodes - 1; i++) {
+            a[i] = (y[i-1] + y[i+1] - 2 * y[i]) * tension;
+            v[i] += a[i];
+            v[i] *= damping;
+        }
+        
+        for(let i = 1; i < nodes - 1; i++) {
+            y[i] += v[i];
+        }
+
+        // Draw String
+        ctx.beginPath();
+        ctx.strokeStyle = '#00ff9d';
+        ctx.lineWidth = 2;
+        ctx.moveTo(0, height/2);
+        for(let i = 0; i < nodes; i++) {
+            ctx.lineTo((i / (nodes - 1)) * width, height/2 + y[i] * 50);
+        }
+        ctx.stroke();
+        
+        requestAnimationFrame(draw);
+    }
+
+    function pluck(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+        const x = ((clientX - rect.left) / rect.width) * (nodes - 1);
+        const idx = Math.floor(x);
+        if(idx > 0 && idx < nodes - 1) {
+            y[idx] = 1.5;
+        }
+    }
+
+    canvas.addEventListener('mousemove', (e) => { if(e.buttons === 1) pluck(e); });
+    canvas.addEventListener('touchmove', pluck);
+    
+    draw();
+</script>
+</body>
+</html>
