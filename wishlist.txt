@@ -86,7 +86,7 @@
 [story] The Bismuth Staircase — melting toxic-looking metal on a stove to grow iridescent crystals  ✅
 [game]  Speedbridger          — hold the optimal angle to bridge without falling off the edge  ✅
 [tool]  Wave Equation         — pluck a virtual 1D string to see harmonic standing waves  ✅
-[art]   Penrose Tiling        — aperiodic dart and kite patterns that never repeat the same way
+[art]   Penrose Tiling        — aperiodic dart and kite patterns that never repeat the same way  ✅
 [story] Why The Sky Is Purple — how our eyes filter atmospheric scattering to see blue instead
 [game]  Sandbox Torture       — put NPCs in increasingly ridiculous and deadly contraptions
 [tool]  Fractional Dimensions — calculate the Hausdorff dimension of Sierpinski triangles
