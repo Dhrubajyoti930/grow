@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why The Sky Is Purple</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --text: #e0e0e0;
+            --accent: #b388ff;
+            --dim: #444;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .nav {
+            margin-bottom: 3rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.1rem;
+        }
+
+        a { color: var(--dim); text-decoration: none; transition: 0.3s; }
+        a:hover { color: var(--accent); }
+
+        h1 { font-weight: 300; letter-spacing: -0.05em; color: var(--accent); }
+
+        #visualizer {
+            width: 100%;
+            height: 200px;
+            background: #111;
+            margin: 2rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+            border: 1px solid #222;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: drift 3s linear infinite;
+        }
+
+        @keyframes drift {
+            from { transform: translateX(-100px); opacity: 0; }
+            50% { opacity: 1; }
+            to { transform: translateX(300px); opacity: 0; }
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #222;
+        }
+
+        button {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover { background: var(--accent); color: var(--bg); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="nav"><a href="../index.html">← /grow</a></div>
+    
+    <h1>Why The Sky Is Purple</h1>
+    
+    <div id="visualizer">
+        <div id="particles"></div>
+        <div style="text-align: center; font-size: 0.7rem; color: #555;">[ PHOTON SCATTERING SIM ]</div>
+    </div>
+
+    <p>High in the thermosphere, the sun sends a chaotic burst of all colors—the full spectrum of light. As these waves strike our atmosphere, they collide with gas molecules, scattering like billiard balls.</p>
+
+    <p>Violet and blue light have the shortest, most energetic wavelengths. They scatter the most, flooding the sky in a violet hue. So, why do we see blue?</p>
+
+    <p>It is not the sky that changes; it is the eye. Human eyes are significantly more sensitive to blue light than violet. Furthermore, the sun emits less violet light to begin with. Our brain takes this violet-drenched scatter, suppresses the deep indigo, and resolves it into the familiar, gentle blue of our world.</p>
+
+    <div class="controls">
+        <button onclick="toggleView()">Toggle Filter</button>
+    </div>
+</div>
+
+<script>
+    const container = document.getElementById('particles');
+    for(let i=0; i<15; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.top = Math.random() * 100 + '%';
+        p.style.animationDelay = Math.random() * 3 + 's';
+        container.appendChild(p);
+    }
+
+    function toggleView() {
+        const visualizer = document.getElementById('visualizer');
+        const particles = document.querySelectorAll('.particle');
+        const isPurple = visualizer.style.borderColor === 'rgb(179, 136, 255)';
+        
+        visualizer.style.borderColor = isPurple ? '#222' : '#b388ff';
+        particles.forEach(p => {
+            p.style.background = isPurple ? '#b388ff' : '#64b5f6';
+        });
+    }
+</script>
+
+</body>
+</html>

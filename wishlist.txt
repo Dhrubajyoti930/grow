@@ -87,7 +87,7 @@
 [game]  Speedbridger          — hold the optimal angle to bridge without falling off the edge  ✅
 [tool]  Wave Equation         — pluck a virtual 1D string to see harmonic standing waves  ✅
 [art]   Penrose Tiling        — aperiodic dart and kite patterns that never repeat the same way  ✅
-[story] Why The Sky Is Purple — how our eyes filter atmospheric scattering to see blue instead
+[story] Why The Sky Is Purple — how our eyes filter atmospheric scattering to see blue instead  ✅
 [game]  Sandbox Torture       — put NPCs in increasingly ridiculous and deadly contraptions
 [tool]  Fractional Dimensions — calculate the Hausdorff dimension of Sierpinski triangles
 [art]   Lissajous Webs        — parametric curves spinning into dense, hypnotic thread art
