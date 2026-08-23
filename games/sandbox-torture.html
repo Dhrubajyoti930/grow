@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sandbox Torture</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@300;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --panel: #16161a; --accent: #ff3e3e; --text: #e0e0e0; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Roboto', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        #back-link { position: absolute; top: 20px; left: 20px; color: #666; text-decoration: none; font-size: 12px; font-family: 'Press Start 2P'; }
+        #game-container { width: 100%; max-width: 600px; margin-top: 60px; padding: 20px; text-align: center; }
+        .canvas { height: 300px; background: #000; border: 2px solid #333; position: relative; margin-bottom: 20px; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; }
+        .npc { width: 40px; height: 40px; background: #f0f0f0; border-radius: 5px; position: relative; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; }
+        .trap { position: absolute; background: var(--accent); opacity: 0.8; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        button { background: var(--panel); border: 1px solid #333; color: white; padding: 15px; cursor: pointer; font-family: 'Press Start 2P'; font-size: 10px; }
+        button:hover { border-color: var(--accent); }
+        .log { margin-top: 20px; font-size: 12px; color: #888; height: 60px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+    <a href="../index.html" id="back-link">← /grow</a>
+    <div id="game-container">
+        <h1>SANDBOX TORTURE</h1>
+        <div class="canvas" id="canvas">
+            <div id="npc" class="npc">🙂</div>
+        </div>
+        <div class="controls">
+            <button onclick="applyTrap('spike')">Iron Spikes</button>
+            <button onclick="applyTrap('crusher')">Hydraulic Press</button>
+            <button onclick="applyTrap('fire')">Magma Pit</button>
+            <button onclick="reset()">Reset NPC</button>
+        </div>
+        <div class="log" id="log">Place a device to begin...</div>
+    </div>
+
+    <script>
+        const npc = document.getElementById('npc');
+        const canvas = document.getElementById('canvas');
+        const log = document.getElementById('log');
+        let hp = 100;
+
+        function logMsg(msg) { log.innerText = msg; }
+
+        function applyTrap(type) {
+            const trap = document.createElement('div');
+            trap.className = 'trap';
+            if(type === 'spike') {
+                trap.style.cssText = "bottom:0; width:100%; height:20px; clip-path: polygon(0% 100%, 10% 0%, 20% 100%, 30% 0%, 40% 100%, 50% 0%, 60% 100%, 70% 0%, 80% 100%, 90% 0%, 100% 100%);";
+                npc.innerText = '😱';
+                damage(20);
+            } else if(type === 'crusher') {
+                trap.style.cssText = "top:0; width:60px; height:50px;";
+                npc.style.transform = 'scaleY(0.5)';
+                damage(40);
+            } else {
+                trap.style.cssText = "bottom:0; width:100%; height:40px; background:#ff9900;";
+                npc.style.filter = 'sepia(1) hue-rotate(-50deg)';
+                damage(60);
+            }
+            canvas.appendChild(trap);
+            setTimeout(() => trap.remove(), 1000);
+        }
+
+        function damage(amt) {
+            hp -= amt;
+            if(hp <= 0) {
+                npc.innerText = '💀';
+                logMsg("Target neutralized.");
+            } else {
+                logMsg("Target health: " + hp + "%");
+            }
+        }
+
+        function reset() {
+            hp = 100;
+            npc.style.transform = 'scaleY(1)';
+            npc.style.filter = 'none';
+            npc.innerText = '🙂';
+            logMsg("New target acquired.");
+        }
+    </script>
+</body>
+</html>
