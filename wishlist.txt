@@ -89,7 +89,7 @@
 [art]   Penrose Tiling        — aperiodic dart and kite patterns that never repeat the same way  ✅
 [story] Why The Sky Is Purple — how our eyes filter atmospheric scattering to see blue instead  ✅
 [game]  Sandbox Torture       — put NPCs in increasingly ridiculous and deadly contraptions  ✅
-[tool]  Fractional Dimensions — calculate the Hausdorff dimension of Sierpinski triangles
+[tool]  Fractional Dimensions — calculate the Hausdorff dimension of Sierpinski triangles  ✅
 [art]   Lissajous Webs        — parametric curves spinning into dense, hypnotic thread art
 [story] Magnetic Braking      — why dropping a magnet through a copper pipe slows it down
 [game]  Potion Brewer         — memorize complex recipes to gain tactical buffs mid-combat

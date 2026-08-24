@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fractional Dimensions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --panel: #16161a;
+            --accent: #00f2ff;
+            --text: #e0e0e0;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Space Mono', monospace;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--panel);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-top: 40px;
+        }
+        h1 { font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--accent); }
+        .input-group { margin-bottom: 1rem; }
+        label { display: block; font-size: 0.8rem; margin-bottom: 0.5rem; }
+        input {
+            width: 100%;
+            background: #000;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 10px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        .result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #000;
+            text-align: center;
+            border-left: 4px solid var(--accent);
+        }
+        #dimension { font-size: 2rem; font-weight: bold; color: var(--accent); }
+        .pixel-art {
+            margin-top: 20px;
+            image-rendering: pixelated;
+            width: 100px;
+            height: 100px;
+            filter: drop-shadow(0 0 5px var(--accent));
+        }
+    </style>
+</head>
+<body>
+
+<a href="../index.html" class="back-link">← /grow</a>
+
+<div class="container">
+    <h1>Hausdorff Dimension</h1>
+    
+    <div class="input-group">
+        <label>Number of Self-Similar Pieces (N)</label>
+        <input type="number" id="nVal" value="3" oninput="calculate()">
+    </div>
+    <div class="input-group">
+        <label>Scaling Factor (1/S)</label>
+        <input type="number" id="sVal" value="2" oninput="calculate()">
+    </div>
+
+    <div class="result">
+        <div style="font-size: 0.7rem; margin-bottom: 5px;">FRACTIONAL DIMENSION</div>
+        <div id="dimension">1.585</div>
+        <div style="font-size: 0.7rem; margin-top: 5px; opacity: 0.6;">D = log(N) / log(S)</div>
+    </div>
+    
+    <div style="display: flex; justify-content: center;">
+        <svg class="pixel-art" viewBox="0 0 3 3">
+            <rect x="1" y="0" width="1" height="1" fill="#00f2ff"/>
+            <rect x="0" y="2" width="1" height="1" fill="#00f2ff"/>
+            <rect x="2" y="2" width="1" height="1" fill="#00f2ff"/>
+        </svg>
+    </div>
+</div>
+
+<script>
+    function calculate() {
+        const N = parseFloat(document.getElementById('nVal').value);
+        const S = parseFloat(document.getElementById('sVal').value);
+        const dimDisplay = document.getElementById('dimension');
+        
+        if (N > 0 && S > 1) {
+            const D = Math.log(N) / Math.log(S);
+            dimDisplay.innerText = D.toFixed(4);
+        } else {
+            dimDisplay.innerText = "ERR";
+        }
+    }
+</script>
+
+</body>
+</html>
