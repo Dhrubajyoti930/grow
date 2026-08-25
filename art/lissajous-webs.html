@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lissajous Webs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #0a0a0c;
+            color: #e0e0e0;
+            font-family: 'Space Mono', monospace;
+        }
+        #back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: color 0.3s;
+        }
+        #back-link:hover { color: #fff; }
+        canvas {
+            display: block;
+        }
+        .ui {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            text-align: right;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="../index.html" id="back-link">← /grow</a>
+    
+    <div class="ui">
+        LISSAJOUS_WEB_v1.0<br>
+        PARAMETRIC_FLOW_ACTIVE
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height;
+        let time = 0;
+        
+        const params = {
+            a: 3,
+            b: 2,
+            delta: Math.PI / 2,
+            speed: 0.005
+        };
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        function draw() {
+            ctx.fillStyle = 'rgba(10, 10, 12, 0.08)';
+            ctx.fillRect(0, 0, width, height);
+            
+            ctx.beginPath();
+            ctx.strokeStyle = 'rgba(100, 200, 255, 0.2)';
+            ctx.lineWidth = 0.5;
+
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const size = Math.min(width, height) * 0.35;
+            
+            time += params.speed;
+            
+            for (let i = 0; i <= 1000; i++) {
+                const t = i * 0.01;
+                const x = centerX + size * Math.sin(params.a * t + time) * Math.cos(params.b * t);
+                const y = centerY + size * Math.sin(params.b * t + time) * Math.sin(params.a * t);
+                
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            
+            ctx.stroke();
+
+            params.a = 3 + Math.sin(time * 0.2) * 2;
+            params.b = 2 + Math.cos(time * 0.3) * 2;
+            
+            requestAnimationFrame(draw);
+        }
+
+        draw();
+    </script>
+</body>
+</html>
