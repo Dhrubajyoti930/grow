@@ -91,7 +91,7 @@
 [game]  Sandbox Torture       — put NPCs in increasingly ridiculous and deadly contraptions  ✅
 [tool]  Fractional Dimensions — calculate the Hausdorff dimension of Sierpinski triangles  ✅
 [art]   Lissajous Webs        — parametric curves spinning into dense, hypnotic thread art  ✅
-[story] Magnetic Braking      — why dropping a magnet through a copper pipe slows it down
+[story] Magnetic Braking      — why dropping a magnet through a copper pipe slows it down  ✅
 [game]  Potion Brewer         — memorize complex recipes to gain tactical buffs mid-combat
 [tool]  Graph Isomorphism     — untangle nodes to see if two network graphs are actually the same
 [art]   Conway's Canvas       — Game of Life cells treated as pixel-art color blooms

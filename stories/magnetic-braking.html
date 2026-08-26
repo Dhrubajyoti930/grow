@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnetic Braking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --panel: #16161a;
+            --accent: #00f2ff;
+            --text: #e1e1e6;
+            --muted: #888;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .nav {
+            width: 100%;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+        .nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover { color: var(--accent); }
+
+        .container {
+            max-width: 600px;
+            padding: 0 20px;
+            margin-bottom: 50px;
+        }
+
+        h1 { font-size: 2.5rem; letter-spacing: -1px; margin-bottom: 2rem; border-left: 4px solid var(--accent); padding-left: 1rem; }
+
+        .viz-box {
+            background: var(--panel);
+            height: 300px;
+            width: 100%;
+            border-radius: 12px;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        #magnet {
+            width: 40px;
+            height: 60px;
+            background: linear-gradient(to right, #ff3e3e, #8b0000 50%, #1e1e1e 50%, #444);
+            border-radius: 4px;
+            position: absolute;
+            top: 20px;
+            transition: top 0.1s linear;
+            box-shadow: 0 0 15px rgba(255,0,0,0.3);
+        }
+
+        .explanation { font-size: 1.1rem; color: #ccc; }
+
+        .term { color: var(--accent); font-weight: bold; }
+
+        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+        .tap-hint { font-family: 'JetBrains Mono'; font-size: 0.8rem; animation: pulse 2s infinite; color: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <nav class="nav">
+        <a href="../index.html">← /grow</a>
+    </nav>
+
+    <div class="container">
+        <h1>Magnetic Braking</h1>
+        
+        <div class="viz-box" onclick="dropMagnet()">
+            <div id="magnet"></div>
+            <div id="hint" class="tap-hint">Tap to drop magnet</div>
+        </div>
+
+        <div class="explanation">
+            <p>When you drop a strong magnet through a copper pipe, it falls <strong>startlingly slowly</strong>.</p>
+            <p>It isn't friction or air resistance. It is <span class="term">Lenz's Law</span> in action.</p>
+            <p>As the magnet falls, its magnetic field changes within the copper walls. This creates <strong>eddy currents</strong>—tiny loops of electricity circulating in the metal. These currents create their own magnetic field that <em>opposes</em> the magnet's motion, effectively pushing back against gravity.</p>
+        </div>
+    </div>
+
+    <script>
+        let isFalling = false;
+        function dropMagnet() {
+            if(isFalling) return;
+            isFalling = true;
+            document.getElementById('hint').style.display = 'none';
+            const m = document.getElementById('magnet');
+            let pos = 20;
+            const drop = setInterval(() => {
+                // Simulate braking resistance
+                pos += 2; 
+                if(pos > 220) {
+                    clearInterval(drop);
+                    setTimeout(() => {
+                        m.style.top = '20px';
+                        isFalling = false;
+                        document.getElementById('hint').style.display = 'block';
+                    }, 500);
+                }
+                m.style.top = pos + 'px';
+            }, 30);
+        }
+    </script>
+</body>
+</html>
