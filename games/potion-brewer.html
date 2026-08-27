@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potion Brewer</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --panel: #1a1a20;
+            --accent: #00ff9d;
+            --text: #e0e0e0;
+            --danger: #ff4757;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        #back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #666;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+        #game-container {
+            width: 90%;
+            max-width: 500px;
+            margin-top: 80px;
+            text-align: center;
+        }
+        .ui-panel {
+            background: var(--panel);
+            padding: 20px;
+            border: 2px solid #333;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .recipe-display {
+            font-size: 2rem;
+            letter-spacing: 5px;
+            color: var(--accent);
+            height: 50px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        button {
+            background: #2a2a35;
+            border: 1px solid #444;
+            color: white;
+            padding: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            font-family: 'VT323', monospace;
+        }
+        button:active { background: #3a3a45; }
+        .stat-bar { height: 10px; background: #222; margin: 10px 0; border: 1px solid #444; }
+        .fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.3s; }
+    </style>
+</head>
+<body>
+
+<a id="back-link" href="../index.html">← /grow</a>
+
+<div id="game-container">
+    <div class="ui-panel">
+        <div style="font-size: 1.2rem; margin-bottom: 10px;">RECIPE</div>
+        <div id="recipe" class="recipe-display">...</div>
+    </div>
+
+    <div class="ui-panel">
+        <div class="grid" id="controls">
+            <button onclick="input('A')">A</button>
+            <button onclick="input('B')">B</button>
+            <button onclick="input('C')">C</button>
+            <button onclick="input('D')">D</button>
+            <button onclick="input('E')">E</button>
+            <button onclick="input('F')">F</button>
+        </div>
+    </div>
+
+    <div class="ui-panel">
+        <div id="status">Memorize the pattern!</div>
+        <div class="stat-bar"><div id="progress" class="fill"></div></div>
+    </div>
+</div>
+
+<script>
+    const ingredients = ['A', 'B', 'C', 'D', 'E', 'F'];
+    let currentRecipe = [];
+    let playerInput = [];
+    let score = 0;
+
+    function generateRecipe() {
+        currentRecipe = [];
+        playerInput = [];
+        const length = Math.min(3 + Math.floor(score / 2), 6);
+        for(let i = 0; i < length; i++) {
+            currentRecipe.push(ingredients[Math.floor(Math.random() * ingredients.length)]);
+        }
+        document.getElementById('recipe').innerText = currentRecipe.join(' ');
+        document.getElementById('progress').style.width = '0%';
+        document.getElementById('status').innerText = "BREWING...";
+    }
+
+    function input(char) {
+        playerInput.push(char);
+        document.getElementById('progress').style.width = (playerInput.length / currentRecipe.length) * 100 + '%';
+        
+        if (playerInput[playerInput.length-1] !== currentRecipe[playerInput.length-1]) {
+            document.getElementById('status').innerText = "EXPLOSION! START OVER.";
+            score = 0;
+            setTimeout(generateRecipe, 1000);
+            return;
+        }
+
+        if (playerInput.length === currentRecipe.length) {
+            score++;
+            document.getElementById('status').innerText = "BUFF APPLIED! LEVEL " + score;
+            setTimeout(generateRecipe, 800);
+        }
+    }
+
+    generateRecipe();
+</script>
+</body>
+</html>
