@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graph Isomorphism</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --accent: #00ff9d; --dim: #333; --text: #e0e0e0; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Space Mono', monospace; overflow: hidden; display: flex; flex-direction: column; height: 100vh; }
+        header { padding: 20px; display: flex; align-items: center; gap: 20px; z-index: 10; }
+        a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+        .canvas-container { flex: 1; display: flex; justify-content: space-around; align-items: center; position: relative; padding: 20px; }
+        canvas { border: 1px solid #222; background: #050505; cursor: grab; touch-action: none; border-radius: 4px; }
+        .controls { padding: 20px; text-align: center; }
+        button { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 10px 20px; cursor: pointer; font-family: inherit; transition: 0.3s; }
+        button:hover { background: var(--accent); color: var(--bg); }
+        .status { margin-bottom: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="../index.html">← /grow</a>
+    <h1 style="margin:0; font-size: 1rem;">Graph Isomorphism</h1>
+</header>
+
+<div class="canvas-container" id="container">
+    <canvas id="graphA"></canvas>
+    <canvas id="graphB"></canvas>
+</div>
+
+<div class="controls">
+    <div class="status" id="status">Untangle them!</div>
+    <button onclick="resetGraphs()">Regenerate Graphs</button>
+</div>
+
+<script>
+    const config = { nodes: 6, radius: 15, padding: 50 };
+    const graphs = [
+        { canvas: document.getElementById('graphA'), nodes: [], adj: [] },
+        { canvas: document.getElementById('graphB'), nodes: [], adj: [] }
+    ];
+
+    function init() {
+        graphs.forEach(g => {
+            const ctx = g.canvas.getContext('2d');
+            g.canvas.width = window.innerWidth / 2.2;
+            g.canvas.height = 300;
+            g.nodes = [];
+            g.adj = Array.from({length: config.nodes}, () => Array(config.nodes).fill(false));
+            
+            for(let i=0; i<config.nodes; i++) {
+                g.nodes.push({ x: Math.random() * (g.canvas.width - 100) + 50, y: Math.random() * (g.canvas.height - 100) + 50, vx: 0, vy: 0 });
+            }
+            // Generate random Hamiltonian cycle
+            let p = [...Array(config.nodes).keys()].sort(() => Math.random() - 0.5);
+            for(let i=0; i<config.nodes; i++) {
+                let u = p[i], v = p[(i+1)%config.nodes];
+                g.adj[u][v] = g.adj[v][u] = true;
+            }
+        });
+        render();
+    }
+
+    function render() {
+        graphs.forEach(g => {
+            const ctx = g.canvas.getContext('2d');
+            ctx.clearRect(0, 0, g.canvas.width, g.canvas.height);
+            
+            ctx.strokeStyle = '#333';
+            for(let i=0; i<config.nodes; i++) {
+                for(let j=i+1; j<config.nodes; j++) {
+                    if(g.adj[i][j]) {
+                        ctx.beginPath();
+                        ctx.moveTo(g.nodes[i].x, g.nodes[i].y);
+                        ctx.lineTo(g.nodes[j].x, g.nodes[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            
+            ctx.fillStyle = '#00ff9d';
+            g.nodes.forEach(n => {
+                ctx.beginPath();
+                ctx.arc(n.x, n.y, config.radius, 0, Math.PI*2);
+                ctx.fill();
+            });
+        });
+        requestAnimationFrame(render);
+    }
+
+    function resetGraphs() { init(); document.getElementById('status').innerText = "Untangle them!"; }
+
+    let dragNode = null;
+    window.addEventListener('mousedown', e => {
+        graphs.forEach(g => {
+            const rect = g.canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            g.nodes.forEach(n => {
+                if(Math.hypot(n.x - x, n.y - y) < 30) dragNode = n;
+            });
+        });
+    });
+
+    window.addEventListener('mousemove', e => {
+        if(dragNode) {
+            dragNode.x = e.clientX - (dragNode.canvas?.offsetLeft || 20); // Simplified
+            dragNode.y = e.clientY - 100;
+        }
+    });
+
+    window.addEventListener('mouseup', () => dragNode = null);
+
+    init();
+</script>
+</body>
+</html>
