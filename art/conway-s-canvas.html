@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conway's Canvas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --panel: #16161a;
+            --accent: #00f2ff;
+            --text: #e1e1e6;
+        }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        #canvas-container {
+            flex-grow: 1;
+            position: relative;
+            cursor: crosshair;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        canvas {
+            image-rendering: pixelated;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            max-width: 95vw;
+            max-height: 70vh;
+        }
+        .controls {
+            padding: 20px;
+            background: var(--panel);
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        button {
+            background: transparent;
+            border: 1px solid #333;
+            color: var(--text);
+            padding: 8px 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+        button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="../index.html">← /grow</a>
+    <h1 style="font-size: 18px; margin:0; font-weight: 300; opacity: 0.7;">CONWAY'S CANVAS</h1>
+</header>
+
+<div id="canvas-container">
+    <canvas id="lifeCanvas"></canvas>
+</div>
+
+<div class="controls">
+    <button id="playBtn">Play / Pause</button>
+    <button id="clearBtn">Clear</button>
+    <button id="randomBtn">Randomize</button>
+</div>
+
+<script>
+    const canvas = document.getElementById('lifeCanvas');
+    const ctx = canvas.getContext('2d');
+    const cellSize = 8;
+    let cols, rows;
+    let grid, playing = false;
+
+    function init() {
+        cols = Math.floor(window.innerWidth / cellSize / 2);
+        rows = Math.floor(window.innerHeight / cellSize / 2);
+        canvas.width = cols * cellSize;
+        canvas.height = rows * cellSize;
+        grid = Array.from({length: cols}, () => Array(rows).fill(0));
+    }
+
+    function draw() {
+        ctx.fillStyle = '#0a0a0c';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        for(let i=0; i<cols; i++) {
+            for(let j=0; j<rows; j++) {
+                if(grid[i][j]) {
+                    ctx.fillStyle = `hsl(${200 + i/cols*100}, 80%, 60%)`;
+                    ctx.fillRect(i*cellSize, j*cellSize, cellSize-1, cellSize-1);
+                }
+            }
+        }
+    }
+
+    function update() {
+        if(!playing) return;
+        let next = grid.map(arr => [...arr]);
+        for(let i=0; i<cols; i++) {
+            for(let j=0; j<rows; j++) {
+                let neighbors = 0;
+                for(let x=-1; x<=1; x++) {
+                    for(let y=-1; y<=1; y++) {
+                        if(x==0 && y==0) continue;
+                        if(grid[(i+x+cols)%cols][(j+y+rows)%rows]) neighbors++;
+                    }
+                }
+                if(grid[i][j] && (neighbors < 2 || neighbors > 3)) next[i][j] = 0;
+                else if(!grid[i][j] && neighbors === 3) next[i][j] = 1;
+            }
+        }
+        grid = next;
+        draw();
+    }
+
+    canvas.addEventListener('mousedown', e => {
+        const rect = canvas.getBoundingClientRect();
+        const x = Math.floor((e.clientX - rect.left) / cellSize);
+        const y = Math.floor((e.clientY - rect.top) / cellSize);
+        grid[x][y] = grid[x][y] ? 0 : 1;
+        draw();
+    });
+
+    document.getElementById('playBtn').onclick = () => playing = !playing;
+    document.getElementById('clearBtn').onclick = () => { grid = grid.map(c => c.fill(0)); draw(); };
+    document.getElementById('randomBtn').onclick = () => {
+        grid = grid.map(c => c.map(() => Math.random() > 0.85 ? 1 : 0));
+        draw();
+    };
+
+    init();
+    setInterval(update, 100);
+</script>
+</body>
+</html>
