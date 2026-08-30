@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ant Algorithms</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0a; --accent: #00ff9d; --text: #d1d1d1; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'IBM Plex Mono', monospace; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        #back-link { position: absolute; top: 20px; left: 20px; color: var(--accent); text-decoration: none; font-size: 0.8rem; opacity: 0.7; }
+        #back-link:hover { opacity: 1; }
+        .container { max-width: 600px; padding: 60px 20px; text-align: center; }
+        h1 { color: var(--accent); letter-spacing: 2px; }
+        #canvas-container { position: relative; border: 1px solid #333; cursor: pointer; background: #000; }
+        canvas { display: block; image-rendering: pixelated; }
+        .ui { margin-top: 20px; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <a id="back-link" href="../index.html">← /grow</a>
+    <div class="container">
+        <h1>ANT ALGORITHMS</h1>
+        <p>In the dark, the blind colony breathes. They deposit liquid traces—pheromones—to map the void. One path vanishes, another deepens. The chaos organizes itself into a perfect line.</p>
+        <div id="canvas-container"><canvas id="sim"></canvas></div>
+        <div class="ui">TAP TO RESET COLONY</div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('sim');
+        const ctx = canvas.getContext('2d');
+        const W = 300, H = 200;
+        canvas.width = W; canvas.height = H;
+        canvas.style.width = '100%'; canvas.style.maxWidth = '600px';
+
+        let pheromones = new Float32Array(W * H);
+        let ants = Array.from({length: 100}, () => ({x: W/2, y: H/2, a: Math.random() * Math.PI * 2}));
+
+        function step() {
+            for(let i=0; i<ants.length; i++) {
+                let ant = ants[i];
+                ant.x += Math.cos(ant.a);
+                ant.y += Math.sin(ant.a);
+                if(ant.x < 0 || ant.x >= W) ant.a = Math.PI - ant.a;
+                if(ant.y < 0 || ant.y >= H) ant.a = -ant.a;
+                
+                let idx = Math.floor(ant.x) + Math.floor(ant.y) * W;
+                pheromones[idx] += 0.2;
+                ant.a += (Math.random() - 0.5) * 0.5;
+            }
+
+            for(let i=0; i<pheromones.length; i++) {
+                pheromones[i] *= 0.98;
+            }
+
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0,0,W,H);
+            ctx.fillStyle = '#00ff9d';
+            for(let i=0; i<pheromones.length; i++) {
+                if(pheromones[i] > 1) {
+                    let x = i % W, y = Math.floor(i / W);
+                    ctx.globalAlpha = Math.min(pheromones[i]/10, 1);
+                    ctx.fillRect(x, y, 1, 1);
+                }
+            }
+            ctx.globalAlpha = 1;
+            requestAnimationFrame(step);
+        }
+
+        canvas.onclick = () => { pheromones.fill(0); };
+        step();
+    </script>
+</body>
+</html>

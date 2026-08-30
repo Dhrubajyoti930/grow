@@ -95,7 +95,7 @@
 [game]  Potion Brewer         — memorize complex recipes to gain tactical buffs mid-combat  ✅
 [tool]  Graph Isomorphism     — untangle nodes to see if two network graphs are actually the same  ✅
 [art]   Conway's Canvas       — Game of Life cells treated as pixel-art color blooms  ✅
-[story] Ant Algorithms        — how a blind colony uses complex pheromone logic to solve mazes
+[story] Ant Algorithms        — how a blind colony uses complex pheromone logic to solve mazes  ✅
 [game]  Nether Navigation     — survive ghast fireballs while bridging over a sea of lava
 [tool]  Tensegrity Simulator  — build floating structures held together purely by tension lines
 [art]   Raymarched Spheres    — infinitely repeating glass orbs reflecting each other
