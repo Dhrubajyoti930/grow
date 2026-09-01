@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tensegrity Simulator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; background: #0a0a0a; color: #e0e0e0; font-family: 'Space Mono', monospace; overflow: hidden; }
+        canvas { display: block; touch-action: none; cursor: crosshair; }
+        .ui { position: absolute; top: 20px; left: 20px; z-index: 10; pointer-events: none; }
+        .back-link { display: inline-block; pointer-events: auto; color: #666; text-decoration: none; font-size: 12px; margin-bottom: 10px; transition: color 0.2s; }
+        .back-link:hover { color: #fff; }
+        h1 { margin: 0; font-size: 18px; letter-spacing: 2px; text-transform: uppercase; color: #00ffcc; }
+        .controls { position: absolute; bottom: 20px; left: 20px; background: rgba(0,0,0,0.7); padding: 15px; border: 1px solid #333; pointer-events: auto; font-size: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="ui">
+        <a href="../index.html" class="back-link">← /grow</a>
+        <h1>Tensegrity Simulator</h1>
+    </div>
+
+    <div class="controls">
+        CLICK/DRAG TO INTERACT<br>
+        TENSION: AUTONOMOUS PHYSICS
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let points = [];
+        let springs = [];
+        const gravity = 0.15;
+        const friction = 0.98;
+
+        class Point {
+            constructor(x, y) {
+                this.x = x; this.y = y;
+                this.px = x; this.py = y;
+            }
+            update() {
+                let vx = (this.x - this.px) * friction;
+                let vy = (this.y - this.py) * friction;
+                this.px = this.x; this.py = this.y;
+                this.x += vx; this.y += vy + gravity;
+                if (this.y > height - 20) { this.y = height - 20; this.px = this.x; }
+            }
+        }
+
+        class Spring {
+            constructor(p1, p2, len) {
+                this.p1 = p1; this.p2 = p2; this.len = len;
+            }
+            update() {
+                let dx = this.p2.x - this.p1.x;
+                let dy = this.p2.y - this.p1.y;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                let diff = (this.len - dist) / dist * 0.5;
+                let offsetX = dx * diff;
+                let offsetY = dy * diff;
+                this.p1.x -= offsetX; this.p1.y -= offsetY;
+                this.p2.x += offsetX; this.p2.y += offsetY;
+            }
+        }
+
+        function setup() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            points = []; springs = [];
+            const cx = width / 2, cy = height / 2;
+            // Create a Tensegrity Prism
+            for(let i=0; i<6; i++) {
+                let angle = i * Math.PI / 3;
+                points.push(new Point(cx + Math.cos(angle)*100, cy + Math.sin(angle)*100 + (i>2 ? 100 : -100)));
+            }
+            // Connections
+            for(let i=0; i<3; i++) {
+                springs.push(new Spring(points[i], points[(i+1)%3], 150));
+                springs.push(new Spring(points[i+3], points[(i+1)%3+3], 150));
+                springs.push(new Spring(points[i], points[i+3], 200));
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = '#0a0a0a';
+            ctx.fillRect(0, 0, width, height);
+            points.forEach(p => p.update());
+            for(let i=0; i<10; i++) springs.forEach(s => s.update());
+            ctx.strokeStyle = '#00ffcc';
+            ctx.lineWidth = 2;
+            springs.forEach(s => {
+                ctx.beginPath();
+                ctx.moveTo(s.p1.x, s.p1.y);
+                ctx.lineTo(s.p2.x, s.p2.y);
+                ctx.stroke();
+            });
+            points.forEach(p => {
+                ctx.fillStyle = '#fff';
+                ctx.beginPath(); ctx.arc(p.x, p.y, 4, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', setup);
+        canvas.addEventListener('mousedown', (e) => {
+            points.forEach(p => {
+                if(Math.hypot(p.x - e.clientX, p.y - e.clientY) < 50) {
+                    p.x = e.clientX; p.y = e.clientY;
+                }
+            });
+        });
+
+        setup();
+        animate();
+    </script>
+</body>
+</html>
