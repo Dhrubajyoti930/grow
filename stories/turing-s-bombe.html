@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turing's Bombe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Space+Grotesk:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --panel: #16161a;
+            --accent: #00ff9d;
+            --text: #e0e0e0;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        #back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: var(--accent);
+            text-decoration: none;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        .container {
+            max-width: 600px;
+            text-align: center;
+            margin-top: 60px;
+        }
+        h1 { font-family: 'Courier Prime', monospace; color: var(--accent); letter-spacing: 2px; }
+        .bombe-viz {
+            width: 300px;
+            height: 150px;
+            border: 2px solid var(--accent);
+            margin: 40px auto;
+            position: relative;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: #000;
+        }
+        .rotor {
+            width: 40px;
+            height: 80px;
+            border: 1px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Courier Prime', monospace;
+            animation: rotate 2s linear infinite;
+        }
+        @keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .story {
+            line-height: 1.6;
+            font-size: 1.1rem;
+            text-align: left;
+        }
+        button {
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: 'Courier Prime', monospace;
+            margin-top: 30px;
+            transition: 0.3s;
+        }
+        button:hover { background: var(--accent); color: var(--bg); }
+        #output { margin-top: 20px; font-family: 'Courier Prime', monospace; color: var(--accent); height: 20px;}
+    </style>
+</head>
+<body>
+    <a id="back-link" href="../index.html">← /grow</a>
+    
+    <div class="container">
+        <h1>TURING'S BOMBE</h1>
+        
+        <div class="bombe-viz">
+            <div class="rotor" id="r1">I</div>
+            <div class="rotor" id="r2" style="animation-duration: 3s">II</div>
+            <div class="rotor" id="r3" style="animation-duration: 5s">III</div>
+        </div>
+
+        <div class="story">
+            <p>1940, Bletchley Park. The Enigma machine is a hydra, its permutations shifting with every keypress. Alan Turing doesn't fight the cipher with pens; he fights it with logic wrought in steel.</p>
+            <p>The Bombe is an electro-mechanical cathedral. Dozens of rotors spin in a rhythmic, clacking dance, searching for a mechanical consistency in the chaos. When they stop, the code breaks.</p>
+        </div>
+
+        <button onclick="crack()">INITIALIZE DECRYPTION</button>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        function crack() {
+            const output = document.getElementById('output');
+            output.innerText = "CALCULATING... 0%";
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 20);
+                if (progress >= 100) {
+                    output.innerText = "ENIGMA DECRYPTED: U-BOAT FOUND";
+                    clearInterval(interval);
+                } else {
+                    output.innerText = "CALCULATING... " + progress + "%";
+                }
+            }, 300);
+        }
+    </script>
+</body>
+</html>
