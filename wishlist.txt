@@ -100,7 +100,7 @@
 [tool]  Tensegrity Simulator  — build floating structures held together purely by tension lines  ✅
 [art]   Raymarched Spheres    — infinitely repeating glass orbs reflecting each other  ✅
 [story] Turing's Bombe        — the electro-mechanical rotors that cracked the Enigma code  ✅
-[game]  G-Fuel Tycoon         — manage a powdery energy drink empire for hardcore gamers
+[game]  G-Fuel Tycoon         — manage a powdery energy drink empire for hardcore gamers  ✅
 [tool]  Mobius Strip Gen      — parametric slider to twist and connect a 3D ribbon of paper
 [art]   Magnetic Field Lines  — iron filings snapping to invisible, animated polar forces
 [story] Benford's Law         — the unexpected ubiquity of the number 1 in tax fraud and nature

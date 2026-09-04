@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G-Fuel Tycoon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-green: #7cfc00;
+            --bg-dark: #0a0a0c;
+            --panel: #16161a;
+            --text: #e0e0e0;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text);
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        #back-link {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            color: var(--neon-green);
+            text-decoration: none;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+        }
+        .container {
+            width: 90%;
+            max-width: 500px;
+            margin-top: 60px;
+            text-align: center;
+        }
+        h1 { font-family: 'Press Start 2P', cursive; color: var(--neon-green); font-size: 1.2rem; }
+        .stats { background: var(--panel); padding: 20px; border-radius: 8px; border: 1px solid #333; margin-bottom: 20px; }
+        .stat-val { font-size: 1.5rem; font-weight: bold; color: var(--neon-green); }
+        .btn {
+            background: var(--neon-green);
+            color: black;
+            border: none;
+            padding: 15px 30px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            transition: transform 0.1s;
+        }
+        .btn:active { transform: scale(0.98); }
+        .btn:disabled { background: #444; color: #888; cursor: not-allowed; }
+        .shop-item {
+            background: var(--panel);
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .pixel-art { font-size: 2rem; }
+    </style>
+</head>
+<body>
+
+<a href="../index.html" id="back-link">← /grow</a>
+
+<div class="container">
+    <h1>G-FUEL TYCOON</h1>
+    <div class="pixel-art">🧪</div>
+    <div class="stats">
+        <div>Tubs Sold: <span id="tubs" class="stat-val">0</span></div>
+        <div>Revenue: $<span id="money" class="stat-val">0</span></div>
+    </div>
+    
+    <button class="btn" onclick="sellTub()">SELL TUB</button>
+
+    <div id="shop">
+        <div class="shop-item">
+            <div>
+                <div style="font-size: 12px;">Marketing Bot</div>
+                <div style="font-size: 10px; color: #888;">+1 tub/sec ($50)</div>
+            </div>
+            <button class="btn" style="width: auto;" onclick="buyUpgrade('bot', 50, 1)" id="btn-bot">BUY</button>
+        </div>
+        <div class="shop-item">
+            <div>
+                <div style="font-size: 12px;">Influencer</div>
+                <div style="font-size: 10px; color: #888;">+5 tubs/sec ($250)</div>
+            </div>
+            <button class="btn" style="width: auto;" onclick="buyUpgrade('inf', 250, 5)" id="btn-inf">BUY</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let tubs = 0;
+    let money = 0;
+    let autoRate = 0;
+
+    function sellTub() {
+        tubs++;
+        money += 5;
+        updateUI();
+    }
+
+    function buyUpgrade(type, cost, rate) {
+        if (money >= cost) {
+            money -= cost;
+            autoRate += rate;
+            updateUI();
+        }
+    }
+
+    function updateUI() {
+        document.getElementById('tubs').innerText = Math.floor(tubs);
+        document.getElementById('money').innerText = money;
+        document.getElementById('btn-bot').disabled = money < 50;
+        document.getElementById('btn-inf').disabled = money < 250;
+    }
+
+    setInterval(() => {
+        if (autoRate > 0) {
+            tubs += (autoRate / 10);
+            money += (autoRate / 10) * 5;
+            updateUI();
+        }
+    }, 100);
+</script>
+
+</body>
+</html>
