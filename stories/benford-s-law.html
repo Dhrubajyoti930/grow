@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benford's Law | The First Digit Mystery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --accent: #00ff9d;
+            --text: #e0e0e0;
+            --dim: #666;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0;
+            padding: 2rem;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container { max-width: 650px; width: 100%; }
+        header { margin-bottom: 3rem; }
+        .back-link { 
+            position: absolute; top: 20px; left: 20px;
+            color: var(--dim); text-decoration: none; font-family: monospace;
+            font-size: 0.9rem; transition: 0.3s;
+        }
+        .back-link:hover { color: var(--accent); }
+        h1 { font-weight: 600; letter-spacing: -1px; margin-bottom: 0.5rem; }
+        .pixel-art {
+            image-rendering: pixelated;
+            width: 128px; height: 128px;
+            background: var(--accent);
+            margin: 2rem auto;
+            clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+        }
+        .interactive {
+            background: #151518;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #222;
+        }
+        input {
+            width: 100%;
+            background: #000;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 10px;
+            box-sizing: border-box;
+            font-family: 'JetBrains Mono';
+        }
+        button {
+            margin-top: 10px;
+            background: var(--accent);
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #000;
+        }
+        #result { margin-top: 20px; font-family: 'JetBrains Mono'; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <a href="../index.html" class="back-link">← /grow</a>
+
+    <div class="container">
+        <header>
+            <h1>Benford's Law</h1>
+            <p style="color: var(--dim)">The hidden pulse of the universe.</p>
+        </header>
+
+        <div class="pixel-art"></div>
+
+        <article>
+            <p>In nature, finance, and the chaotic sprawl of human records, numbers aren't distributed evenly. You might assume the leading digit of a random set of data is equally likely to be 1 through 9. You would be wrong.</p>
+            <p>The number <b>1</b> appears as the leading digit roughly 30% of the time. This is Benford's Law. It is the secret weapon used by forensic accountants to catch tax evaders: if your "random" numbers don't follow this logarithmic decay, you are likely faking them.</p>
+        </article>
+
+        <div class="interactive">
+            <h3>Test the Law</h3>
+            <p style="font-size: 0.8rem; opacity: 0.7;">Enter a list of numbers (comma separated) to check the lead digit frequency:</p>
+            <input type="text" id="nums" placeholder="e.g. 10, 25, 100, 4, 18, 99, 120...">
+            <button onclick="analyze()">Analyze Sequence</button>
+            <div id="result"></div>
+        </div>
+    </div>
+
+    <script>
+        function analyze() {
+            const input = document.getElementById('nums').value;
+            const arr = input.split(',').map(n => n.trim()).filter(n => n.length > 0);
+            if (arr.length === 0) return;
+
+            const counts = {};
+            arr.forEach(n => {
+                const firstDigit = n.toString()[0];
+                counts[firstDigit] = (counts[firstDigit] || 0) + 1;
+            });
+
+            let html = "<strong>Distribution:</strong><br>";
+            for (let i = 1; i <= 9; i++) {
+                const count = counts[i] || 0;
+                const perc = ((count / arr.length) * 100).toFixed(1);
+                html += `${i}: ${perc}%<br>`;
+            }
+            document.getElementById('result').innerHTML = html;
+        }
+    </script>
+</body>
+</html>
