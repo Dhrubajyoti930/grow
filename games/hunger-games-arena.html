@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hunger Games Arena</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0a; --accent: #ff3e3e; --text: #e0e0e0; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Roboto', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        a { color: #666; text-decoration: none; font-family: 'Press Start 2P', cursive; font-size: 0.6rem; position: absolute; top: 20px; left: 20px; }
+        #game-container { width: 90%; max-width: 600px; margin-top: 60px; text-align: center; }
+        h1 { font-family: 'Press Start 2P', cursive; color: var(--accent); font-size: 1.2rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
+        #arena-box { border: 2px solid #333; padding: 20px; background: #111; min-height: 200px; position: relative; border-radius: 4px; box-shadow: 0 0 20px rgba(255,62,62,0.1); }
+        #log { font-size: 0.9rem; line-height: 1.6; height: 250px; overflow-y: auto; text-align: left; margin-bottom: 20px; color: #aaa; }
+        button { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 10px 20px; cursor: pointer; font-family: 'Press Start 2P', cursive; transition: 0.3s; }
+        button:hover { background: var(--accent); color: #fff; }
+        .stats { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.8rem; font-family: 'Press Start 2P', cursive; }
+    </style>
+</head>
+<body>
+    <a href="../index.html">← /grow</a>
+    <div id="game-container">
+        <h1>Hunger Games Arena</h1>
+        <div class="stats">
+            <span id="tributes">Tributes: 24</span>
+            <span id="day">Day: 1</span>
+        </div>
+        <div id="arena-box">
+            <div id="log">Welcome to the 74th Hunger Games. The cornucopia lies in the center. Will you risk it?</div>
+        </div>
+        <button id="action-btn" onclick="gameLoop()">Enter Cornucopia</button>
+    </div>
+
+    <script>
+        let tributes = Array.from({length: 23}, (_, i) => ({ name: "Tribute " + (i+1), alive: true }));
+        tributes.push({ name: "You", alive: true });
+        let day = 1;
+        let gameActive = true;
+
+        const logEl = document.getElementById('log');
+        const btn = document.getElementById('action-btn');
+        const tributesEl = document.getElementById('tributes');
+        const dayEl = document.getElementById('day');
+
+        function addLog(msg) {
+            logEl.innerHTML += `<br>> ${msg}`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function gameLoop() {
+            if (!gameActive) location.reload();
+            
+            const alive = tributes.filter(t => t.alive);
+            if (alive.length === 1) {
+                addLog(`VICTORY: ${alive[0].name} has won the Games.`);
+                btn.innerText = "Restart";
+                gameActive = false;
+                return;
+            }
+
+            if (day === 1) {
+                addLog("A bloodbath at the Cornucopia!");
+                tributes.forEach((t, i) => {
+                    if (Math.random() < 0.4 && t.name !== "You") t.alive = false;
+                });
+            } else {
+                let victim = tributes.find(t => t.alive && t.name !== "You");
+                if (victim) {
+                    victim.alive = false;
+                    addLog(`${victim.name} has been eliminated.`);
+                }
+                if (Math.random() < 0.2 && tributes.find(t => t.name === "You").alive) {
+                    addLog("You found a supply cache!");
+                }
+            }
+
+            day++;
+            tributesEl.innerText = `Tributes: ${tributes.filter(t => t.alive).length}`;
+            dayEl.innerText = `Day: ${day}`;
+            
+            if (!tributes.find(t => t.name === "You").alive) {
+                addLog("You have been eliminated. Game Over.");
+                btn.innerText = "Try Again";
+                gameActive = false;
+            } else {
+                btn.innerText = "Survive another day";
+            }
+        }
+    </script>
+</body>
+</html>
