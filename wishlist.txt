@@ -105,7 +105,7 @@
 [art]   Magnetic Field Lines  — iron filings snapping to invisible, animated polar forces  ✅
 [story] Benford's Law         — the unexpected ubiquity of the number 1 in tax fraud and nature  ✅
 [game]  Hunger Games Arena    — loot the cornucopia and survive a 24-player battle royale  ✅
-[tool]  Conic Sections        — slice a double cone with a 3D plane to reveal ellipses and parabolas
+[tool]  Conic Sections        — slice a double cone with a 3D plane to reveal ellipses and parabolas  ✅
 [art]   Slime Mold Network    — simulating Physarum polycephalum finding food sources
 [story] The Tacoma Narrows    — how aeroelastic flutter, not simple resonance, collapsed a bridge
 [game]  Techno's Library      — decipher ancient combat texts and apply Sun Tzu quotes to PvP
