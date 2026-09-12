@@ -108,7 +108,7 @@
 [tool]  Conic Sections        — slice a double cone with a 3D plane to reveal ellipses and parabolas  ✅
 [art]   Slime Mold Network    — simulating Physarum polycephalum finding food sources  ✅
 [story] The Tacoma Narrows    — how aeroelastic flutter, not simple resonance, collapsed a bridge  ✅
-[game]  Techno's Library      — decipher ancient combat texts and apply Sun Tzu quotes to PvP
+[game]  Techno's Library      — decipher ancient combat texts and apply Sun Tzu quotes to PvP  ✅
 [tool]  Proof by Induction    — visual dominoes falling to prove mathematical statements
 [art]   Fluid Vortex Shedding — beautiful, repeating swirls behind an object in a stream
 [story] The Mpemba Effect     — the counter-intuitive anomaly where hot water freezes faster

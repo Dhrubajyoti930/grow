@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Techno's Library</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root { --neon-gold: #ffd700; --bg: #0a0a0c; --panel: #16161a; --text: #dcdcdc; }
+        body { background: var(--bg); color: var(--text); font-family: 'Courier Prime', monospace; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; }
+        .back-link { position: absolute; top: 20px; left: 20px; color: var(--neon-gold); text-decoration: none; font-size: 0.8rem; border: 1px solid var(--neon-gold); padding: 5px 10px; }
+        .container { max-width: 600px; width: 100%; text-align: center; }
+        h1 { font-family: 'Press Start 2P', cursive; color: var(--neon-gold); font-size: 1.2rem; margin-top: 60px; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
+        #game-box { background: var(--panel); border: 2px solid #333; padding: 20px; border-radius: 8px; margin-top: 20px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .quote { font-style: italic; margin-bottom: 20px; min-height: 3em; border-left: 3px solid var(--neon-gold); padding-left: 10px; }
+        .options { display: grid; gap: 10px; }
+        button { background: #222; border: 1px solid #444; color: #fff; padding: 10px; cursor: pointer; transition: 0.3s; font-family: inherit; }
+        button:hover { background: var(--neon-gold); color: #000; border-color: var(--neon-gold); }
+        .status { margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-link">← /grow</a>
+    
+    <div class="container">
+        <h1>Techno's Library</h1>
+        <div id="game-box">
+            <div id="text" class="quote">Loading scroll...</div>
+            <div id="options" class="options"></div>
+            <div id="status" class="status"></div>
+        </div>
+    </div>
+
+    <script>
+        const scenarios = [
+            { t: "The enemy approaches with superior numbers. What does Sun Tzu dictate?", o: ["Avoid direct combat", "Attack the weak point", "Retreat to high ground"], c: 1 },
+            { t: "Your equipment is failing in the heat of battle. How do you adapt?", o: ["Change your strategy", "Blame the blacksmith", "Keep swinging"], c: 0 },
+            { t: "The opponent relies on erratic movement. What is the play?", o: ["Chase them blindly", "Control the space", "Panic"], c: 1 },
+            { t: "Victory is within reach, but the enemy lures you into a narrow corridor.", o: ["Ignore the bait", "Full send", "Use a potion"], c: 0 }
+        ];
+
+        let current = 0;
+        const textEl = document.getElementById('text');
+        const optEl = document.getElementById('options');
+        const statEl = document.getElementById('status');
+
+        function load() {
+            if (current >= scenarios.length) {
+                textEl.innerText = "The scrolls are mastered. Your PvP prowess is absolute.";
+                optEl.innerHTML = '<button onclick="location.reload()">Reset Library</button>';
+                return;
+            }
+            const s = scenarios[current];
+            textEl.innerText = s.t;
+            optEl.innerHTML = '';
+            s.o.forEach((opt, i) => {
+                const b = document.createElement('button');
+                b.innerText = opt;
+                b.onclick = () => check(i);
+                optEl.appendChild(b);
+            });
+        }
+
+        function check(i) {
+            if (i === scenarios[current].c) {
+                statEl.innerText = "Combat Log: Success.";
+                statEl.style.color = "var(--neon-gold)";
+                current++;
+                setTimeout(load, 1000);
+            } else {
+                statEl.innerText = "Combat Log: Failure. Try again.";
+                statEl.style.color = "#ff4444";
+            }
+        }
+        load();
+    </script>
+</body>
+</html>
