@@ -111,7 +111,7 @@
 [game]  Techno's Library      — decipher ancient combat texts and apply Sun Tzu quotes to PvP  ✅
 [tool]  Proof by Induction    — visual dominoes falling to prove mathematical statements  ✅
 [art]   Fluid Vortex Shedding — beautiful, repeating swirls behind an object in a stream  ✅
-[story] The Mpemba Effect     — the counter-intuitive anomaly where hot water freezes faster
+[story] The Mpemba Effect     — the counter-intuitive anomaly where hot water freezes faster  ✅
 [game]  Manhunt Analysis      — rewind and analyze 200 IQ plays to see if they were scripted
 [tool]  Cellular Automata     — 1D Rule 30 generator showing complex patterns from simple rules
 [art]   Hex Tessellations     — infinitely folding Escher-style geometric animals
