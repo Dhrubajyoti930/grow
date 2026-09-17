@@ -113,7 +113,7 @@
 [art]   Fluid Vortex Shedding — beautiful, repeating swirls behind an object in a stream  ✅
 [story] The Mpemba Effect     — the counter-intuitive anomaly where hot water freezes faster  ✅
 [game]  Manhunt Analysis      — rewind and analyze 200 IQ plays to see if they were scripted  ✅
-[tool]  Cellular Automata     — 1D Rule 30 generator showing complex patterns from simple rules
+[tool]  Cellular Automata     — 1D Rule 30 generator showing complex patterns from simple rules  ✅
 [art]   Hex Tessellations     — infinitely folding Escher-style geometric animals
 [story] Weighing The Earth    — how the Cavendish experiment measured planetary mass in a shed
 [game]  Dragon Perch          — predict the dragon's landing sequence to deal massive bed damage
