@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hex Tessellations</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --accent: #00f2ff; --panel: #16161a; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: var(--bg); font-family: 'Space Grotesk', sans-serif; color: white; }
+        a { position: absolute; top: 20px; left: 20px; color: var(--accent); text-decoration: none; font-size: 12px; z-index: 10; letter-spacing: 1px; opacity: 0.7; }
+        canvas { display: block; cursor: crosshair; }
+        .ui { position: absolute; bottom: 30px; right: 30px; text-align: right; pointer-events: none; }
+        h1 { margin: 0; font-size: 18px; text-transform: uppercase; letter-spacing: 4px; }
+        p { font-size: 10px; opacity: 0.5; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <a href="../index.html">← /grow</a>
+    <div class="ui">
+        <h1>Hex Tessellations</h1>
+        <p>TAP TO EVOLVE THE GEOMETRY</p>
+    </div>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let size = 60, seed = Math.random() * 1000;
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            draw();
+        }
+
+        function drawHex(x, y, s, angle) {
+            ctx.beginPath();
+            for (let i = 0; i < 6; i++) {
+                let a = angle + i * Math.PI / 3;
+                ctx.lineTo(x + s * Math.cos(a), y + s * Math.sin(a));
+            }
+            ctx.closePath();
+            ctx.strokeStyle = '#00f2ff33';
+            ctx.stroke();
+            
+            // Stylized "Escher" stroke
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + s * 0.5 * Math.cos(angle + 0.5), y + s * 0.5 * Math.sin(angle + 0.5));
+            ctx.strokeStyle = '#ffffff88';
+            ctx.stroke();
+        }
+
+        function draw() {
+            ctx.fillStyle = '#0a0a0c';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            let hexW = size * 1.5;
+            let hexH = Math.sqrt(3) * size;
+            for (let x = -size; x < canvas.width + size; x += hexW) {
+                for (let y = -size; y < canvas.height + size; y += hexH) {
+                    let offset = (x / hexW) % 2 === 0 ? 0 : hexH / 2;
+                    drawHex(x, y + offset, size, seed);
+                }
+            }
+        }
+
+        window.addEventListener('resize', resize);
+        window.addEventListener('click', () => { seed += 0.5; draw(); });
+        resize();
+    </script>
+</body>
+</html>
