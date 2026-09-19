@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weighing The Earth</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --accent: #4ade80; --text: #e2e8f0; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.6; }
+        .nav { padding: 20px; font-family: 'Courier Prime'; }
+        .nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        h1 { font-family: 'Courier Prime'; color: var(--accent); border-bottom: 1px solid #333; padding-bottom: 10px; }
+        #canvas { width: 100%; height: 200px; background: #161618; border-radius: 8px; margin: 20px 0; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border: 1px solid #333; }
+        .balance-rod { width: 150px; height: 4px; background: #fff; position: relative; transition: transform 0.1s; }
+        .weight { width: 30px; height: 30px; background: var(--accent); border-radius: 50%; position: absolute; top: -13px; }
+        .left { left: -15px; } .right { right: -15px; }
+        button { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 10px 20px; cursor: pointer; border-radius: 4px; font-weight: 600; width: 100%; }
+        button:hover { background: var(--accent); color: var(--bg); }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="nav"><a href="../index.html">← /grow</a></div>
+    <div class="container">
+        <h1>Weighing The Earth</h1>
+        <p>In 1798, Henry Cavendish stepped into a quiet shed in Clapham. He didn't have a giant scale. He had a torsion balance—a delicate, spindly contraption designed to detect the faint pull of gravity between two lead spheres.</p>
+        
+        <div id="canvas">
+            <div class="balance-rod" id="rod">
+                <div class="weight left"></div>
+                <div class="weight right"></div>
+            </div>
+        </div>
+
+        <p id="text">The Earth pulls everything toward its core. By measuring how much these small lead weights twisted a wire toward larger ones, Cavendish calculated the "Gravitational Constant." It was the first time a human weighed the entire planet.</p>
+        
+        <button id="interact">Twist the Balance</button>
+        <p id="result" style="text-align: center; font-family: 'Courier Prime'; margin-top: 20px;"></p>
+    </div>
+
+    <script>
+        const rod = document.getElementById('rod');
+        const btn = document.getElementById('interact');
+        const res = document.getElementById('result');
+        let angle = 0;
+
+        btn.addEventListener('click', () => {
+            angle += 15;
+            rod.style.transform = `rotate(${angle % 360}deg)`;
+            if(angle >= 45) {
+                res.innerHTML = "Result: 5.97 × 10²⁴ kg (approx)";
+            } else {
+                res.innerHTML = "Measuring gravitational pull...";
+            }
+        });
+    </script>
+</body>
+</html>

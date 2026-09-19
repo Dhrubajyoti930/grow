@@ -115,7 +115,7 @@
 [game]  Manhunt Analysis      — rewind and analyze 200 IQ plays to see if they were scripted  ✅
 [tool]  Cellular Automata     — 1D Rule 30 generator showing complex patterns from simple rules  ✅
 [art]   Hex Tessellations     — infinitely folding Escher-style geometric animals  ✅
-[story] Weighing The Earth    — how the Cavendish experiment measured planetary mass in a shed
+[story] Weighing The Earth    — how the Cavendish experiment measured planetary mass in a shed  ✅
 [game]  Dragon Perch          — predict the dragon's landing sequence to deal massive bed damage
 [tool]  Newton's Method       — follow tangent lines down a curve to find its roots iteratively
 [art]   Truchet Pipes         — randomized quarter-circle tiles forming infinite looping plumbing
