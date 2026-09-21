@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragon Perch</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --accent: #ff3e3e; --text: #e0e0e0; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Press Start 2P', cursive; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
+        #back-link { position: absolute; top: 20px; left: 20px; color: var(--accent); text-decoration: none; font-size: 0.7rem; }
+        .game-container { text-align: center; width: 90%; max-width: 400px; }
+        .sky { height: 200px; border-bottom: 4px solid #333; position: relative; margin-bottom: 20px; display: flex; align-items: flex-end; justify-content: center; }
+        #dragon { font-size: 3rem; position: absolute; transition: transform 0.1s; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        button { background: #222; border: 2px solid #444; color: white; padding: 15px; cursor: pointer; font-family: inherit; transition: 0.2s; }
+        button:hover { border-color: var(--accent); }
+        #log { margin-top: 20px; font-size: 0.6rem; color: #666; height: 50px; }
+        .score { font-size: 1.2rem; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<a id="back-link" href="../index.html">← /grow</a>
+
+<div class="game-container">
+    <div class="score">HP: <span id="hp">100</span></div>
+    <div class="sky">
+        <div id="dragon">🐉</div>
+    </div>
+    <div class="controls">
+        <button onclick="guess('left')">LEFT</button>
+        <button onclick="guess('right')">RIGHT</button>
+    </div>
+    <div id="log">Predict the landing zone!</div>
+</div>
+
+<script>
+    let hp = 100;
+    let dragonPos = 0; // -1 left, 1 right
+    const dragon = document.getElementById('dragon');
+    const hpDisplay = document.getElementById('hp');
+    const log = document.getElementById('log');
+
+    function moveDragon() {
+        dragonPos = Math.random() > 0.5 ? 1 : -1;
+        dragon.style.transform = `translateX(${dragonPos * 100}px)`;
+    }
+
+    function guess(side) {
+        const choice = side === 'left' ? -1 : 1;
+        if (choice === dragonPos) {
+            hp -= 20;
+            log.innerText = "CRITICAL HIT! BED SHATTERED!";
+            document.body.style.backgroundColor = "#2a0a0a";
+            setTimeout(() => document.body.style.backgroundColor = "#0a0a0c", 200);
+        } else {
+            hp += 5;
+            log.innerText = "MISS! DRAGON RECOVERED.";
+        }
+        
+        if (hp <= 0) {
+            hp = 100;
+            alert("DRAGON DEFEATED!");
+        }
+        
+        hpDisplay.innerText = hp;
+        moveDragon();
+    }
+
+    moveDragon();
+</script>
+</body>
+</html>
