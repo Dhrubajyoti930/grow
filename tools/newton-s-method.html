@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newton's Method</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --panel: #16161a;
+            --accent: #00ff9d;
+            --text: #e1e1e6;
+            --dim: #666;
+        }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Space Mono', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        nav { width: 100%; padding: 20px; box-sizing: border-box; }
+        a { color: var(--dim); text-decoration: none; font-size: 0.8rem; transition: 0.3s; }
+        a:hover { color: var(--accent); }
+        .container { width: 100%; max-width: 800px; padding: 20px; text-align: center; }
+        canvas { 
+            background: var(--panel); 
+            border: 1px solid #333; 
+            width: 100%; 
+            height: 400px; 
+            cursor: crosshair;
+            image-rendering: pixelated;
+        }
+        .controls { margin-top: 20px; display: grid; gap: 10px; }
+        button { 
+            background: transparent; color: var(--accent); border: 1px solid var(--accent);
+            padding: 10px; cursor: pointer; font-family: inherit; transition: 0.3s;
+        }
+        button:hover { background: var(--accent); color: var(--bg); }
+        .info { margin-top: 20px; font-size: 0.9rem; color: var(--dim); }
+    </style>
+</head>
+<body>
+    <nav><a href="../index.html">← /grow</a></nav>
+    <div class="container">
+        <h1>Newton's Method</h1>
+        <canvas id="canvas"></canvas>
+        <div class="controls">
+            <button onclick="reset()">Reset Iteration</button>
+        </div>
+        <p class="info" id="status">Click anywhere on the graph to set start point x₀</p>
+    </div>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let x = 2.5; 
+    
+    function f(x) { return Math.pow(x, 3) - 2 * x - 5; }
+    function df(x) { return 3 * Math.pow(x, 2) - 2; }
+
+    function draw() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = 400;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        const scale = 40;
+        const midX = canvas.width / 2;
+        const midY = canvas.height / 2;
+
+        // Draw Axes
+        ctx.strokeStyle = '#333';
+        ctx.beginPath();
+        ctx.moveTo(0, midY); ctx.lineTo(canvas.width, midY);
+        ctx.moveTo(midX, 0); ctx.lineTo(midX, canvas.height);
+        ctx.stroke();
+
+        // Draw Function
+        ctx.strokeStyle = '#fff';
+        ctx.beginPath();
+        for(let i = 0; i < canvas.width; i++) {
+            let val = (i - midX) / scale;
+            ctx.lineTo(i, midY - f(val) * scale);
+        }
+        ctx.stroke();
+
+        // Newton Iteration Drawing
+        let currX = x;
+        ctx.strokeStyle = '#00ff9d';
+        for(let i = 0; i < 4; i++) {
+            let yVal = f(currX);
+            let nextX = currX - yVal / df(currX);
+            
+            ctx.beginPath();
+            ctx.moveTo(midX + currX * scale, midY);
+            ctx.lineTo(midX + currX * scale, midY - yVal * scale);
+            ctx.lineTo(midX + nextX * scale, midY);
+            ctx.stroke();
+            
+            currX = nextX;
+        }
+    }
+
+    canvas.addEventListener('mousedown', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        x = (e.clientX - rect.left - canvas.width / 2) / 40;
+        document.getElementById('status').innerText = `Iteration x₀: ${x.toFixed(3)}`;
+        draw();
+    });
+
+    function reset() { x = 2.5; draw(); }
+    window.onresize = draw;
+    draw();
+</script>
+</body>
+</html>
