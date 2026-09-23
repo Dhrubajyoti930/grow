@@ -118,7 +118,7 @@
 [story] Weighing The Earth    — how the Cavendish experiment measured planetary mass in a shed  ✅
 [game]  Dragon Perch          — predict the dragon's landing sequence to deal massive bed damage  ✅
 [tool]  Newton's Method       — follow tangent lines down a curve to find its roots iteratively  ✅
-[art]   Truchet Pipes         — randomized quarter-circle tiles forming infinite looping plumbing
+[art]   Truchet Pipes         — randomized quarter-circle tiles forming infinite looping plumbing  ✅
 [story] Stimulated Emission   — the quantum leap required to align photons into a laser beam
 [game]  Compass Manhunt       — evade multiple hunters in a procedurally generated wilderness
 [tool]  Stereo Projection     — shine a light through a sphere to map its surface to a plane
