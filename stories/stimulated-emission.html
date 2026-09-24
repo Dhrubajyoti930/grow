@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stimulated Emission</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --text: #e0e0e0; --accent: #00ffcc; --dim: #555; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+        a { color: var(--dim); text-decoration: none; position: absolute; top: 20px; left: 20px; font-family: 'JetBrains Mono'; font-size: 0.8rem; transition: 0.3s; }
+        a:hover { color: var(--accent); }
+        #game-container { width: 90vw; max-width: 600px; text-align: center; }
+        .story { margin-bottom: 2rem; min-height: 120px; line-height: 1.6; font-size: 1.1rem; }
+        .btn { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 10px 20px; cursor: pointer; font-family: 'JetBrains Mono'; transition: 0.3s; }
+        .btn:hover { background: var(--accent); color: #000; }
+        canvas { border: 1px solid #222; background: #050505; cursor: crosshair; touch-action: none; }
+        #counter { font-family: 'JetBrains Mono'; margin-top: 10px; color: var(--accent); }
+    </style>
+</head>
+<body>
+
+<a href="../index.html">← /grow</a>
+
+<div id="game-container">
+    <div class="story" id="story">An atom sits in darkness, waiting for the spark.</div>
+    <canvas id="laserCanvas" width="400" height="200"></canvas>
+    <div id="counter">Photons: 0 / 50</div>
+    <button class="btn" id="actionBtn" onclick="advance()">STIMULATE</button>
+</div>
+
+<script>
+    const canvas = document.getElementById('laserCanvas');
+    const ctx = canvas.getContext('2d');
+    const storyEl = document.getElementById('story');
+    const counterEl = document.getElementById('counter');
+    let phase = 0;
+    let photons = [];
+
+    function advance() {
+        if (phase === 0) {
+            storyEl.innerText = "The electron is excited to a higher shell. It is unstable, trembling in anticipation of the fall.";
+            phase = 1;
+        } else if (phase === 1) {
+            storyEl.innerText = "A passing photon strikes. The electron collapses, releasing an identical twin. The cascade begins.";
+            phase = 2;
+        } else if (phase < 50) {
+            photons.push({ x: Math.random() * 50, y: Math.random() * 200, v: 2 + Math.random() * 3 });
+            counterEl.innerText = `Photons: ${photons.length} / 50`;
+            if (photons.length >= 50) {
+                storyEl.innerText = "Coherence achieved. The beam burns through the void, a singular, monochromatic line of pure reality.";
+                document.getElementById('actionBtn').style.display = 'none';
+            }
+        }
+    }
+
+    function animate() {
+        ctx.fillStyle = 'rgba(5, 5, 5, 0.2)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.strokeStyle = '#00ffcc';
+        ctx.lineWidth = 2;
+        
+        photons.forEach(p => {
+            p.x += p.v;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p.x + 10, p.y + Math.sin(p.x * 0.1) * 10);
+            ctx.stroke();
+            if (p.x > canvas.width) p.x = 0;
+        });
+        requestAnimationFrame(animate);
+    }
+    animate();
+</script>
+
+</body>
+</html>
