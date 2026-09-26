@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Compass Manhunt</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --text: #e0e0e0; --accent: #00ff9d; --danger: #ff4d4d; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Space Mono', monospace; overflow: hidden; display: flex; flex-direction: column; height: 100vh; }
+        #ui { padding: 20px; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
+        a { color: #666; text-decoration: none; font-size: 0.8rem; }
+        #game-container { flex-grow: 1; position: relative; touch-action: none; cursor: crosshair; }
+        canvas { display: block; image-rendering: pixelated; }
+        #msg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; display: none; }
+    </style>
+</head>
+<body>
+
+<div id="ui">
+    <a href="../index.html">← /grow</a>
+    <div id="status">SURVIVE: <span id="timer">0</span>s</div>
+</div>
+
+<div id="game-container">
+    <canvas id="canvas"></canvas>
+    <div id="msg">
+        <h1 id="title">CAUGHT</h1>
+        <button onclick="resetGame()" style="padding: 10px 20px; background: none; border: 1px solid var(--accent); color: var(--accent); cursor: pointer;">RETRY</button>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const timerEl = document.getElementById('timer');
+    const msg = document.getElementById('msg');
+    
+    let w, h, player, hunters, particles, frame, score, active;
+
+    function init() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight - 60;
+        player = { x: w/2, y: h/2, size: 8 };
+        hunters = Array.from({length: 4}, () => ({ 
+            x: Math.random() * w, y: Math.random() * h, speed: 1.5 + Math.random() 
+        }));
+        particles = Array.from({length: 50}, () => ({ x: Math.random()*w, y: Math.random()*h }));
+        frame = 0; score = 0; active = true;
+        msg.style.display = 'none';
+        loop();
+    }
+
+    window.addEventListener('mousemove', e => {
+        player.x = e.clientX;
+        player.y = e.clientY - 60;
+    });
+
+    window.addEventListener('touchmove', e => {
+        player.x = e.touches[0].clientX;
+        player.y = e.touches[0].clientY - 60;
+    });
+
+    function resetGame() { init(); }
+
+    function loop() {
+        if (!active) return;
+        ctx.fillStyle = '#0a0a0c';
+        ctx.fillRect(0, 0, w, h);
+
+        // Draw Stars
+        ctx.fillStyle = '#333';
+        particles.forEach(p => ctx.fillRect(p.x, p.y, 2, 2));
+
+        // Update Hunters
+        hunters.forEach(hnd => {
+            const dx = player.x - hnd.x;
+            const dy = player.y - hnd.y;
+            const dist = Math.hypot(dx, dy);
+            hnd.x += (dx / dist) * hnd.speed;
+            hnd.y += (dy / dist) * hnd.speed;
+            
+            ctx.fillStyle = '#ff4d4d';
+            ctx.fillRect(hnd.x - 4, hnd.y - 4, 8, 8);
+
+            if (dist < 10) { active = false; msg.style.display = 'block'; }
+        });
+
+        // Player
+        ctx.fillStyle = '#00ff9d';
+        ctx.fillRect(player.x - 4, player.y - 4, 8, 8);
+
+        score++;
+        timerEl.innerText = Math.floor(score / 60);
+        requestAnimationFrame(loop);
+    }
+
+    init();
+</script>
+</body>
+</html>

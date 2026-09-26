@@ -120,7 +120,7 @@
 [tool]  Newton's Method       — follow tangent lines down a curve to find its roots iteratively  ✅
 [art]   Truchet Pipes         — randomized quarter-circle tiles forming infinite looping plumbing  ✅
 [story] Stimulated Emission   — the quantum leap required to align photons into a laser beam  ✅
-[game]  Compass Manhunt       — evade multiple hunters in a procedurally generated wilderness
+[game]  Compass Manhunt       — evade multiple hunters in a procedurally generated wilderness  ✅
 [tool]  Stereo Projection     — shine a light through a sphere to map its surface to a plane
 [art]   Moebius Knot Work     — intertwined Celtic knots painted onto non-orientable surfaces
 [story] The Eclipse of 1919   — how starlight bending around the sun proved general relativity
