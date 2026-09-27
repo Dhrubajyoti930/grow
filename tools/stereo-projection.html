@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stereo Projection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --accent: #00f2ff; --text: #e0e0e0; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; overflow: hidden; }
+        a { color: var(--accent); text-decoration: none; font-size: 14px; opacity: 0.7; transition: 0.3s; }
+        a:hover { opacity: 1; }
+        #ui { position: absolute; top: 20px; left: 20px; z-index: 10; }
+        canvas { display: block; cursor: crosshair; }
+        .controls { position: absolute; bottom: 20px; left: 20px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.1); }
+        .label { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; color: var(--accent); }
+    </style>
+</head>
+<body>
+
+<div id="ui">
+    <a href="../index.html">← /grow</a>
+    <h1 style="margin: 10px 0 0 0; font-size: 24px; font-weight: 600;">Stereo Projection</h1>
+</div>
+
+<div class="controls">
+    <div class="label">Projection Origin</div>
+    <input type="range" id="zOffset" min="-2" max="2" step="0.01" value="1">
+</div>
+
+<canvas id="canvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const zInput = document.getElementById('zOffset');
+
+    let w, h, center;
+    const sphereRadius = 100;
+    const points = [];
+
+    function init() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+        center = { x: w / 2, y: h / 2 };
+        
+        points.length = 0;
+        for (let i = 0; i < 500; i++) {
+            points.push({
+                x: (Math.random() - 0.5) * 2,
+                y: (Math.random() - 0.5) * 2,
+                z: (Math.random() - 0.5) * 2
+            });
+        }
+    }
+
+    function draw() {
+        ctx.fillStyle = '#0a0a0c';
+        ctx.fillRect(0, 0, w, h);
+
+        const zOrigin = parseFloat(zInput.value);
+
+        ctx.strokeStyle = 'rgba(0, 242, 255, 0.3)';
+        ctx.beginPath();
+        ctx.arc(center.x, center.y, sphereRadius, 0, Math.PI * 2);
+        ctx.stroke();
+
+        points.forEach(p => {
+            const mag = Math.sqrt(p.x*p.x + p.y*p.y + p.z*p.z);
+            const nx = (p.x / mag) * sphereRadius;
+            const ny = (p.y / mag) * sphereRadius;
+            const nz = (p.z / mag) * sphereRadius;
+
+            // Projection formula: Project onto plane at Z = -sphereRadius from origin (0, 0, zOrigin)
+            const t = (-sphereRadius - (zOrigin * sphereRadius)) / (nz - (zOrigin * sphereRadius));
+            const projX = nx * t;
+            const projY = ny * t;
+
+            ctx.fillStyle = 'white';
+            ctx.fillRect(center.x + nx, center.y + ny, 2, 2);
+            
+            ctx.fillStyle = 'var(--accent)';
+            ctx.fillRect(center.x + projX, center.y + projY, 2, 2);
+        });
+
+        requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', init);
+    init();
+    draw();
+</script>
+</body>
+</html>
