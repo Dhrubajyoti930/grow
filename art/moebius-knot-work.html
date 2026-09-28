@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moebius Knot Work</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --accent: #d4af37;
+            --line: #2a2a30;
+        }
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: var(--bg); color: #ccc;
+            font-family: 'Courier Prime', monospace;
+            overflow: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        #nav {
+            position: absolute; top: 20px; left: 20px;
+            z-index: 10;
+        }
+        a { color: var(--accent); text-decoration: none; font-size: 0.9rem; border-bottom: 1px solid var(--accent); }
+        canvas { cursor: move; touch-action: none; max-width: 100vw; max-height: 100vh; }
+        .ui { position: absolute; bottom: 20px; text-align: center; pointer-events: none; }
+        h1 { font-family: 'Cinzel', serif; color: var(--accent); margin: 0 0 10px 0; letter-spacing: 2px; }
+        .pixel-border {
+            border: 2px solid var(--line);
+            padding: 10px;
+            image-rendering: pixelated;
+        }
+    </style>
+</head>
+<body>
+
+<div id="nav"><a href="../index.html">← /grow</a></div>
+
+<div class="ui">
+    <h1 class="pixel-border">MOEBIUS KNOT WORK</h1>
+    <p>Drag to rotate the infinite loop</p>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, rotationX = 0, rotationY = 0;
+    let isDragging = false, lastX, lastY;
+
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function draw() {
+        ctx.clearRect(0, 0, width, height);
+        ctx.strokeStyle = '#d4af37';
+        ctx.lineWidth = 2;
+
+        const centerX = width / 2;
+        const centerY = height / 2;
+        const radius = Math.min(width, height) * 0.25;
+
+        // Draw Moebius Strip skeleton
+        for (let t = 0; t < Math.PI * 2; t += 0.05) {
+            // Parametric Moebius: x = (R + v cos(u/2)) cos u
+            const x = (radius + 20 * Math.cos(t / 2 + rotationY)) * Math.cos(t + rotationX);
+            const y = (radius + 20 * Math.cos(t / 2 + rotationY)) * Math.sin(t + rotationX);
+            const z = 20 * Math.sin(t / 2 + rotationY);
+
+            const perspective = 400 / (400 + z);
+            ctx.beginPath();
+            ctx.arc(centerX + x * perspective, centerY + y * perspective, 1.5, 0, Math.PI * 2);
+            ctx.fillStyle = z > 0 ? '#d4af37' : '#4a3f15';
+            ctx.fill();
+        }
+        
+        requestAnimationFrame(draw);
+    }
+
+    canvas.addEventListener('mousedown', e => { isDragging = true; lastX = e.clientX; lastY = e.clientY; });
+    window.addEventListener('mouseup', () => isDragging = false);
+    window.addEventListener('mousemove', e => {
+        if (!isDragging) return;
+        rotationX += (e.clientX - lastX) * 0.01;
+        rotationY += (e.clientY - lastY) * 0.01;
+        lastX = e.clientX; lastY = e.clientY;
+    });
+
+    draw();
+</script>
+</body>
+</html>
