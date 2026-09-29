@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Eclipse of 1919</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --text: #e0e0e0;
+            --accent: #d4af37;
+            --dim: #666;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Courier Prime', monospace;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            line-height: 1.6;
+        }
+
+        #container {
+            max-width: 650px;
+            width: 100%;
+        }
+
+        .nav {
+            margin-bottom: 40px;
+        }
+
+        .nav a {
+            color: var(--dim);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover { color: var(--accent); }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .pixel-sun {
+            width: 100px;
+            height: 100px;
+            background: #d4af37;
+            margin: 20px auto;
+            image-rendering: pixelated;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        #game-area {
+            background: #151518;
+            padding: 20px;
+            border: 1px solid #333;
+            border-radius: 4px;
+            margin-top: 30px;
+        }
+
+        button {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: inherit;
+            margin-top: 20px;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <div class="nav"><a href="../index.html">← /grow</a></div>
+    
+    <h1>The Eclipse of 1919</h1>
+    
+    <div class="pixel-sun"></div>
+
+    <div id="story">
+        <p>In the spring of 1919, the world was weary of war, but Arthur Eddington was looking toward the sky. Albert Einstein had proposed a radical idea: gravity was not a force, but a curvature of space itself.</p>
+        <p>To prove it, one had to see starlight bend as it passed the sun. But the sun is far too bright—unless, of course, it is eclipsed.</p>
+        <div id="game-area">
+            <div id="text-box">The shadow of the moon is approaching Sobral, Brazil. The expedition is ready. Will you capture the proof?</div>
+            <button id="action-btn" onclick="nextStep()">Begin Observation</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let step = 0;
+    const text = document.getElementById('text-box');
+    const btn = document.getElementById('action-btn');
+
+    function nextStep() {
+        step++;
+        if(step === 1) {
+            text.innerHTML = "The sky darkens. Birds stop singing. The corona flares into view like a silver crown. The photographic plates are exposed.";
+            btn.innerText = "Develop Plates";
+        } else if(step === 2) {
+            text.innerHTML = "You compare the plates against control maps of the Hyades cluster taken months prior. The stars are not where they should be. They have shifted, precisely as Einstein predicted.";
+            btn.innerText = "Confirm Discovery";
+        } else if(step === 3) {
+            text.innerHTML = "<strong>Result:</strong> Space is curved. Newton’s steady clockwork universe has been shattered by the light of a distant star. General Relativity is proven.";
+            btn.style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>
