@@ -124,7 +124,7 @@
 [tool]  Stereo Projection     — shine a light through a sphere to map its surface to a plane  ✅
 [art]   Moebius Knot Work     — intertwined Celtic knots painted onto non-orientable surfaces  ✅
 [story] The Eclipse of 1919   — how starlight bending around the sun proved general relativity  ✅
-[game]  Barrel Horror         — navigate a dark cellar with limited lantern oil and hostile props
+[game]  Barrel Horror         — navigate a dark cellar with limited lantern oil and hostile props  ✅
 [tool]  Harmonic Oscillator   — perfectly damped, underdamped, and overdamped spring masses
 [art]   Kaleidoscope Raytrace — bouncing a single beam of light thousands of times
 [story] 100,000 Holes         — how a simple pegboard revealed the hidden statistics of randomness
