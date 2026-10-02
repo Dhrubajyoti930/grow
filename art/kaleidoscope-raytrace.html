@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaleidoscope Raytrace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0c;
+            color: #e0e0e0;
+            font-family: 'Space Mono', monospace;
+            overflow: hidden;
+        }
+        #back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+            z-index: 10;
+            transition: color 0.3s;
+        }
+        #back-link:hover { color: #fff; }
+        canvas {
+            display: block;
+            cursor: crosshair;
+        }
+        .ui {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            text-align: right;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+
+<a id="back-link" href="../index.html">← /grow</a>
+
+<div class="ui">
+    KALEIDOSCOPE RAYTRACE<br>
+    <span style="font-size: 10px;">REFLECTIONS: INFINITE</span>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, sides = 6;
+    let angle = 0;
+
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function draw() {
+        ctx.fillStyle = 'rgba(10, 10, 12, 0.15)';
+        ctx.fillRect(0, 0, width, height);
+
+        const centerX = width / 2;
+        const centerY = height / 2;
+        const time = Date.now() * 0.0005;
+
+        ctx.strokeStyle = '#3ff';
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        
+        let x = centerX, y = centerY;
+        let vx = Math.cos(time) * 10;
+        let vy = Math.sin(time) * 10;
+
+        ctx.moveTo(x, y);
+
+        for (let i = 0; i < 2000; i++) {
+            x += vx;
+            y += vy;
+
+            // Simple boundary bounce
+            if (x < 0 || x > width) vx *= -1;
+            if (y < 0 || y > height) vy *= -1;
+
+            // Kaleidoscope modulation
+            if (i % 50 === 0) {
+                vx += Math.sin(time + i) * 2;
+                vy += Math.cos(time + i) * 2;
+            }
+
+            ctx.lineTo(x, y);
+            
+            // Subtle color shift
+            if (i % 200 === 0) {
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.strokeStyle = `hsl(${(i + time * 50) % 360}, 70%, 60%)`;
+                ctx.moveTo(x, y);
+            }
+        }
+        ctx.stroke();
+        requestAnimationFrame(draw);
+    }
+
+    draw();
+</script>
+
+</body>
+</html>
