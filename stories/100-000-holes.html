@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100,000 Holes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Space+Grotesk:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --panel: #151518;
+            --accent: #00ff9d;
+            --text: #e0e0e0;
+            --dim: #888;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        header { width: 100%; padding: 2rem; box-sizing: border-box; }
+        .back-link { font-family: 'Courier Prime', monospace; color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+        main { max-width: 650px; padding: 0 20px; }
+        h1 { font-size: 2.5rem; margin-bottom: 2rem; letter-spacing: -1px; }
+        .interactive-zone {
+            background: var(--panel);
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            margin: 2rem 0;
+            border: 1px solid #333;
+        }
+        canvas {
+            display: block;
+            margin: 0 auto 1rem;
+            background: #000;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.5rem 1.5rem;
+            cursor: pointer;
+            font-family: 'Courier Prime', monospace;
+            transition: 0.3s;
+        }
+        button:hover { background: var(--accent); color: #000; }
+        .stats { font-family: 'Courier Prime', monospace; font-size: 0.8rem; color: var(--dim); }
+        p { margin-bottom: 1.5rem; font-weight: 300; }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="../index.html" class="back-link">← /grow</a>
+</header>
+
+<main>
+    <h1>100,000 Holes</h1>
+    
+    <p>It started as a simple wooden board—a grid of nails hammered into pine. Drop a marble, watch it hit a pin, bounce left or right, and repeat. Through one hole, it's chaos. Through one thousand, it's noise.</p>
+    
+    <div class="interactive-zone">
+        <canvas id="sim" width="300" height="200"></canvas>
+        <button onclick="runSimulation()">Drop Batch</button>
+        <div class="stats" id="counter">Total dropped: 0</div>
+    </div>
+
+    <p>But at 100,000, the chaos vanishes. The marbles don't settle randomly; they emerge into the shape of the Gaussian curve. The Galton Board reveals the secret of the universe: randomness, when aggregated, is the most predictable force in existence.</p>
+</main>
+
+<script>
+    const canvas = document.getElementById('sim');
+    const ctx = canvas.getContext('2d');
+    const counterDisplay = document.getElementById('counter');
+    let total = 0;
+    let bins = new Array(30).fill(0);
+
+    function draw() {
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#00ff9d';
+        const max = Math.max(...bins, 1);
+        bins.forEach((b, i) => {
+            const h = (b / max) * 150;
+            ctx.fillRect(i * 10, 200 - h, 8, h);
+        });
+    }
+
+    function runSimulation() {
+        for(let i = 0; i < 500; i++) {
+            let pos = 15;
+            for(let j = 0; j < 15; j++) {
+                pos += (Math.random() > 0.5 ? 1 : -1);
+            }
+            if(pos >= 0 && pos < 30) bins[pos]++;
+        }
+        total += 500;
+        counterDisplay.innerText = `Total dropped: ${total.toLocaleString()}`;
+        draw();
+    }
+    
+    draw();
+</script>
+
+</body>
+</html>

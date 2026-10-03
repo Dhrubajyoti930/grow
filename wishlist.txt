@@ -127,7 +127,7 @@
 [game]  Barrel Horror         — navigate a dark cellar with limited lantern oil and hostile props  ✅
 [tool]  Harmonic Oscillator   — perfectly damped, underdamped, and overdamped spring masses  ✅
 [art]   Kaleidoscope Raytrace — bouncing a single beam of light thousands of times  ✅
-[story] 100,000 Holes         — how a simple pegboard revealed the hidden statistics of randomness
+[story] 100,000 Holes         — how a simple pegboard revealed the hidden statistics of randomness  ✅
 [game]  Block Clutch Practice — fall into the void, place blocks on the wall to survive
 [tool]  Divergence Map        — visualize fluid sources and sinks in a continuous vector field
 [art]   Plasma Fractal        — diamond-square algorithms generating retro demoscene clouds
