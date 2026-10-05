@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divergence Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #0a0a0c; font-family: 'Space Grotesk', sans-serif; color: #e0e0e0; }
+        #canvas { display: block; cursor: crosshair; }
+        .ui { position: absolute; top: 20px; left: 20px; z-index: 10; pointer-events: none; }
+        a { color: #555; text-decoration: none; font-size: 12px; letter-spacing: 1px; transition: 0.3s; pointer-events: auto; }
+        a:hover { color: #fff; }
+        .controls { position: absolute; bottom: 20px; right: 20px; background: rgba(0,0,0,0.6); padding: 15px; border: 1px solid #222; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; }
+        h1 { margin: 0 0 5px 0; font-size: 18px; font-weight: 500; letter-spacing: -0.5px; }
+    </style>
+</head>
+<body>
+    <div class="ui">
+        <a href="../index.html">← /grow</a>
+        <h1>Divergence Map</h1>
+    </div>
+    <div class="controls">Click/Drag to inject field flux</div>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, rows, cols;
+        const cellSize = 25;
+        let particles = [];
+        let mouse = { x: 0, y: 0, active: false };
+
+        function init() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            cols = Math.ceil(width / cellSize);
+            rows = Math.ceil(height / cellSize);
+        }
+
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = 0; this.vy = 0;
+            }
+            update() {
+                let c = Math.floor(this.x / cellSize);
+                let r = Math.floor(this.y / cellSize);
+                if (c >= 0 && c < cols && r >= 0 && r < rows) {
+                    let angle = (Math.sin(c * 0.5) + Math.cos(r * 0.5)) * Math.PI;
+                    this.vx += Math.cos(angle) * 0.1;
+                    this.vy += Math.sin(angle) * 0.1;
+                }
+                if (mouse.active) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let dist = Math.sqrt(dx*dx + dy*dy);
+                    this.vx += (dx / dist) * 0.5;
+                    this.vy += (dy / dist) * 0.5;
+                }
+                this.vx *= 0.95; this.vy *= 0.95;
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) this.reset();
+            }
+            draw() {
+                ctx.fillStyle = `rgba(100, 200, 255, ${Math.abs(this.vx + this.vy) * 0.5 + 0.1})`;
+                ctx.fillRect(this.x, this.y, 1.5, 1.5);
+            }
+        }
+
+        for (let i = 0; i < 800; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.fillStyle = 'rgba(10, 10, 12, 0.15)';
+            ctx.fillRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+        window.addEventListener('mousedown', () => mouse.active = true);
+        window.addEventListener('mouseup', () => mouse.active = false);
+        window.addEventListener('resize', init);
+
+        init();
+        animate();
+    </script>
+</body>
+</html>
