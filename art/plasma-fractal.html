@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plasma Fractal</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --fg: #d1d1d1; --accent: #00ff9f; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); color: var(--fg); font-family: 'IBM Plex Mono', monospace; overflow: hidden; }
+        #canvas { display: block; width: 100vw; height: 100vh; cursor: crosshair; image-rendering: pixelated; }
+        .ui { position: absolute; top: 20px; left: 20px; z-index: 10; pointer-events: none; }
+        a { color: var(--accent); text-decoration: none; font-size: 0.8rem; pointer-events: auto; letter-spacing: 1px; }
+        .controls { position: absolute; bottom: 20px; right: 20px; text-align: right; pointer-events: none; }
+        .hint { font-size: 0.7rem; opacity: 0.6; }
+    </style>
+</head>
+<body>
+
+    <div class="ui"><a href="../index.html">← /grow</a></div>
+    <div class="controls">
+        <div class="hint">CLICK TO REGENERATE</div>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let size = 129; 
+        let roughness = 0.5;
+
+        function init() {
+            canvas.width = 128;
+            canvas.height = 128;
+            draw();
+        }
+
+        function generate() {
+            let data = Array.from({length: size}, () => new Float32Array(size));
+            data[0][0] = data[0][size-1] = data[size-1][0] = data[size-1][size-1] = Math.random();
+
+            function divide(s) {
+                let x, y, half = Math.floor(s / 2);
+                if (half < 1) return;
+
+                for (y = half; y < size; y += s) {
+                    for (x = half; x < size; x += s) {
+                        let avg = (data[y-half][x-half] + data[y-half][x+half] + data[y+half][x-half] + data[y+half][x+half]) / 4;
+                        data[y][x] = avg + (Math.random() * 2 - 1) * s * roughness / size;
+                    }
+                }
+                for (y = 0; y < size; y += half) {
+                    for (x = (y + half) % s; x < size; x += s) {
+                        let count = 0, sum = 0;
+                        if (y >= half) { sum += data[y-half][x]; count++; }
+                        if (y + half < size) { sum += data[y+half][x]; count++; }
+                        if (x >= half) { sum += data[y][x-half]; count++; }
+                        if (x + half < size) { sum += data[y][x+half]; count++; }
+                        data[y][x] = sum / count + (Math.random() * 2 - 1) * s * roughness / size;
+                    }
+                }
+                divide(half);
+            }
+
+            divide(size - 1);
+            return data;
+        }
+
+        function draw() {
+            const data = generate();
+            const img = ctx.createImageData(128, 128);
+            for (let i = 0; i < 128 * 128; i++) {
+                let val = data[Math.floor(i / 128)][i % 128];
+                let color = Math.floor(val * 255);
+                img.data[i * 4] = color * 0.2;     // R
+                img.data[i * 4 + 1] = color * 0.6; // G
+                img.data[i * 4 + 2] = color;       // B
+                img.data[i * 4 + 3] = 255;
+            }
+            ctx.putImageData(img, 0, 0);
+        }
+
+        canvas.addEventListener('click', draw);
+        window.onload = init;
+        window.onresize = () => { ctx.imageSmoothingEnabled = false; };
+    </script>
+</body>
+</html>
