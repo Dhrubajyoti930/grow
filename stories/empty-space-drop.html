@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empty Space Drop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --accent: #00f2ff; --text: #e0e0e0; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+        #back-link { position: absolute; top: 20px; left: 20px; color: var(--accent); text-decoration: none; font-size: 0.9rem; z-index: 10; opacity: 0.7; transition: opacity 0.3s; }
+        #back-link:hover { opacity: 1; }
+        #container { position: relative; width: 100%; max-width: 400px; height: 70vh; border-left: 2px solid #222; border-right: 2px solid #222; overflow: hidden; cursor: pointer; }
+        .object { position: absolute; left: 50%; transform: translateX(-50%); }
+        #ball { width: 40px; height: 40px; background: radial-gradient(circle at 30% 30%, #555, #000); border-radius: 50%; box-shadow: 0 0 20px rgba(0,0,0,0.5); top: 0; }
+        #feather { width: 24px; height: 32px; background: #fff; clip-path: polygon(50% 0%, 100% 20%, 80% 100%, 20% 100%, 0% 20%); top: 0; opacity: 0.8; }
+        #ui { margin-top: 20px; text-align: center; }
+        h1 { font-weight: 300; letter-spacing: 2px; margin-bottom: 5px; }
+        p { font-size: 0.8rem; opacity: 0.6; }
+    </style>
+</head>
+<body>
+
+<a href="../index.html" id="back-link">← /grow</a>
+
+<div id="container" onclick="drop()">
+    <div id="ball" class="object"></div>
+    <div id="feather" class="object" style="margin-top: 5px;"></div>
+</div>
+
+<div id="ui">
+    <h1>EMPTY SPACE DROP</h1>
+    <p>Tap inside the vacuum to release</p>
+</div>
+
+<script>
+    let isFalling = false;
+    const container = document.getElementById('container');
+    const ball = document.getElementById('ball');
+    const feather = document.getElementById('feather');
+
+    function drop() {
+        if (isFalling) {
+            ball.style.transition = "none";
+            feather.style.transition = "none";
+            ball.style.top = "0px";
+            feather.style.top = "0px";
+            isFalling = false;
+            return;
+        }
+
+        isFalling = true;
+        const duration = "2.5s";
+        const distance = container.offsetHeight - 50;
+
+        ball.style.transition = `top ${duration} cubic-bezier(0.55, 0, 0.1, 1)`;
+        feather.style.transition = `top ${duration} cubic-bezier(0.55, 0, 0.1, 1)`;
+        
+        ball.style.top = `${distance}px`;
+        feather.style.top = `${distance}px`;
+    }
+</script>
+</body>
+</html>
