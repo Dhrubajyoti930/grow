@@ -132,7 +132,7 @@
 [tool]  Divergence Map        — visualize fluid sources and sinks in a continuous vector field  ✅
 [art]   Plasma Fractal        — diamond-square algorithms generating retro demoscene clouds  ✅
 [story] Empty Space Drop      — how a bowling ball and feather fall perfectly in a giant vacuum  ✅
-[game]  Happy Physics Cart    — violently unfair 2D ragdoll driving over impossible gaps
+[game]  Happy Physics Cart    — violently unfair 2D ragdoll driving over impossible gaps  ✅
 [tool]  Curl Calculator       — drop a virtual paddlewheel in a vector field to measure rotation
 [art]   Cymatic Water         — liquid surface distortion driven by deep bass frequencies
 [story] Incompleteness Theory — Gödel proving that some truths can never be mathematically verified
