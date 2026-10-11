@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curl Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --accent: #00ff9d; --dim: #333; --text: #e0e0e0; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: 'Space Mono', monospace; }
+        #back-link { position: absolute; top: 20px; left: 20px; z-index: 10; color: var(--accent); text-decoration: none; font-size: 0.8rem; letter-spacing: 1px; }
+        #canvas-container { position: relative; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
+        canvas { cursor: crosshair; }
+        #ui { position: absolute; bottom: 20px; right: 20px; background: rgba(0,0,0,0.8); border: 1px solid #222; padding: 15px; border-radius: 4px; pointer-events: none; }
+        h1 { font-size: 1rem; margin: 0 0 10px 0; color: var(--accent); }
+        .data { font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <a id="back-link" href="../index.html">← /grow</a>
+    <div id="ui">
+        <h1>CURL CALCULATOR</h1>
+        <div class="data">Curl: <span id="curl-val">0.00</span></div>
+    </div>
+    <div id="canvas-container">
+        <canvas id="c"></canvas>
+    </div>
+
+<script>
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    const curlVal = document.getElementById('curl-val');
+    let width, height, mouse = { x: 0, y: 0 };
+
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+    window.onresize = resize;
+    resize();
+
+    function getVector(x, y) {
+        // A simple rotational field: F = (-y, x) with some noise
+        const dx = x - width / 2;
+        const dy = y - height / 2;
+        const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+        return { u: -dy / (dist * 0.1), v: dx / (dist * 0.1) };
+    }
+
+    function draw() {
+        ctx.fillStyle = '#0a0a0c';
+        ctx.fillRect(0, 0, width, height);
+        ctx.strokeStyle = '#222';
+        ctx.lineWidth = 1;
+
+        const spacing = 40;
+        for (let x = 0; x < width; x += spacing) {
+            for (let y = 0; y < height; y += spacing) {
+                const vec = getVector(x, y);
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + vec.u, y + vec.v);
+                ctx.stroke();
+            }
+        }
+
+        // Draw Paddlewheel
+        const r = 30;
+        ctx.strokeStyle = '#00ff9d';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(mouse.x, mouse.y, r, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Calculate Curl at mouse position (Discrete Approximation)
+        const d = 10;
+        const f1 = getVector(mouse.x + d, mouse.y);
+        const f2 = getVector(mouse.x - d, mouse.y);
+        const f3 = getVector(mouse.x, mouse.y + d);
+        const f4 = getVector(mouse.x, mouse.y - d);
+        
+        const curl = ((f1.v - f2.v) / (2*d) - (f3.u - f4.u) / (2*d)) * 100;
+        curlVal.innerText = curl.toFixed(2);
+
+        // Paddle Animation
+        ctx.beginPath();
+        ctx.moveTo(mouse.x - r, mouse.y);
+        ctx.lineTo(mouse.x + r, mouse.y);
+        ctx.moveTo(mouse.x, mouse.y - r);
+        ctx.lineTo(mouse.x, mouse.y + r);
+        ctx.stroke();
+
+        requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+    window.addEventListener('touchmove', e => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; });
+    
+    draw();
+</script>
+</body>
+</html>
