@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incompleteness Theory</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=JetBrains+Mono:wght@300;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --text: #d1d1d1;
+            --accent: #00ff9d;
+            --dim: #444;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Courier Prime', monospace;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        #container {
+            max-width: 600px;
+            width: 90%;
+            padding: 2rem;
+            position: relative;
+        }
+        .back-link {
+            position: absolute;
+            top: -20px;
+            left: 0;
+            font-size: 0.8rem;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .back-link:hover { color: var(--accent); }
+        h1 { font-family: 'JetBrains Mono'; font-weight: 700; letter-spacing: -1px; color: var(--accent); }
+        .pixel-art {
+            width: 64px;
+            height: 64px;
+            background: #222;
+            margin-bottom: 2rem;
+            image-rendering: pixelated;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            border: 2px solid #333;
+        }
+        .pixel { width: 8px; height: 8px; }
+        #story { line-height: 1.6; min-height: 200px; }
+        .btn {
+            margin-top: 2rem;
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+        .btn:hover { background: var(--accent); color: var(--bg); }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <a href="../index.html" class="back-link">← /grow</a>
+    <div class="pixel-art" id="art"></div>
+    <h1 id="title">Incompleteness</h1>
+    <div id="story">
+        Vienna, 1931. Kurt sits before a mountain of proofs. The system is elegant, consistent, and complete—or so they say. He picks up his pen. If a system is consistent, he thinks, it cannot be both complete and provable.
+    </div>
+    <button class="btn" onclick="nextStep()" id="btn">Engage Logic</button>
+</div>
+
+<script>
+    const art = document.getElementById('art');
+    const story = document.getElementById('story');
+    const btn = document.getElementById('btn');
+    let stage = 0;
+
+    function drawArt(pattern) {
+        art.innerHTML = '';
+        pattern.forEach(row => {
+            row.forEach(cell => {
+                const p = document.createElement('div');
+                p.className = 'pixel';
+                p.style.backgroundColor = cell ? '#00ff9d' : '#1a1a1a';
+                art.appendChild(p);
+            });
+        });
+    }
+
+    const p1 = [
+        [0,0,1,1,1,1,0,0], [0,1,0,0,0,0,1,0], [1,0,1,0,0,1,0,1], [1,0,0,0,0,0,0,1],
+        [1,0,1,0,0,1,0,1], [1,0,0,1,1,0,0,1], [0,1,0,0,0,0,1,0], [0,0,1,1,1,1,0,0]
+    ];
+    
+    drawArt(p1);
+
+    function nextStep() {
+        stage++;
+        if(stage === 1) {
+            story.innerText = "He defines a G-number for every symbol. He encodes logic into arithmetic. He constructs a statement: 'This statement is not provable within the system.'";
+            btn.innerText = "Examine Paradox";
+        } else if(stage === 2) {
+            story.innerText = "If the statement is provable, it is false—and the system is broken. If it is not provable, then it is true—and the system is incomplete.";
+            btn.innerText = "Accept Reality";
+        } else {
+            story.innerText = "Mathematics is not a closed loop. There will always be truths that hide in the gaps, beyond the reach of axioms. Kurt closes his notebook. The universe is wider than we can calculate.";
+            btn.style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>
