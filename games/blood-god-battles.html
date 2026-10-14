@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Blood God Battles</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root { --blood: #8b0000; --bone: #e0dcd3; --void: #0a0a0a; }
+        body { margin: 0; background: var(--void); color: var(--bone); font-family: 'Press Start 2P', cursive; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+        #back-link { position: absolute; top: 20px; left: 20px; color: var(--bone); text-decoration: none; font-size: 10px; z-index: 10; }
+        #game-ui { text-align: center; width: 100%; max-width: 600px; }
+        canvas { border: 4px solid var(--blood); background: #1a1a1a; touch-action: none; cursor: crosshair; }
+        .hud { display: flex; justify-content: space-between; padding: 10px; font-size: 12px; }
+        #controls { margin-top: 20px; font-size: 8px; color: #666; }
+    </style>
+</head>
+<body>
+    <a id="back-link" href="../index.html">← /grow</a>
+    <div id="game-ui">
+        <div class="hud">
+            <div id="p1-stats">HP: 100</div>
+            <div id="p2-stats">ENEMY: 100</div>
+        </div>
+        <canvas id="arena" width="600" height="400"></canvas>
+        <div id="controls">WASD/ARROWS TO STRAFE | SPACE TO CAST ROD</div>
+    </div>
+
+<script>
+const canvas = document.getElementById('arena');
+const ctx = canvas.getContext('2d');
+const p1Stats = document.getElementById('p1-stats');
+const p2Stats = document.getElementById('p2-stats');
+
+let p1 = { x: 100, y: 200, hp: 100, color: '#ff4444', vx: 0, vy: 0, rod: 0 };
+let p2 = { x: 500, y: 200, hp: 100, color: '#4444ff', vx: 0, vy: 0, rod: 0 };
+let keys = {};
+
+window.onkeydown = (e) => keys[e.key] = true;
+window.onkeyup = (e) => keys[e.key] = false;
+
+function update() {
+    // P1 Movement
+    if (keys['w']) p1.y -= 3; if (keys['s']) p1.y += 3;
+    if (keys['a']) p1.x -= 3; if (keys['d']) p1.x += 3;
+    
+    // P1 Attack
+    if (keys[' '] && p1.rod === 0) p1.rod = 20;
+    if (p1.rod > 0) p1.rod--;
+
+    // Simple AI
+    p2.y += (p1.y - p2.y) * 0.02;
+    if (Math.random() < 0.02) p2.rod = 20;
+
+    // Collision & Combat
+    if (p1.rod > 15 && Math.abs(p1.x - p2.x) < 50 && Math.abs(p1.y - p2.y) < 50) {
+        let crit = Math.random() > 0.7 ? 2 : 1;
+        p2.hp -= (5 * crit);
+        p1.rod = 0;
+    }
+
+    p1Stats.innerText = `HP: ${Math.max(0, p1.hp)}`;
+    p2Stats.innerText = `ENEMY: ${Math.max(0, p2.hp)}`;
+    draw();
+    requestAnimationFrame(update);
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw P1
+    ctx.fillStyle = p1.color;
+    ctx.fillRect(p1.x, p1.y, 30, 30);
+    if(p1.rod > 0) { ctx.strokeStyle = 'white'; ctx.strokeRect(p1.x-10, p1.y-10, 50, 50); }
+    
+    // Draw P2
+    ctx.fillStyle = p2.color;
+    ctx.fillRect(p2.x, p2.y, 30, 30);
+    if(p2.rod > 0) { ctx.strokeStyle = 'white'; ctx.strokeRect(p2.x-10, p2.y-10, 50, 50); }
+}
+
+update();
+</script>
+</body>
+</html>

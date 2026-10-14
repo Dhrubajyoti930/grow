@@ -136,7 +136,7 @@
 [tool]  Curl Calculator       — drop a virtual paddlewheel in a vector field to measure rotation  ✅
 [art]   Cymatic Water         — liquid surface distortion driven by deep bass frequencies  ✅
 [story] Incompleteness Theory — Gödel proving that some truths can never be mathematically verified  ✅
-[game]  Blood God Battles     — 1v1 arena combat focusing on strafing, crits, and fishing rods
+[game]  Blood God Battles     — 1v1 arena combat focusing on strafing, crits, and fishing rods  ✅
 [tool]  Pi Collision Sim      — count perfectly elastic blocks bouncing to calculate digits of Pi
 [art]   Epicycloid Gears      — rolling circles tracing out planetary mechanical paths
 [story] Laser Light Sails     — using radiation pressure from photons to propel ships to other stars
