@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pi Collision Sim</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --panel: #16161a;
+            --accent: #00f2ff;
+            --text: #e0e0e0;
+        }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        a { color: var(--accent); text-decoration: none; font-size: 0.9rem; position: absolute; top: 20px; left: 20px; }
+        #app-container { width: 100%; max-width: 800px; padding: 20px; text-align: center; }
+        canvas { background: var(--panel); border: 2px solid #333; border-radius: 8px; width: 100%; height: auto; image-rendering: pixelated; margin-top: 20px; }
+        .stats { font-size: 2rem; color: var(--accent); margin: 20px 0; font-weight: bold; }
+        .controls { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
+        button { background: var(--accent); color: var(--bg); border: none; padding: 10px 20px; font-weight: bold; cursor: pointer; border-radius: 4px; }
+        button:hover { filter: brightness(1.2); }
+    </style>
+</head>
+<body>
+    <a href="../index.html">← /grow</a>
+    <div id="app-container">
+        <h1>Pi Collision Sim</h1>
+        <div class="stats" id="counter">Collisions: 0</div>
+        <canvas id="canvas" width="800" height="200"></canvas>
+        <div class="controls">
+            <button onclick="resetSim(100)">10² Mass</button>
+            <button onclick="resetSim(10000)">10⁴ Mass</button>
+            <button onclick="resetSim(1000000)">10⁶ Mass</button>
+        </div>
+    </div>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const counterEl = document.getElementById('counter');
+    
+    let m1 = 1, m2 = 100, v1 = 0, v2 = -2, x1 = 100, x2 = 200, count = 0;
+    const speed = 10;
+
+    function resetSim(m) {
+        m2 = m; v1 = 0; v2 = -2; x1 = 100; x2 = 300; count = 0;
+    }
+
+    function update() {
+        for (let i = 0; i < speed; i++) {
+            x1 += v1; x2 += v2;
+            if (x1 <= 0) { v1 *= -1; count++; }
+            if (x1 + 20 >= x2) {
+                let v1_new = ((m1 - m2) / (m1 + m2)) * v1 + ((2 * m2) / (m1 + m2)) * v2;
+                let v2_new = ((2 * m1) / (m1 + m2)) * v1 + ((m2 - m1) / (m1 + m2)) * v2;
+                v1 = v1_new; v2 = v2_new;
+                count++;
+            }
+            counterEl.innerText = "Collisions: " + count;
+        }
+        draw();
+        requestAnimationFrame(update);
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#ff0055";
+        ctx.fillRect(x1, 150, 20, 20);
+        ctx.fillStyle = "#00f2ff";
+        ctx.fillRect(x2, 100 - (Math.sqrt(m2) * 0.5), 50 + Math.sqrt(m2), 50 + Math.sqrt(m2));
+    }
+
+    update();
+</script>
+</body>
+</html>
