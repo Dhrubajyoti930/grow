@@ -138,7 +138,7 @@
 [story] Incompleteness Theory — Gödel proving that some truths can never be mathematically verified  ✅
 [game]  Blood God Battles     — 1v1 arena combat focusing on strafing, crits, and fishing rods  ✅
 [tool]  Pi Collision Sim      — count perfectly elastic blocks bouncing to calculate digits of Pi  ✅
-[art]   Epicycloid Gears      — rolling circles tracing out planetary mechanical paths
+[art]   Epicycloid Gears      — rolling circles tracing out planetary mechanical paths  ✅
 [story] Laser Light Sails     — using radiation pressure from photons to propel ships to other stars
 [game]  Orphan Obliterator    — fast-paced hack and slash boss rush, purely for the loot
 [tool]  Neural Net Layers     — peek inside a perceptron network to see how it separates data
