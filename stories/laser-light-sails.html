@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laser Light Sails</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --accent: #00f2ff; --dim: #555; }
+        body { margin: 0; background: var(--bg); color: #e0e0e0; font-family: 'Space Grotesk', sans-serif; overflow-x: hidden; }
+        #back-link { position: fixed; top: 20px; left: 20px; color: var(--dim); text-decoration: none; font-size: 0.9rem; z-index: 100; transition: color 0.3s; }
+        #back-link:hover { color: var(--accent); }
+        .container { max-width: 600px; margin: 80px auto; padding: 20px; text-align: center; }
+        h1 { font-family: 'JetBrains Mono', monospace; color: var(--accent); letter-spacing: 2px; }
+        #canvas-container { position: relative; height: 300px; margin: 40px 0; border: 1px solid #222; background: radial-gradient(circle at center, #111 0%, #000 100%); overflow: hidden; }
+        #sail { position: absolute; top: 50%; left: 10px; width: 40px; height: 80px; background: white; clip-path: polygon(0 0, 100% 50%, 0 100%); box-shadow: 0 0 20px #fff; transition: left 0.1s linear; }
+        #laser { position: absolute; top: 50%; left: -100px; height: 2px; background: linear-gradient(90deg, transparent, var(--accent)); width: 100px; box-shadow: 0 0 10px var(--accent); }
+        .controls { margin-top: 30px; }
+        button { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 10px 25px; cursor: pointer; font-family: 'JetBrains Mono'; transition: all 0.3s; }
+        button:hover { background: var(--accent); color: black; }
+        #stats { font-family: 'JetBrains Mono'; font-size: 0.8rem; color: var(--dim); margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <a href="../index.html" id="back-link">← /grow</a>
+
+    <div class="container">
+        <h1>LASER LIGHT SAILS</h1>
+        <p>Harnessing the momentum of photons to bridge the interstellar void. Click to fire the array.</p>
+        
+        <div id="canvas-container">
+            <div id="laser"></div>
+            <div id="sail"></div>
+        </div>
+
+        <button id="fire-btn">ACTIVATE ARRAY</button>
+        <div id="stats">VELOCITY: 0.00% c</div>
+    </div>
+
+    <script>
+        const sail = document.getElementById('sail');
+        const laser = document.getElementById('laser');
+        const stats = document.getElementById('stats');
+        const btn = document.getElementById('fire-btn');
+        
+        let position = 10;
+        let velocity = 0;
+        let active = false;
+
+        btn.addEventListener('click', () => {
+            active = !active;
+            btn.textContent = active ? "SHUT DOWN" : "ACTIVATE ARRAY";
+            laser.style.opacity = active ? "1" : "0";
+        });
+
+        function animate() {
+            if (active) {
+                velocity += 0.05;
+                position += velocity;
+                if (position > 550) position = 10;
+            } else if (velocity > 0) {
+                velocity -= 0.01;
+                position += velocity;
+            }
+            
+            sail.style.left = position + 'px';
+            stats.textContent = `VELOCITY: ${(velocity * 0.1).toFixed(4)}% c`;
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
