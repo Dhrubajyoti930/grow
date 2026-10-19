@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Net Layers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --accent: #00ff9d; --dim: #333; --text: #e0e0e0; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Space Mono', monospace; overflow: hidden; display: flex; flex-direction: column; align-items: center; }
+        #back-link { position: absolute; top: 20px; left: 20px; color: var(--accent); text-decoration: none; font-size: 12px; z-index: 10; }
+        canvas { cursor: crosshair; touch-action: none; margin-top: 60px; image-rendering: pixelated; border: 1px solid #222; }
+        .ui { margin-top: 20px; text-align: center; }
+        .stats { font-size: 10px; color: #666; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <a id="back-link" href="../index.html">← /grow</a>
+    <canvas id="netCanvas"></canvas>
+    <div class="ui">
+        <div>PERCEPTRON DECISION BOUNDARY</div>
+        <div class="stats">CLICK TO ADD DATA • SPACE TO RESET</div>
+    </div>
+
+<script>
+    const canvas = document.getElementById('netCanvas');
+    const ctx = canvas.getContext('2d');
+    let points = [];
+    let weights = { w1: Math.random() - 0.5, w2: Math.random() - 0.5, bias: 0 };
+
+    function resize() {
+        const size = Math.min(window.innerWidth * 0.9, 400);
+        canvas.width = size;
+        canvas.height = size;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function train() {
+        for (let p of points) {
+            let sum = p.x * weights.w1 + p.y * weights.w2 + weights.bias;
+            let guess = sum >= 0 ? 1 : -1;
+            let error = p.label - guess;
+            let lr = 0.05;
+            weights.w1 += error * p.x * lr;
+            weights.w2 += error * p.y * lr;
+            weights.bias += error * lr;
+        }
+    }
+
+    function draw() {
+        ctx.fillStyle = '#0a0a0c';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Draw decision boundary
+        ctx.strokeStyle = '#00ff9d';
+        ctx.beginPath();
+        let x1 = -1, y1 = (-weights.bias - weights.w1 * x1) / weights.w2;
+        let x2 = 1, y2 = (-weights.bias - weights.w1 * x2) / weights.w2;
+        ctx.moveTo((x1 + 1) * canvas.width / 2, (y1 + 1) * canvas.height / 2);
+        ctx.lineTo((x2 + 1) * canvas.width / 2, (y2 + 1) * canvas.height / 2);
+        ctx.stroke();
+
+        // Draw points
+        for (let p of points) {
+            ctx.fillStyle = p.label === 1 ? '#00ff9d' : '#ff3e3e';
+            ctx.beginPath();
+            ctx.arc((p.x + 1) * canvas.width / 2, (p.y + 1) * canvas.height / 2, 4, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        train();
+        requestAnimationFrame(draw);
+    }
+
+    canvas.addEventListener('mousedown', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        points.push({
+            x: (e.clientX - rect.left) / canvas.width * 2 - 1,
+            y: (e.clientY - rect.top) / canvas.height * 2 - 1,
+            label: e.shiftKey ? -1 : 1
+        });
+    });
+
+    window.addEventListener('keydown', (e) => { if(e.code === 'Space') points = []; });
+    draw();
+</script>
+</body>
+</html>
