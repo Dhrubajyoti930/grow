@@ -143,7 +143,7 @@
 [game]  Orphan Obliterator    — fast-paced hack and slash boss rush, purely for the loot  ✅
 [tool]  Neural Net Layers     — peek inside a perceptron network to see how it separates data  ✅
 [art]   Apollonian Gasket     — infinitely nesting tangent circles packed inside one another  ✅
-[story] Seeing the Unseeable  — the algorithm that stitched together the first image of a black hole
+[story] Seeing the Unseeable  — the algorithm that stitched together the first image of a black hole  ✅
 [game]  Meme Reviewer         — rate procedurally generated internet images while dodging bans
 [tool]  Quaternion Sphere     — visualize 4D rotations mapped onto a stereographic 3D projection
 [art]   Cellular Slime        — organic, squishy blobs merging and dividing based on proximity
