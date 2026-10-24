@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cellular Slime</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #0a0a0c; overflow: hidden; font-family: 'Space Mono', monospace; }
+        canvas { display: block; filter: contrast(15) brightness(1.2); }
+        #ui { position: absolute; top: 20px; left: 20px; z-index: 10; }
+        a { color: #555; text-decoration: none; font-size: 12px; transition: color 0.3s; }
+        a:hover { color: #fff; }
+        .controls { position: absolute; bottom: 20px; left: 20px; color: #333; font-size: 10px; pointer-events: none; }
+    </style>
+</head>
+<body>
+
+<div id="ui"><a href="../index.html">← /grow</a></div>
+<div class="controls">TOUCH TO INTERACT</div>
+<canvas id="canvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, blobs = [];
+
+    class Blob {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.vx = (Math.random() - 0.5) * 2;
+            this.vy = (Math.random() - 0.5) * 2;
+            this.radius = Math.random() * 20 + 15;
+            this.color = '#fff';
+        }
+
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            if (this.x < 0 || this.x > width) this.vx *= -1;
+            if (this.y < 0 || this.y > height) this.vy *= -1;
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+            ctx.closePath();
+        }
+    }
+
+    function init() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        blobs = [];
+        for (let i = 0; i < 15; i++) {
+            blobs.push(new Blob(Math.random() * width, Math.random() * height));
+        }
+    }
+
+    function animate() {
+        ctx.fillStyle = '#0a0a0c';
+        ctx.fillRect(0, 0, width, height);
+        
+        // Draw metaball connections
+        ctx.shadowBlur = 30;
+        ctx.shadowColor = '#fff';
+        
+        blobs.forEach(b => {
+            b.update();
+            b.draw();
+        });
+
+        // Simple proximity "merging" visual effect
+        for (let i = 0; i < blobs.length; i++) {
+            for (let j = i + 1; j < blobs.length; j++) {
+                let dx = blobs[i].x - blobs[j].x;
+                let dy = blobs[i].y - blobs[j].y;
+                let dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < 100) {
+                    ctx.beginPath();
+                    ctx.moveTo(blobs[i].x, blobs[i].y);
+                    ctx.lineTo(blobs[j].x, blobs[j].y);
+                    ctx.strokeStyle = `rgba(255,255,255,${1 - dist/100})`;
+                    ctx.lineWidth = 20 - (dist/5);
+                    ctx.stroke();
+                }
+            }
+        }
+        ctx.shadowBlur = 0;
+        requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', init);
+    window.addEventListener('mousedown', (e) => blobs.push(new Blob(e.clientX, e.clientY)));
+    window.addEventListener('touchstart', (e) => blobs.push(new Blob(e.touches[0].clientX, e.touches[0].clientY)));
+
+    init();
+    animate();
+</script>
+</body>
+</html>
