@@ -147,7 +147,7 @@
 [game]  Meme Reviewer         — rate procedurally generated internet images while dodging bans  ✅
 [tool]  Quaternion Sphere     — visualize 4D rotations mapped onto a stereographic 3D projection  ✅
 [art]   Cellular Slime        — organic, squishy blobs merging and dividing based on proximity  ✅
-[story] Spooky Action Proven  — Einstein's entanglement doubts crushed by bell inequality tests
+[story] Spooky Action Proven  — Einstein's entanglement doubts crushed by bell inequality tests  ✅
 [game]  Bridge Builder Pro    — click at 20 CPS to bridge across the void without sneaking
 [tool]  Bayes Theorem Tree    — dynamic branching paths showing conditional probabilities
 [art]   Bifurcation Diagram   — plotting the exact moments where chaos splits into order

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spooky Action Proven</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Space+Grotesk:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --accent: #00ffcc;
+            --text: #e0e0e0;
+            --dim: #666;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        #nav {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        a { color: var(--dim); text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
+        a:hover { color: var(--accent); }
+
+        .container {
+            max-width: 600px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 { font-family: 'Courier Prime', monospace; color: var(--accent); letter-spacing: 2px; }
+
+        #particle-grid {
+            width: 120px;
+            height: 120px;
+            margin: 40px auto;
+            border: 1px solid #333;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .pixel { background: #1a1a1a; transition: 0.2s; }
+        .pixel.active { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+
+        .content { line-height: 1.6; font-size: 1.1rem; color: #aaa; }
+        
+        button {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 10px 20px;
+            margin-top: 30px;
+            cursor: pointer;
+            font-family: 'Courier Prime';
+            transition: 0.3s;
+        }
+
+        button:hover { background: var(--accent); color: var(--bg); }
+    </style>
+</head>
+<body>
+
+    <div id="nav"><a href="../index.html">← /grow</a></div>
+
+    <div class="container">
+        <h1>SPOOKY ACTION PROVEN</h1>
+        
+        <div id="particle-grid"></div>
+
+        <div class="content" id="story">
+            <p>Einstein called it <em>spukhafte Fernwirkung</em>. He believed in local realism—that particles possess definite states before measurement.</p>
+            <p>But the universe doesn't care for intuition. When two entangled particles are measured, the collapse is instantaneous, across any distance.</p>
+        </div>
+
+        <button onclick="testBell()">RUN BELL INEQUALITY TEST</button>
+    </div>
+
+    <script>
+        const grid = document.getElementById('particle-grid');
+        const story = document.getElementById('story');
+        
+        for(let i=0; i<16; i++) {
+            const p = document.createElement('div');
+            p.className = 'pixel';
+            grid.appendChild(p);
+        }
+
+        function testBell() {
+            const pixels = document.querySelectorAll('.pixel');
+            pixels.forEach(p => p.classList.remove('active'));
+            
+            // Simulate Bell Violation
+            setTimeout(() => {
+                const indices = [Math.floor(Math.random()*16), Math.floor(Math.random()*16)];
+                pixels[indices[0]].classList.add('active');
+                pixels[indices[1]].classList.add('active');
+                
+                story.innerHTML = `
+                    <p style="color: var(--accent)">Bell's Theorem violated.</p>
+                    <p>The correlation coefficient exceeds the classical limit of 2. Hidden variables do not exist. Information is non-local.</p>
+                    <p>Einstein was wrong. The spooky action is real.</p>
+                `;
+            }, 300);
+        }
+    </script>
+</body>
+</html>
