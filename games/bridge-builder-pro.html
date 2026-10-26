@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bridge Builder Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --neon: #00f2ff; --void: #1a1a20; --text: #e0e0e0; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Press Start 2P', cursive; overflow: hidden; height: 100vh; display: flex; flex-direction: column; align-items: center; }
+        #back-link { position: absolute; top: 20px; left: 20px; color: var(--neon); text-decoration: none; font-size: 10px; z-index: 10; }
+        #ui { margin-top: 60px; text-align: center; }
+        #game-area { position: relative; width: 100%; height: 300px; margin-top: 50px; background: #000; border-top: 4px solid var(--neon); border-bottom: 4px solid var(--neon); display: flex; align-items: center; overflow: hidden; }
+        #bridge { position: absolute; left: 10%; height: 10px; background: var(--neon); box-shadow: 0 0 10px var(--neon); transition: width 0.1s linear; }
+        #status { margin-top: 20px; color: #ff0055; font-size: 12px; height: 20px; }
+        #btn { padding: 20px 40px; background: transparent; border: 2px solid var(--neon); color: var(--neon); font-family: inherit; cursor: pointer; outline: none; transition: 0.2s; touch-action: manipulation; }
+        #btn:active { background: var(--neon); color: black; }
+        .win { color: #00ff9d !important; }
+    </style>
+</head>
+<body>
+    <a href="../index.html" id="back-link">← /grow</a>
+    <div id="ui">
+        <h2>BRIDGE BUILDER</h2>
+        <div id="cps-display">CPS: 0</div>
+    </div>
+    <div id="game-area">
+        <div id="bridge" style="width: 0%;"></div>
+    </div>
+    <div id="status">Keep clicking to build!</div>
+    <button id="btn">CLICK FAST!</button>
+
+    <script>
+        let clicks = 0;
+        let lastTime = Date.now();
+        let cps = 0;
+        let bridgeWidth = 0;
+        const bridge = document.getElementById('bridge');
+        const btn = document.getElementById('btn');
+        const cpsDisplay = document.getElementById('cps-display');
+        const status = document.getElementById('status');
+
+        function update() {
+            let now = Date.now();
+            let elapsed = (now - lastTime) / 1000;
+            if (elapsed >= 1) {
+                cps = Math.round(clicks / elapsed);
+                cpsDisplay.innerText = `CPS: ${cps}`;
+                clicks = 0;
+                lastTime = now;
+            }
+            if (cps >= 20) {
+                bridgeWidth += 1;
+                bridge.style.width = bridgeWidth + '%';
+                status.innerText = "BRIDGE STABLE";
+                status.classList.add('win');
+            } else if (bridgeWidth > 0) {
+                bridgeWidth -= 0.5;
+                bridge.style.width = bridgeWidth + '%';
+                status.innerText = "SPEED UP!";
+                status.classList.remove('win');
+            }
+            if (bridgeWidth >= 80) status.innerText = "VOID CROSSED! PRO STATUS.";
+            requestAnimationFrame(update);
+        }
+
+        btn.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            clicks++;
+        });
+
+        update();
+    </script>
+</body>
+</html>
