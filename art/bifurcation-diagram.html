@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bifurcation Diagram</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --accent: #00ff9d;
+            --text: #e0e0e0;
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Space Mono', monospace;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #ui {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        canvas {
+            cursor: crosshair;
+            image-rendering: pixelated;
+        }
+        #controls {
+            position: absolute;
+            bottom: 30px;
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 4px;
+            backdrop-filter: blur(5px);
+            font-size: 0.7rem;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="ui">
+    <a href="../index.html">← /grow</a>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<div id="controls">
+    [ LOGISTIC MAP: xₙ₊₁ = r · xₙ(1 - xₙ) ]
+</div>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        draw();
+    }
+
+    function draw() {
+        const w = canvas.width;
+        const h = canvas.height;
+        ctx.fillStyle = '#0a0a0c';
+        ctx.fillRect(0, 0, w, h);
+        
+        ctx.fillStyle = '#00ff9d';
+        
+        const iterations = 100;
+        const skip = 50;
+        const rMin = 2.4;
+        const rMax = 4.0;
+
+        for (let i = 0; i < w; i++) {
+            let r = rMin + (i / w) * (rMax - rMin);
+            let x = 0.5;
+
+            for (let j = 0; j < iterations; j++) {
+                x = r * x * (1 - x);
+                if (j > skip) {
+                    let y = (1 - x) * h;
+                    ctx.fillRect(i, y, 1, 0.5);
+                }
+            }
+        }
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+</script>
+
+</body>
+</html>

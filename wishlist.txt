@@ -150,7 +150,7 @@
 [story] Spooky Action Proven  — Einstein's entanglement doubts crushed by bell inequality tests  ✅
 [game]  Bridge Builder Pro    — click at 20 CPS to bridge across the void without sneaking  ✅
 [tool]  Bayes Theorem Tree    — dynamic branching paths showing conditional probabilities  ✅
-[art]   Bifurcation Diagram   — plotting the exact moments where chaos splits into order
+[art]   Bifurcation Diagram   — plotting the exact moments where chaos splits into order  ✅
 [story] The Chicxulub Impact  — tracing the asteroid event to the exact hour the dinosaurs died
 [game]  Pug Simulator         — play as a pair of pugs solving puzzles in a chaotic household
 [tool]  Normal Dist Board     — drop balls through a Galton board to form a bell curve
