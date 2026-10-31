@@ -152,7 +152,7 @@
 [tool]  Bayes Theorem Tree    — dynamic branching paths showing conditional probabilities  ✅
 [art]   Bifurcation Diagram   — plotting the exact moments where chaos splits into order  ✅
 [story] The Chicxulub Impact  — tracing the asteroid event to the exact hour the dinosaurs died  ✅
-[game]  Pug Simulator         — play as a pair of pugs solving puzzles in a chaotic household
+[game]  Pug Simulator         — play as a pair of pugs solving puzzles in a chaotic household  ✅
 [tool]  Normal Dist Board     — drop balls through a Galton board to form a bell curve
 [art]   Soap Film Minimal     — dipping wireframes into a physics simulator to form tension planes
 [story] Nuclear Dice          — proving radioactive decay rates using 1,000 violently shaking dice

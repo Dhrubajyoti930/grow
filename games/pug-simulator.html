@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pug Simulator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0a; --accent: #ffb86c; --text: #f8f8f2; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        #nav { position: absolute; top: 20px; left: 20px; }
+        a { color: var(--accent); text-decoration: none; font-family: 'Press Start 2P'; font-size: 0.7rem; }
+        #game-container { width: 90vw; max-width: 600px; margin-top: 80px; text-align: center; }
+        .pug-box { font-size: 4rem; margin: 20px; cursor: pointer; transition: transform 0.2s; display: inline-block; }
+        .pug-box:active { transform: scale(0.9); }
+        #scene { background: #1a1a1a; padding: 20px; border-radius: 12px; border: 2px solid #333; min-height: 200px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        #msg { margin-bottom: 20px; font-weight: 600; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        button { background: #222; border: 1px solid var(--accent); color: var(--text); padding: 15px; border-radius: 8px; cursor: pointer; font-family: 'Outfit'; }
+        button:hover { background: var(--accent); color: #000; }
+    </style>
+</head>
+<body>
+
+<div id="nav"><a href="../index.html">← /grow</a></div>
+
+<div id="game-container">
+    <h1>PUG SIMULATOR</h1>
+    <div id="scene">
+        <div id="display">
+            <span class="pug-box" onclick="boop(0)">🐶</span>
+            <span class="pug-box" onclick="boop(1)">🐾</span>
+        </div>
+        <p id="msg">The house is a mess! Help the pugs find the hidden treat.</p>
+    </div>
+    <div class="controls">
+        <button onclick="solve('sofa')">Check Sofa</button>
+        <button onclick="solve('fridge')">Open Fridge</button>
+        <button onclick="solve('rug')">Roll in Rug</button>
+        <button onclick="solve('shoes')">Chew Shoes</button>
+    </div>
+</div>
+
+<script>
+    const puzzles = {
+        'sofa': 'You found a stale crumb! 🍪',
+        'fridge': 'The door is locked! You just licked the metal. 👅',
+        'rug': 'You got tangled and fell over. A classic pug move. 🌀',
+        'shoes': 'You found a missing squeaky toy inside! Success! 🧸'
+    };
+    function boop(i) {
+        const pugs = ['🐶', '🐾'];
+        alert("Snort! " + pugs[i] + " is ready for chaos.");
+    }
+    function solve(key) {
+        document.getElementById('msg').innerText = puzzles[key];
+        if(key === 'shoes') {
+            document.getElementById('scene').style.borderColor = '#50fa7b';
+        }
+    }
+</script>
+</body>
+</html>
