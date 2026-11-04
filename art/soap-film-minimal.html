@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Soap Film Minimal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #0a0a0a; color: #fff; font-family: 'Space Mono', monospace; overflow: hidden; }
+        #canvas { display: block; touch-action: none; }
+        .ui { position: absolute; top: 20px; left: 20px; pointer-events: none; }
+        .ui a { pointer-events: auto; color: #666; text-decoration: none; font-size: 12px; transition: color 0.3s; }
+        .ui a:hover { color: #fff; }
+        .controls { position: absolute; bottom: 20px; width: 100%; text-align: center; color: #333; font-size: 10px; pointer-events: none; text-transform: uppercase; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+
+<div class="ui">
+    <a href="../index.html">← /grow</a>
+</div>
+
+<div class="controls">Tap/Click to dip the wireframe</div>
+
+<canvas id="canvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+    const constraints = [];
+
+    class Particle {
+        constructor(x, y) {
+            this.x = x; this.y = y;
+            this.oldX = x; this.oldY = y;
+            this.pinned = false;
+        }
+    }
+
+    function init() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        particles = [];
+        const rows = 12, cols = 12;
+        const spacing = 30;
+        const offsetX = (width - cols * spacing) / 2;
+        const offsetY = (height - rows * spacing) / 2;
+
+        for (let i = 0; i <= rows; i++) {
+            for (let j = 0; j <= cols; j++) {
+                let p = new Particle(offsetX + j * spacing, offsetY + i * spacing);
+                if (i === 0 || i === rows || j === 0 || j === cols) p.pinned = true;
+                particles.push(p);
+            }
+        }
+    }
+
+    function update() {
+        particles.forEach(p => {
+            if (p.pinned) return;
+            let vx = (p.x - p.oldX) * 0.99;
+            let vy = (p.y - p.oldY) * 0.99;
+            p.oldX = p.x; p.oldY = p.y;
+            p.x += vx; p.y += vy;
+            p.y += 0.05; 
+        });
+
+        for (let i = 0; i < 10; i++) {
+            particles.forEach((p1, idx) => {
+                particles.forEach((p2, idx2) => {
+                    if (Math.hypot(p1.x - p2.x, p1.y - p2.y) < 35) {
+                        let dx = p1.x - p2.x, dy = p1.y - p2.y;
+                        let dist = Math.hypot(dx, dy);
+                        let diff = (32 - dist) / dist * 0.5;
+                        let ox = dx * diff, oy = dy * diff;
+                        if (!p1.pinned) { p1.x += ox; p1.y += oy; }
+                        if (!p2.pinned) { p2.x -= ox; p2.y -= oy; }
+                    }
+                });
+            });
+        }
+    }
+
+    function draw() {
+        ctx.fillStyle = '#0a0a0a';
+        ctx.fillRect(0, 0, width, height);
+        
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+        for(let i=0; i<particles.length; i++) {
+            for(let j=i+1; j<particles.length; j++) {
+                let d = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
+                if(d < 35) {
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                }
+            }
+        }
+        ctx.stroke();
+
+        ctx.fillStyle = 'rgba(0, 255, 200, 0.05)';
+        ctx.beginPath();
+        particles.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+        ctx.fill();
+        
+        requestAnimationFrame(() => { update(); draw(); });
+    }
+
+    window.addEventListener('mousedown', init);
+    window.addEventListener('resize', init);
+    init();
+    draw();
+</script>
+</body>
+</html>
