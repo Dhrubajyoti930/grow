@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuclear Dice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Space+Grotesk:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --accent: #00ff9d; --dim: #555; }
+        body { margin: 0; background: var(--bg); color: #e0e0e0; font-family: 'Space Grotesk', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
+        .back-link { position: absolute; top: 20px; left: 20px; color: var(--dim); text-decoration: none; font-size: 0.8rem; font-family: 'Courier Prime'; }
+        .back-link:hover { color: var(--accent); }
+        .container { max-width: 600px; width: 100%; text-align: center; }
+        h1 { color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-top: 40px; }
+        #canvas-container { height: 300px; border: 1px solid #222; margin: 20px 0; display: flex; flex-wrap: wrap; justify-content: center; align-content: center; background: #050505; overflow: hidden; position: relative; }
+        .die { width: 8px; height: 8px; background: var(--accent); margin: 1px; transition: opacity 0.3s; }
+        .die.decayed { opacity: 0; }
+        .stats { font-family: 'Courier Prime'; font-size: 1.2rem; margin: 20px 0; }
+        button { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 10px 25px; cursor: pointer; font-family: 'Space Grotesk'; text-transform: uppercase; transition: 0.3s; }
+        button:hover { background: var(--accent); color: var(--bg); }
+        .story { line-height: 1.6; color: #aaa; text-align: left; margin-top: 30px; font-size: 0.95rem; }
+    </style>
+</head>
+<body>
+
+<a href="../index.html" class="back-link">← /grow</a>
+
+<div class="container">
+    <h1>Nuclear Dice</h1>
+    <div id="canvas-container"></div>
+    <div class="stats">Active Nuclei: <span id="count">1000</span></div>
+    <button id="shake">Trigger Decay Cycle</button>
+
+    <div class="story">
+        <p>You have 1,000 cubes of unstable isotopes. Every second, they vibrate in a subatomic dance. If a die lands on '6', it releases its energy and stabilizes, forever removed from the active pool.</p>
+        <p>This is the nature of randomness at scale. Even though you cannot predict which single die will decay, the group follows an unwavering, predictable curve. Watch the entropy unfold.</p>
+    </div>
+</div>
+
+<script>
+    const container = document.getElementById('canvas-container');
+    const countDisplay = document.getElementById('count');
+    const btn = document.getElementById('shake');
+    let dice = Array(1000).fill(true);
+
+    function init() {
+        container.innerHTML = '';
+        dice.forEach((_, i) => {
+            const d = document.createElement('div');
+            d.className = 'die';
+            d.id = 'd' + i;
+            container.appendChild(d);
+        });
+    }
+
+    btn.addEventListener('click', () => {
+        let activeCount = 0;
+        dice = dice.map((alive, i) => {
+            if (!alive) return false;
+            if (Math.random() < 1/6) {
+                document.getElementById('d' + i).classList.add('decayed');
+                return false;
+            }
+            activeCount++;
+            return true;
+        });
+        countDisplay.innerText = activeCount;
+        if (activeCount === 0) btn.disabled = true;
+    });
+
+    init();
+</script>
+</body>
+</html>
