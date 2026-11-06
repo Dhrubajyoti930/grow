@@ -156,7 +156,7 @@
 [tool]  Normal Dist Board     — drop balls through a Galton board to form a bell curve  ✅
 [art]   Soap Film Minimal     — dipping wireframes into a physics simulator to form tension planes  ✅
 [story] Nuclear Dice          — proving radioactive decay rates using 1,000 violently shaking dice  ✅
-[game]  Brofist Brawler       — side-scrolling beat-em-up with absurd power-ups and tambourines
+[game]  Brofist Brawler       — side-scrolling beat-em-up with absurd power-ups and tambourines  ✅
 [tool]  Prime Spiral          — highlight prime numbers on an expanding polar coordinate grid
 [art]   Generative Glitch     — precise math equations purposefully broken for aesthetic artifacts
 [story] Slower Than Light     — the exact speed at which electricity actually flows through a wire
