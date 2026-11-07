@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Spiral</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --accent: #00f2ff;
+            --prime: #ff007a;
+            --text: #e0e0e0;
+        }
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Space Mono', monospace;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        #ui {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+        a { color: var(--accent); text-decoration: none; font-size: 0.8rem; opacity: 0.7; transition: 0.3s; }
+        a:hover { opacity: 1; }
+        canvas { display: block; cursor: crosshair; }
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            text-align: right;
+            pointer-events: none;
+        }
+        .stats { font-size: 0.7rem; color: #666; }
+    </style>
+</head>
+<body>
+
+    <div id="ui">
+        <a href="../index.html">← /grow</a>
+        <h1 style="margin: 10px 0 0 0; font-size: 1.2rem; letter-spacing: 2px;">PRIME SPIRAL</h1>
+    </div>
+
+    <div class="controls">
+        <div class="stats" id="counter">POINTS: 0</div>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const counter = document.getElementById('counter');
+        
+        let width, height, centerX, centerY;
+        let n = 1;
+        let points = [];
+        const maxPoints = 5000;
+
+        function isPrime(num) {
+            if (num <= 1) return false;
+            for (let i = 2, s = Math.sqrt(num); i <= s; i++)
+                if (num % i === 0) return false;
+            return true;
+        }
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            centerX = width / 2;
+            centerY = height / 2;
+        }
+
+        function draw() {
+            if (n < maxPoints) {
+                const angle = n * 0.2;
+                const radius = Math.sqrt(n) * 5;
+                const x = centerX + Math.cos(angle) * radius;
+                const y = centerY + Math.sin(angle) * radius;
+                
+                const prime = isPrime(n);
+                points.push({x, y, prime});
+                n++;
+                counter.innerText = `POINTS: ${n}`;
+            }
+
+            ctx.fillStyle = '#0a0a0c';
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.beginPath();
+            ctx.strokeStyle = '#222';
+            ctx.lineWidth = 0.5;
+            for(let i = 0; i < points.length - 1; i++) {
+                ctx.moveTo(points[i].x, points[i].y);
+                ctx.lineTo(points[i+1].x, points[i+1].y);
+            }
+            ctx.stroke();
+
+            points.forEach(p => {
+                ctx.fillStyle = p.prime ? '#ff007a' : '#00f2ff';
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.prime ? 2.5 : 1, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            requestAnimationFrame(draw);
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+        draw();
+    </script>
+</body>
+</html>
