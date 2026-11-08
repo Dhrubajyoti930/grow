@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generative Glitch</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            color: #00ff41;
+            font-family: 'Space Mono', monospace;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #nav {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+
+        a {
+            color: #555;
+            text-decoration: none;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: color 0.3s;
+        }
+
+        a:hover { color: #fff; }
+
+        canvas {
+            display: block;
+            cursor: crosshair;
+            image-rendering: pixelated;
+        }
+
+        .ui {
+            position: absolute;
+            bottom: 20px;
+            text-align: center;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="nav"><a href="../index.html">← /grow</a></div>
+    <canvas id="glitchCanvas"></canvas>
+    <div class="ui">CLICK TO MUTATE EQUATIONS</div>
+
+    <script>
+        const canvas = document.getElementById('glitchCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, time = 0;
+        let glitchIntensity = 0.05;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        function draw() {
+            time += 0.05;
+            ctx.fillStyle = '#0a0a0a';
+            ctx.fillRect(0, 0, width, height);
+
+            const slices = 20;
+            const sliceH = height / slices;
+
+            for (let i = 0; i < slices; i++) {
+                const xOffset = Math.sin(time + i) * (glitchIntensity * 200);
+                const y = i * sliceH;
+                
+                // Draw broken math wave
+                ctx.beginPath();
+                ctx.strokeStyle = `hsl(${120 + (i * 2)}, 100%, 50%)`;
+                ctx.lineWidth = 2;
+                
+                for (let x = 0; x < width; x += 10) {
+                    // Equation: y = sin(x) * cos(time) broken by modulo artifacts
+                    const mathY = Math.sin(x * 0.01 + time) * Math.cos(time * 0.5) * 50;
+                    const glitch = (Math.random() > 0.98) ? Math.random() * 500 : 0;
+                    
+                    if (x === 0) ctx.moveTo(x, y + mathY + glitch);
+                    else ctx.lineTo(x, y + mathY + (i % 2 === 0 ? xOffset : -xOffset) + glitch);
+                }
+                ctx.stroke();
+            }
+
+            // Random pixel block artifacts
+            if (Math.random() > 0.9) {
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(Math.random() * width, Math.random() * height, Math.random() * 50, 2);
+            }
+
+            requestAnimationFrame(draw);
+        }
+
+        window.addEventListener('mousedown', () => {
+            glitchIntensity = Math.random() * 0.5;
+            setTimeout(() => { glitchIntensity = 0.05; }, 200);
+        });
+
+        draw();
+    </script>
+</body>
+</html>
