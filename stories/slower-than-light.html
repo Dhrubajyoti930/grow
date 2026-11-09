@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slower Than Light</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --text: #e0e0e0;
+            --accent: #00f2ff;
+            --dim: #555;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 600px;
+            padding: 40px;
+            line-height: 1.6;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: var(--dim);
+            text-decoration: none;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover { color: var(--accent); }
+
+        h1 {
+            font-family: 'Courier Prime', monospace;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            letter-spacing: -1px;
+            border-bottom: 1px solid var(--dim);
+            padding-bottom: 10px;
+        }
+
+        p { margin-bottom: 1.5rem; }
+
+        .wire-container {
+            height: 100px;
+            width: 100%;
+            background: #1a1a1d;
+            border-radius: 4px;
+            position: relative;
+            margin: 3rem 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        #electron {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: absolute;
+            left: 0;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .controls {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .stat {
+            font-family: 'Courier Prime', monospace;
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+    <a href="../index.html" class="back-link">← /grow</a>
+
+    <div class="container">
+        <h1>Slower Than Light</h1>
+        <p>We imagine the flip of a switch as an instantaneous event. A snap of fingers, a flood of light. We treat electricity like a ghost—omnipresent and immediate.</p>
+        <p>But inside the copper veins of your walls, the reality is much more sluggish. Electrons do not sprint at the speed of light; they drift. They are dancers in a crowded ballroom, bumping into atoms, losing energy, creeping forward at a mere fraction of a millimeter per second.</p>
+        
+        <div class="wire-container">
+            <div id="electron"></div>
+        </div>
+
+        <p>If you were to watch a single electron inside your lamp's wire, it would take hours to travel the length of a single meter. The power you feel is not the movement of matter, but the pulse of a field—the message arriving long before the messenger.</p>
+        
+        <div class="controls">
+            <div class="stat" id="speed-display">Drift Velocity: ~0.0001 m/s</div>
+        </div>
+    </div>
+
+    <script>
+        const electron = document.getElementById('electron');
+        let pos = 0;
+
+        function animate() {
+            // Simulated drift velocity: very slow
+            pos += 0.05; 
+            if (pos > 100) pos = 0;
+            electron.style.left = pos + '%';
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
