@@ -160,7 +160,7 @@
 [tool]  Prime Spiral          — highlight prime numbers on an expanding polar coordinate grid  ✅
 [art]   Generative Glitch     — precise math equations purposefully broken for aesthetic artifacts  ✅
 [story] Slower Than Light     — the exact speed at which electricity actually flows through a wire  ✅
-[game]  Sub Bot Defender      — fight off an army of automated accounts to maintain your sub lead
+[game]  Sub Bot Defender      — fight off an army of automated accounts to maintain your sub lead  ✅
 [tool]  Calculus Chain Rule   — visual gears representing nested derivatives turning one another
 [art]   Spectral Flow         — mapping vector field velocities to an HSV color wheel gradient
 [tool]  Navier-Stokes Viz     — incompressible fluid equations rendered as swirling 2D smoke

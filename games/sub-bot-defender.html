@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sub Bot Defender</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --accent: #00ff9d; --danger: #ff4757; --text: #e0e0e0; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; user-select: none; touch-action: manipulation; }
+        #game-container { position: relative; width: 100vw; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        a { position: absolute; top: 20px; left: 20px; color: var(--accent); text-decoration: none; font-size: 12px; z-index: 10; font-family: 'Press Start 2P'; }
+        #ui { text-align: center; margin-bottom: 20px; }
+        #sub-count { font-size: 2.5rem; font-weight: 700; color: var(--accent); }
+        canvas { border: 2px solid #333; background: #111; cursor: crosshair; touch-action: none; max-width: 95vw; max-height: 60vh; }
+        .controls { margin-top: 20px; color: #666; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+<a href="../index.html">← /grow</a>
+
+<div id="game-container">
+    <div id="ui">
+        <div>SUB COUNT</div>
+        <div id="sub-count">1000</div>
+    </div>
+    <canvas id="gameCanvas"></canvas>
+    <div class="controls">TAP BOTS TO DEFEND YOUR SUBS</div>
+</div>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const subDisplay = document.getElementById('sub-count');
+    
+    let subs = 1000;
+    let bots = [];
+    let gameActive = true;
+
+    function resize() {
+        canvas.width = Math.min(window.innerWidth * 0.9, 600);
+        canvas.height = 400;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Bot {
+        constructor() {
+            this.radius = 15;
+            this.x = Math.random() * (canvas.width - 30) + 15;
+            this.y = -20;
+            this.speed = 1 + Math.random() * 2;
+        }
+        update() { this.y += this.speed; }
+        draw() {
+            ctx.fillStyle = '#ff4757';
+            ctx.fillRect(this.x - 10, this.y - 10, 20, 20);
+            ctx.fillStyle = 'white';
+            ctx.font = '8px Arial';
+            ctx.fillText('BOT', this.x - 10, this.y - 12);
+        }
+    }
+
+    function spawnBot() {
+        if(gameActive) {
+            bots.push(new Bot());
+            setTimeout(spawnBot, Math.max(500, 2000 - (1000 - subs)));
+        }
+    }
+
+    canvas.addEventListener('pointerdown', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        
+        bots = bots.filter(bot => {
+            const dist = Math.hypot(bot.x - mouseX, bot.y - mouseY);
+            if(dist < 30) {
+                subs += 5;
+                return false;
+            }
+            return true;
+        });
+    });
+
+    function animate() {
+        if(!gameActive) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        bots.forEach((bot, index) => {
+            bot.update();
+            bot.draw();
+            if(bot.y > canvas.height) {
+                subs = Math.max(0, subs - 10);
+                bots.splice(index, 1);
+            }
+        });
+
+        subDisplay.innerText = Math.floor(subs);
+        
+        if(subs <= 0) {
+            gameActive = false;
+            alert("SYSTEM OVERRUN. SUBS LOST.");
+            location.reload();
+        }
+        requestAnimationFrame(animate);
+    }
+
+    spawnBot();
+    animate();
+</script>
+</body>
+</html>
