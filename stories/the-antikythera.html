@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Antikythera</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bronze: #cd7f32;
+            --oxidized: #4a6741;
+            --bg: #0a0a0a;
+            --text: #e0d8c3;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'EB Garamond', serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            width: 90%;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        a { color: var(--bronze); text-decoration: none; font-family: 'Cinzel', serif; font-size: 0.9rem; }
+
+        .container {
+            max-width: 600px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 { font-family: 'Cinzel', serif; color: var(--bronze); letter-spacing: 3px; }
+
+        #gear-box {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 40px auto;
+            border: 2px solid var(--bronze);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, #1a1a1a 0%, #000 70%);
+        }
+
+        .gear {
+            width: 200px;
+            height: 200px;
+            border: 8px solid var(--bronze);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        #story {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .controls { margin-top: 30px; }
+
+        button {
+            background: transparent;
+            border: 1px solid var(--bronze);
+            color: var(--bronze);
+            padding: 10px 20px;
+            font-family: 'Cinzel', serif;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover { background: var(--bronze); color: black; }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="../index.html">← /grow</a>
+</header>
+
+<div class="container">
+    <h1>THE ANTIKYTHERA</h1>
+    
+    <div id="gear-box" onclick="crank()">
+        <div class="gear">⚙</div>
+    </div>
+
+    <div id="story">
+        <p id="text">The year is 80 BC. Before you sits a complex mechanism of bronze gears, recovered from the salt and silt of the Aegean. It hums with the celestial math of the ancients.</p>
+    </div>
+
+    <div class="controls">
+        <button onclick="crank()">Turn the Crank</button>
+    </div>
+</div>
+
+<script>
+    const lines = [
+        "The brass dials click into alignment, tracing the golden path of the sun.",
+        "A small indicator shifts—the moon cycles through its phases in silence.",
+        "Calculations of eclipses emerge from the teeth of thirty-seven interlocking gears.",
+        "You feel the weight of centuries in the turning metal; a computer born of logic and starlight.",
+        "The mechanism stops. It has predicted the shadow that will fall upon the world in a year hence."
+    ];
+    let index = 0;
+
+    function crank() {
+        const p = document.getElementById('text');
+        const gear = document.querySelector('.gear');
+        
+        index = (index + 1) % lines.length;
+        p.innerText = lines[index];
+        
+        gear.style.animationDuration = '1s';
+        setTimeout(() => gear.style.animationDuration = '10s', 500);
+    }
+</script>
+
+</body>
+</html>

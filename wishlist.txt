@@ -165,7 +165,7 @@
 [art]   Spectral Flow         — mapping vector field velocities to an HSV color wheel gradient  ✅
 [tool]  Navier-Stokes Viz     — incompressible fluid equations rendered as swirling 2D smoke  ✅
 [art]   Diffusion Limited     — particles clustering into frost-fern crystal dendrites  ✅
-[story] The Antikythera       — a bronze clockwork computer built to predict eclipses in 80 BC
+[story] The Antikythera       — a bronze clockwork computer built to predict eclipses in 80 BC  ✅
 [game]  Creeper Compression   — detonate precisely timed chains to carve sculpted terrain art
 [tool]  Jacobian Matrix       — stretch a 2D grid to see how nonlinear maps distort local area
 [art]   Hilbert Curve Fill    — a single line folding to perfectly fill every pixel of a square
