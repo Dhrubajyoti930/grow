@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Creeper Compression</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --accent: #00ff9d; --dim: #333; }
+        body { margin: 0; background: var(--bg); color: #fff; font-family: 'Press Start 2P', cursive; overflow: hidden; touch-action: none; }
+        #nav { position: absolute; top: 20px; left: 20px; z-index: 10; font-size: 10px; }
+        a { color: var(--accent); text-decoration: none; }
+        canvas { display: block; cursor: crosshair; }
+        #ui { position: absolute; bottom: 20px; width: 100%; text-align: center; pointer-events: none; font-size: 8px; color: var(--dim); }
+    </style>
+</head>
+<body>
+    <div id="nav"><a href="../index.html">← /grow</a></div>
+    <div id="ui">TAP TO PLACE CREEPER | HOLD TO CHARGE | RELEASE TO DETONATE</div>
+    <canvas id="c"></canvas>
+
+<script>
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    let cells = [];
+    const size = 20;
+    let cols, rows;
+
+    function init() {
+        cols = Math.floor(window.innerWidth / size);
+        rows = Math.floor(window.innerHeight / size);
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        cells = Array.from({length: cols}, () => Array(rows).fill(0));
+    }
+
+    window.addEventListener('resize', init);
+    init();
+
+    let active = null;
+    canvas.addEventListener('mousedown', (e) => active = {x: Math.floor(e.clientX/size), y: Math.floor(e.clientY/size), r: 0});
+    canvas.addEventListener('mouseup', () => {
+        if(active) {
+            explode(active.x, active.y, Math.floor(active.r));
+            active = null;
+        }
+    });
+
+    function explode(cx, cy, r) {
+        for(let x=0; x<cols; x++) {
+            for(let y=0; y<rows; y++) {
+                let dist = Math.hypot(x-cx, y-cy);
+                if(dist < r + 2) cells[x][y] = 0;
+            }
+        }
+    }
+
+    function draw() {
+        ctx.fillStyle = '#0a0a0c';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        for(let x=0; x<cols; x++) {
+            for(let y=0; y<rows; y++) {
+                if((x+y)%2 === 0) {
+                    cells[x][y] = 1;
+                    ctx.fillStyle = '#1a1a1e';
+                    ctx.fillRect(x*size, y*size, size-1, size-1);
+                }
+            }
+        }
+
+        if(active) {
+            active.r += 0.2;
+            ctx.strokeStyle = '#00ff9d';
+            ctx.beginPath();
+            ctx.arc(active.x*size + size/2, active.y*size + size/2, active.r*size, 0, Math.PI*2);
+            ctx.stroke();
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+</script>
+</body>
+</html>
