@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jacobian Matrix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --accent: #00f2ff; --text: #e0e0e0; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Space Mono', monospace; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+        #back-link { position: absolute; top: 20px; left: 20px; color: var(--accent); text-decoration: none; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; }
+        canvas { touch-action: none; cursor: crosshair; box-shadow: 0 0 20px rgba(0,0,0,0.5); border: 1px solid #222; }
+        .controls { position: absolute; bottom: 20px; pointer-events: none; text-align: center; font-size: 10px; opacity: 0.6; }
+        .ui { position: absolute; top: 20px; right: 20px; text-align: right; }
+        .val { color: var(--accent); font-weight: bold; }
+    </style>
+</head>
+<body>
+    <a id="back-link" href="../index.html">← /grow</a>
+    <div class="ui">
+        <div>det(J) = <span id="detVal" class="val">1.00</span></div>
+    </div>
+    <canvas id="canvas"></canvas>
+    <div class="controls">DRAG TO DISTORT SPACE</div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const detEl = document.getElementById('detVal');
+        let width, height;
+        let mouse = { x: 0, y: 0, active: false };
+
+        function resize() {
+            width = canvas.width = Math.min(window.innerWidth * 0.9, 600);
+            height = canvas.height = Math.min(window.innerHeight * 0.9, 600);
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        function map(x, y) {
+            let dx = (x - width / 2) / (width / 2);
+            let dy = (y - height / 2) / (height / 2);
+            let mx = (mouse.x - width / 2) / (width / 2);
+            let my = (mouse.y - height / 2) / (height / 2);
+            
+            // Nonlinear mapping: f(v) = v + v * distortion
+            let dist = Math.exp(-(dx*dx + dy*dy) * 3);
+            let nx = x + (mx * 100 * dist);
+            let ny = y + (my * 100 * dist);
+            return { x: nx, y: ny };
+        }
+
+        function draw() {
+            ctx.fillStyle = '#0a0a0c';
+            ctx.fillRect(0, 0, width, height);
+            ctx.strokeStyle = '#222';
+            ctx.lineWidth = 1;
+
+            const step = 30;
+            for(let i = 0; i <= width; i += step) {
+                ctx.beginPath();
+                for(let j = 0; j <= height; j++) {
+                    let p = map(i, j);
+                    if(j === 0) ctx.moveTo(p.x, p.y);
+                    else ctx.lineTo(p.x, p.y);
+                }
+                ctx.stroke();
+            }
+
+            for(let j = 0; j <= height; j += step) {
+                ctx.beginPath();
+                for(let i = 0; i <= width; i++) {
+                    let p = map(i, j);
+                    if(i === 0) ctx.moveTo(p.x, p.y);
+                    else ctx.lineTo(p.x, p.y);
+                }
+                ctx.stroke();
+            }
+
+            // Estimate Determinant via finite difference at center
+            let h = 0.01;
+            let c = map(width/2, height/2);
+            let dx = map(width/2 + h, height/2);
+            let dy = map(width/2, height/2 + h);
+            let det = ((dx.x - c.x)/h) * ((dy.y - c.y)/h) - ((dx.y - c.y)/h) * ((dy.x - c.x)/h);
+            detEl.innerText = det.toFixed(2);
+            
+            requestAnimationFrame(draw);
+        }
+
+        canvas.addEventListener('mousemove', e => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        });
+
+        canvas.addEventListener('mousedown', () => mouse.active = true);
+        window.addEventListener('mouseup', () => mouse.active = false);
+
+        draw();
+    </script>
+</body>
+</html>
