@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Banach-Tarski</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --text: #e0e0e0;
+            --accent: #00ff9d;
+            --dim: #666;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        nav { width: 100%; padding: 2rem; box-sizing: border-box; }
+        a { color: var(--dim); text-decoration: none; font-family: 'Space Mono'; font-size: 0.8rem; transition: 0.3s; }
+        a:hover { color: var(--accent); }
+        main { max-width: 600px; padding: 0 20px; }
+        h1 { font-family: 'Space Mono'; font-size: 2.5rem; margin-bottom: 2rem; border-bottom: 1px solid #333; padding-bottom: 1rem; }
+        .sphere-box { 
+            width: 150px; height: 150px; margin: 2rem auto; 
+            background: radial-gradient(circle at 30% 30%, #333, #000);
+            border-radius: 50%; border: 2px solid var(--accent);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; position: relative; overflow: hidden;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .sphere-box:hover { transform: scale(1.05); }
+        .split { transform: scale(0.6) translateX(-60px); }
+        .split2 { transform: scale(0.6) translateX(60px); }
+        button {
+            background: none; border: 1px solid var(--accent); color: var(--accent);
+            padding: 0.5rem 1rem; cursor: pointer; font-family: 'Space Mono';
+            margin-top: 2rem; display: block; margin-left: auto; margin-right: auto;
+        }
+        button:hover { background: var(--accent); color: black; }
+        .hidden { display: none; }
+        #story { margin-top: 2rem; }
+    </style>
+</head>
+<body>
+
+    <nav><a href="../index.html">← /grow</a></nav>
+
+    <main>
+        <h1>The Banach-Tarski</h1>
+        
+        <div id="visualizer">
+            <div id="sphere1" class="sphere-box"></div>
+            <div id="sphere2" class="sphere-box hidden"></div>
+        </div>
+
+        <div id="story">
+            <p>Imagine a solid sphere. In the rigid world of geometry, it is an immutable object. But in the world of <strong>Set Theory</strong>, it is merely a collection of points.</p>
+            <p id="part2" class="hidden">By invoking the <em>Axiom of Choice</em>, we can decompose the sphere into a finite number of non-measurable pieces. Through pure mathematical rotation and translation, these pieces can be reassembled into two identical spheres.</p>
+            <p id="part3" class="hidden">Matter is not created; the volume is redefined. It is not magic—it is the limit of our intuition when dealing with the infinite.</p>
+        </div>
+
+        <button id="btn">Deconstruct</button>
+    </main>
+
+    <script>
+        const btn = document.getElementById('btn');
+        const s1 = document.getElementById('sphere1');
+        const s2 = document.getElementById('sphere2');
+        const p2 = document.getElementById('part2');
+        const p3 = document.getElementById('part3');
+        let stage = 0;
+
+        btn.onclick = () => {
+            if(stage === 0) {
+                s1.classList.add('split');
+                s2.classList.remove('hidden');
+                s2.classList.add('split2');
+                p2.classList.remove('hidden');
+                btn.innerText = "Reassemble";
+                stage = 1;
+            } else {
+                s1.classList.remove('split');
+                s2.classList.add('hidden');
+                s2.classList.remove('split2');
+                p3.classList.remove('hidden');
+                btn.classList.add('hidden');
+                stage = 2;
+            }
+        }
+    </script>
+</body>
+</html>
