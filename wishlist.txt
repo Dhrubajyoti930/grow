@@ -171,7 +171,7 @@
 [art]   Hilbert Curve Fill    — a single line folding to perfectly fill every pixel of a square  ✅
 [story] The Banach-Tarski     — how set theory lets you disassemble a sphere into two identical ones  ✅
 [game]  Chorus Fruit Clutch   — teleport through End blocks to dodge projectiles at point blank  ✅
-[tool]  Simplex Noise Field   — tune octaves and persistence to sculpt organic terrain noise
+[tool]  Simplex Noise Field   — tune octaves and persistence to sculpt organic terrain noise  ✅
 [art]   Nodal Standing Waves  — vibrating 2D membrane showing harmonic mode shapes
 [story] The Geoid Shape       — Earth is not a sphere, not an ellipsoid, but a lumpy gravity potato
 [game]  Speedrun Clock Abuse  — exploit in-game timer lag to shave milliseconds off a world record
