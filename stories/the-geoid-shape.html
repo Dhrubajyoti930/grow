@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Geoid Shape</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;600&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --accent: #00f2ff;
+            --text: #e0e0e0;
+            --dim: #666;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        nav {
+            width: 90%;
+            padding: 2rem 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        a { color: var(--accent); text-decoration: none; opacity: 0.7; transition: 0.3s; }
+        a:hover { opacity: 1; }
+
+        .container {
+            max-width: 600px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        #potato-canvas {
+            width: 250px;
+            height: 250px;
+            cursor: pointer;
+            image-rendering: pixelated;
+            filter: drop-shadow(0 0 20px rgba(0, 242, 255, 0.2));
+            transition: transform 0.5s ease;
+        }
+
+        h1 { font-weight: 300; letter-spacing: 2px; margin-top: 2rem; }
+        p { line-height: 1.8; color: #aaa; margin-bottom: 2rem; }
+
+        .controls { font-family: 'IBM Plex Mono'; font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
+
+        .potato-container { position: relative; margin: 2rem 0; }
+        .stats { font-family: 'IBM Plex Mono'; font-size: 0.9rem; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="../index.html">← /grow</a>
+    </nav>
+
+    <div class="container">
+        <h1>THE GEOID</h1>
+        
+        <div class="potato-container">
+            <canvas id="potato-canvas" width="64" height="64"></canvas>
+        </div>
+
+        <p id="story">
+            Earth is not a perfect sphere. It isn't even a smooth ellipsoid. 
+            Because mass is distributed unevenly within our planet, gravity pulls harder in some places than others. 
+            The result is a lumpy, irregular shape—a gravitational potato known as the <b>Geoid</b>.
+        </p>
+
+        <div class="controls">Click the potato to measure gravity</div>
+        <div id="status" class="stats"></div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('potato-canvas');
+        const ctx = canvas.getContext('2d');
+        const status = document.getElementById('status');
+        
+        // Draw a procedural "lumpy" potato
+        function drawPotato(offset = 0) {
+            ctx.clearRect(0, 0, 64, 64);
+            ctx.fillStyle = '#00f2ff';
+            ctx.beginPath();
+            
+            for(let i = 0; i < 360; i+=10) {
+                const angle = i * Math.PI / 180;
+                const noise = Math.sin(i + offset) * 3;
+                const r = 20 + noise;
+                const x = 32 + r * Math.cos(angle);
+                const y = 32 + r * Math.sin(angle);
+                if(i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        let time = 0;
+        function animate() {
+            time += 0.05;
+            drawPotato(time);
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        canvas.addEventListener('click', () => {
+            const grav = (9.78 + Math.random() * 0.05).toFixed(4);
+            status.innerText = `LOCAL GRAVITY: ${grav} m/s²`;
+            canvas.style.transform = 'scale(1.1)';
+            setTimeout(() => canvas.style.transform = 'scale(1)', 100);
+        });
+    </script>
+</body>
+</html>
