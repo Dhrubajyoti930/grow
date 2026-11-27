@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speedrun Clock Abuse</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0c; --accent: #00ff9d; --dim: #333; }
+        body { margin: 0; background: var(--bg); color: #eee; font-family: 'IBM Plex Mono', monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
+        #nav { position: absolute; top: 20px; left: 20px; }
+        a { color: var(--accent); text-decoration: none; font-size: 0.8rem; }
+        #game-container { text-align: center; border: 2px solid var(--dim); padding: 40px; border-radius: 4px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        h1 { font-size: 1.2rem; margin-bottom: 2rem; letter-spacing: 2px; color: var(--accent); }
+        #timer { font-size: 4rem; font-weight: 700; margin: 20px 0; font-variant-numeric: tabular-nums; }
+        .controls { display: flex; gap: 10px; justify-content: center; }
+        button { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 10px 20px; cursor: pointer; transition: 0.2s; font-family: inherit; }
+        button:active { background: var(--accent); color: var(--bg); }
+        #lag-btn { border-color: #ff0055; color: #ff0055; }
+        #lag-btn:active { background: #ff0055; color: white; }
+        .msg { height: 1.5rem; margin-top: 20px; font-size: 0.9rem; color: #888; }
+    </style>
+</head>
+<body>
+
+<div id="nav"><a href="../index.html">← /grow</a></div>
+
+<div id="game-container">
+    <h1>SPEEDRUN CLOCK ABUSE</h1>
+    <div id="timer">00.000</div>
+    <div class="controls">
+        <button id="start-btn">START</button>
+        <button id="lag-btn">LAG INPUT</button>
+    </div>
+    <div id="msg" class="msg">Press START to initiate run.</div>
+</div>
+
+<script>
+    let timer = 0;
+    let running = false;
+    let interval;
+    const display = document.getElementById('timer');
+    const msg = document.getElementById('msg');
+
+    const updateDisplay = () => {
+        display.innerText = (timer / 1000).toFixed(3);
+    };
+
+    document.getElementById('start-btn').addEventListener('click', () => {
+        if (!running) {
+            running = true;
+            timer = 0;
+            interval = setInterval(() => {
+                timer += 10;
+                updateDisplay();
+                if (timer >= 5000) {
+                    clearInterval(interval);
+                    running = false;
+                    msg.innerText = "RUN FINISHED: " + display.innerText + "s";
+                }
+            }, 10);
+            msg.innerText = "RUNNING... LAG THE CLOCK!";
+        }
+    });
+
+    document.getElementById('lag-btn').addEventListener('click', () => {
+        if (running) {
+            // The "Abuse": The timer skips a cycle to trick the game logic
+            timer -= 50; 
+            msg.innerText = "LAG TRIGGERED: -50ms";
+            setTimeout(() => { if(running) msg.innerText = "RUNNING..."; }, 500);
+            updateDisplay();
+        }
+    });
+</script>
+</body>
+</html>
